@@ -1,1 +1,168 @@
-Kalkulator Sistem Bilangan 
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Sistem Bilangan</title>
+
+    <!-- Bootstrap 5 CDN -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+</head>
+<body class="bg-light">
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-7 col-lg-6">
+
+                <div class="card shadow border-0">
+                    <div class="card-header bg-primary text-white text-center py-3">
+                        <h3 class="mb-0">Kalkulator Sistem Bilangan</h3>
+                    </div>
+
+                    <div class="card-body p-4">
+
+                        <!-- Input Bilangan -->
+                        <div class="mb-3">
+                            <label for="bilangan" class="form-label">
+                                Masukkan Bilangan
+                            </label>
+                            <input
+                                type="text"
+                                id="bilangan"
+                                class="form-control form-control-lg"
+                                placeholder="Contoh: 1010"
+                            >
+                        </div>
+
+                        <!-- Sistem Bilangan Input -->
+                        <div class="mb-3">
+                            <label for="jenisInput" class="form-label">
+                                Sistem Bilangan Input
+                            </label>
+                            <select id="jenisInput" class="form-select">
+                                <option value="2">Biner (Basis 2)</option>
+                                <option value="8">Oktal (Basis 8)</option>
+                                <option value="10" selected>Desimal (Basis 10)</option>
+                                <option value="16">Heksadesimal (Basis 16)</option>
+                            </select>
+                        </div>
+
+                        <!-- Sistem Bilangan Output -->
+                        <div class="mb-4">
+                            <label for="jenisOutput" class="form-label">
+                                Sistem Bilangan Hasil
+                            </label>
+                            <select id="jenisOutput" class="form-select">
+                                <option value="2" selected>Biner (Basis 2)</option>
+                                <option value="8">Oktal (Basis 8)</option>
+                                <option value="10">Desimal (Basis 10)</option>
+                                <option value="16">Heksadesimal (Basis 16)</option>
+                            </select>
+                        </div>
+
+                        <!-- Tombol Konversi -->
+                        <button
+                            type="button"
+                            class="btn btn-primary btn-lg w-100"
+                            onclick="konversikan()"
+                        >
+                            Konversi
+                        </button>
+
+                        <!-- Hasil -->
+                        <div class="mt-4 p-3 bg-light border rounded text-center">
+                            <div class="text-secondary mb-2">
+                                Hasil Konversi
+                            </div>
+                            <div
+                                id="hasil"
+                                class="fs-2 fw-bold text-primary text-break"
+                                aria-live="polite"
+                            >
+                                -
+                            </div>
+                            <div id="keterangan" class="small text-muted mt-2"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function konversikan() {
+            const input = document.getElementById("bilangan").value.trim();
+            const jenisInput = parseInt(
+                document.getElementById("jenisInput").value
+            );
+            const jenisOutput = parseInt(
+                document.getElementById("jenisOutput").value
+            );
+
+            const hasil = document.getElementById("hasil");
+            const keterangan = document.getElementById("keterangan");
+
+            // Validasi input kosong
+            if (input === "") {
+                hasil.textContent = "Input kosong!";
+                hasil.className = "fs-4 fw-bold text-danger text-break";
+                keterangan.textContent = "Silakan masukkan bilangan.";
+                return;
+            }
+
+            // Validasi karakter sesuai basis
+            const pola = {
+                2: /^[01]+$/,
+                8: /^[0-7]+$/,
+                10: /^[0-9]+$/,
+                16: /^[0-9a-fA-F]+$/
+            };
+
+            if (!pola[jenisInput].test(input)) {
+                hasil.textContent = "Bilangan tidak valid!";
+                hasil.className = "fs-4 fw-bold text-danger text-break";
+                keterangan.textContent =
+                    "Periksa angka sesuai sistem bilangan input.";
+                return;
+            }
+
+            // Konversi ke nilai desimal
+            const nilaiDesimal = parseInt(input, jenisInput);
+
+            if (!Number.isSafeInteger(nilaiDesimal)) {
+                hasil.textContent = "Bilangan terlalu besar!";
+                hasil.className = "fs-4 fw-bold text-danger text-break";
+                keterangan.textContent =
+                    "Gunakan bilangan dalam rentang integer aman JavaScript.";
+                return;
+            }
+
+            // Konversi ke sistem bilangan tujuan
+            const nilaiHasil = nilaiDesimal
+                .toString(jenisOutput)
+                .toUpperCase();
+
+            // Tampilkan hasil
+            hasil.textContent = nilaiHasil;
+            hasil.className = "fs-2 fw-bold text-primary text-break";
+
+            const namaBasis = {
+                2: "Biner",
+                8: "Oktal",
+                10: "Desimal",
+                16: "Heksadesimal"
+            };
+
+            keterangan.textContent =
+                namaBasis[jenisInput] + " → " + namaBasis[jenisOutput];
+        }
+    </script>
+
+</body>
+</html>
