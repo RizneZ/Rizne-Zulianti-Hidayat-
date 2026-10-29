@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title> Rizne Zulianti Hidayat - 262505006 o</title>
+<title> Rizne Zulianti Hidayat - 262505006- Kalkulator Modulo</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
 <style>
   * { box-sizing:border-box; }
   body { margin:0; min-height:100vh; display:flex; flex-direction:column; align-items:center;
-         font-family:'Baloo 2','Comic Sans MS',cursive; color:#5a4470; padding:0 12px 28px;
-         background:linear-gradient(160deg,#ffd6ec,#d6e9ff 55%,#d8ffe0); }
+         font-family:'Baloo 2','Comic Sans MS',cursive; color:#5a4470; padding:0 12px;
+         background:linear-gradient(180deg,#ffe3f1 0%,#d6e9ff 55%,#fff6c9 100%); }
   h1 { font-size:2rem; font-weight:800; margin:16px 0 0; text-align:center;
        background:linear-gradient(90deg,#ff6b6b,#ffa94d,#f5c400,#40c057,#339af0,#9775fa);
        -webkit-background-clip:text; background-clip:text; color:transparent; }
@@ -31,7 +31,11 @@
             box-shadow:0 5px 0 #d9548f; }
   .hitung:active { transform:translateY(3px); box-shadow:0 2px 0 #d9548f; }
   .hasil { margin-top:16px; text-align:center; }
+  .ucap { background:#fff0f7; border:3px solid #ffd0e6; border-radius:16px; padding:6px 12px;
+          font-weight:800; color:#e0559a; margin:0 auto 8px; max-width:300px; }
   .maskot { width:96px; height:96px; }
+  .nama { display:inline-block; font-weight:800; color:#fff; background:#9775fa;
+          padding:2px 16px; border-radius:999px; box-shadow:0 3px 0 #6f4fd0; margin-top:2px; }
   .angka { font-size:2.6rem; font-weight:800; color:#e0559a; line-height:1.1; word-break:break-all; }
   .rumus { font-weight:800; color:#339af0; font-size:1.1rem; margin:4px 0; word-break:break-all; }
   .langkah { text-align:left; background:#f6f0ff; border-radius:16px; padding:10px 14px;
@@ -41,11 +45,22 @@
                 font-size:.8rem; font-weight:800; background:#e9f3ff; color:#6b8fb8; }
   .kotak span.pilih { background:#ff7eb6; color:#fff; transform:scale(1.2); box-shadow:0 3px 0 #d9548f; }
   .salah { color:#d6336c; font-weight:800; }
+
+  /* taman bunga matahari */
+  .taman { width:100%; max-width:560px; display:flex; justify-content:center; align-items:flex-end;
+           gap:2px; margin-top:22px; }
+  .bunga { width:20%; max-width:110px; height:auto; overflow:visible;
+           transform-origin:50% 100%; animation:goyang 4s ease-in-out infinite alternate; }
+  .bunga.kecil { width:15%; max-width:80px; }
+  @keyframes goyang { from { transform:rotate(-4deg); } to { transform:rotate(4deg); } }
+  .rumput { width:100vw; height:34px; margin-top:-8px; background:#8be28b;
+            border-top:8px solid #a4eaa4; }
+  @media (prefers-reduced-motion: reduce) { .bunga { animation:none; } }
 </style>
 </head>
 <body>
 <h1>Kalkulator Modulo</h1>
-<p class="sub">Cari sisa bagi dengan mudah</p>
+<p class="sub">Dibantu Modulus, si kelinci pintar</p>
 
 <div class="kartu">
   <div class="tab">
@@ -60,17 +75,54 @@
   <button class="hitung" id="hitung">Hitung!</button>
 
   <div class="hasil">
+    <div class="ucap" id="ucap"></div>
     <svg class="maskot" id="maskot" viewBox="0 0 100 100" aria-hidden="true"></svg>
+    <div class="nama">Modulus</div>
     <div id="keluaran"></div>
   </div>
 </div>
+
+<div class="taman" aria-hidden="true">
+  <svg class="bunga kecil" viewBox="0 0 100 160" style="animation-delay:-1s"></svg>
+  <svg class="bunga" viewBox="0 0 100 160" style="animation-delay:-2.5s"></svg>
+  <svg class="bunga kecil" viewBox="0 0 100 160" style="animation-delay:-.5s"></svg>
+  <svg class="bunga" viewBox="0 0 100 160" style="animation-delay:-3s"></svg>
+  <svg class="bunga kecil" viewBox="0 0 100 160" style="animation-delay:-1.8s"></svg>
+</div>
+<div class="rumput"></div>
 
 <script>
 let mode = 'sisa';
 const $ = id => document.getElementById(id);
 
-// ----- Maskot -----
+// ----- Bunga matahari -----
+function isiBunga() {
+  let s = '<path d="M50 62 C50 100 50 130 50 160" stroke="#4caf50" stroke-width="6" fill="none" stroke-linecap="round"/>';
+  s += '<ellipse cx="34" cy="118" rx="17" ry="8" fill="#5cc45f" transform="rotate(-30 34 118)"/>';
+  s += '<ellipse cx="66" cy="132" rx="17" ry="8" fill="#5cc45f" transform="rotate(30 66 132)"/>';
+  for (let i = 0; i < 12; i++)
+    s += '<ellipse cx="50" cy="19" rx="7" ry="15" fill="#ffb703" transform="rotate(' + i * 30 + ' 50 45)"/>';
+  for (let i = 0; i < 12; i++)
+    s += '<ellipse cx="50" cy="22" rx="6.5" ry="13" fill="#ffd60a" transform="rotate(' + (i * 30 + 15) + ' 50 45)"/>';
+  s += '<circle cx="50" cy="45" r="17" fill="#8a5a2b"/>';
+  s += '<circle cx="50" cy="45" r="13" fill="#6b3f1d"/>';
+  s += '<circle cx="44" cy="42" r="2.3" fill="#fff"/><circle cx="56" cy="42" r="2.3" fill="#fff"/>';
+  s += '<circle cx="44" cy="42.5" r="1.2" fill="#2e1a0b"/><circle cx="56" cy="42.5" r="1.2" fill="#2e1a0b"/>';
+  s += '<ellipse cx="40" cy="49" rx="3" ry="1.8" fill="#ff8fb1" opacity=".7"/>';
+  s += '<ellipse cx="60" cy="49" rx="3" ry="1.8" fill="#ff8fb1" opacity=".7"/>';
+  s += '<path d="M46 49 q4 4 8 0" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round"/>';
+  return s;
+}
+document.querySelectorAll('.bunga').forEach(el => { el.innerHTML = isiBunga(); });
+
+// ----- Maskot Modulus -----
 function maskot(suasana) {
+  const kata = {
+    biasa: 'Halo! Aku Modulus. Ayo hitung sisa bagi!',
+    senang: 'Yeay, berhasil! Aku Modulus, si jago sisa!',
+    bingung: 'Hmm, ada yang kurang pas. Cek lagi, ya!'
+  };
+  $('ucap').textContent = kata[suasana];
   const mata = suasana === 'bingung'
     ? '<circle cx="36" cy="48" r="5" fill="#4a3555"/><circle cx="64" cy="48" r="8" fill="#4a3555"/><circle cx="66" cy="45" r="2.5" fill="#fff"/>'
     : suasana === 'senang'
