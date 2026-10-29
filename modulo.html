@@ -35,7 +35,7 @@
   .hasil { margin-top:16px; text-align:center; }
   .ucap { background:#fff0f7; border:3px solid #ffd0e6; border-radius:16px; padding:6px 12px;
           font-weight:800; color:#e0559a; margin:0 auto 8px; max-width:300px; }
-  .maskot { width:96px; height:96px; }
+  .maskot { width:96px; height:96px; flex:none; }
   .nama { display:inline-block; font-weight:800; color:#fff; background:#9775fa;
           padding:2px 16px; border-radius:999px; box-shadow:0 3px 0 #6f4fd0; margin-top:2px; }
   .angka { font-size:2.6rem; font-weight:800; color:#e0559a; line-height:1.1; word-break:break-all; }
@@ -47,6 +47,12 @@
                 font-size:.8rem; font-weight:800; background:#e9f3ff; color:#6b8fb8; }
   .kotak span.pilih { background:#ff7eb6; color:#fff; transform:scale(1.2); box-shadow:0 3px 0 #d9548f; }
   .salah { color:#d6336c; font-weight:800; }
+  .penjelasan { text-align:left; background:#fff8e1; border:3px solid #ffe08a; border-radius:16px;
+                padding:10px 14px; margin-top:10px; font-size:.95rem; line-height:1.5; }
+
+  /* gajah + bunga matahari di kiri-kanan */
+  .panggung { display:flex; justify-content:center; align-items:flex-end; gap:6px; }
+  .bunga.sisi { width:60px; max-width:60px; flex:none; }
 
   /* taman bunga matahari */
   .taman { width:100%; max-width:560px; display:flex; justify-content:center; align-items:flex-end;
@@ -62,7 +68,7 @@
 </head>
 <body>
 <h1>Kalkulator Modulo</h1>
-<p class="sub">Dibantu Modulus, si kelinci pintar</p>
+<p class="sub">Dibantu Modulus, si gajah pintar</p>
 
 <div class="kartu">
   <div class="tab">
@@ -90,7 +96,11 @@
 
   <div class="hasil">
     <div class="ucap" id="ucap"></div>
-    <svg class="maskot" id="maskot" viewBox="0 0 100 100" aria-hidden="true"></svg>
+    <div class="panggung">
+      <svg class="bunga sisi" viewBox="0 0 100 160" style="animation-delay:-1.2s" aria-hidden="true"></svg>
+      <svg class="maskot" id="maskot" viewBox="0 0 100 100" aria-hidden="true"></svg>
+      <svg class="bunga sisi" viewBox="0 0 100 160" style="animation-delay:-2.6s" aria-hidden="true"></svg>
+    </div>
     <div class="nama">Modulus</div>
     <div id="keluaran"></div>
   </div>
@@ -141,7 +151,7 @@ function isiBunga() {
 }
 document.querySelectorAll('.bunga').forEach(el => { el.innerHTML = isiBunga(); });
 
-// ----- Maskot Modulus -----
+// ----- Maskot Modulus (gajah) -----
 function maskot(suasana) {
   const kata = {
     biasa: 'Halo! Aku Modulus. Ayo hitung sisa bagi!',
@@ -154,23 +164,30 @@ function maskot(suasana) {
     : suasana === 'senang'
     ? '<path d="M30 50q6-9 12 0M58 50q6-9 12 0" stroke="#4a3555" stroke-width="4" fill="none" stroke-linecap="round"/>'
     : '<ellipse cx="36" cy="48" rx="5.5" ry="7" fill="#4a3555"/><ellipse cx="64" cy="48" rx="5.5" ry="7" fill="#4a3555"/><circle cx="34" cy="45" r="2" fill="#fff"/><circle cx="62" cy="45" r="2" fill="#fff"/>';
-  const mulut = suasana === 'bingung'
-    ? '<path d="M42 70q8-6 16 0" stroke="#4a3555" stroke-width="3" fill="none" stroke-linecap="round"/>'
-    : suasana === 'senang'
-    ? '<path d="M40 64q10 14 20 0z" fill="#c2395f"/>'
-    : '<path d="M43 64q7 8 14 0" stroke="#4a3555" stroke-width="3" fill="none" stroke-linecap="round"/>';
+  // belalai: lurus kalau bingung, melengkung ke atas kalau senang, melengkung biasa kalau netral
+  const jalur = suasana === 'bingung' ? 'M50 58 L50 92'
+    : suasana === 'senang' ? 'M50 58 C50 86 76 90 76 68'
+    : 'M50 58 C50 78 50 86 62 90';
+  const belalai =
+    '<path d="' + jalur + '" stroke="#ff8fb1" stroke-width="16" fill="none" stroke-linecap="round"/>' +
+    '<path d="' + jalur + '" stroke="#ffd0df" stroke-width="5" fill="none" stroke-linecap="round" opacity=".8"/>';
+  const alis = suasana === 'bingung'
+    ? '<path d="M28 38l12 5M72 38l-12 5" stroke="#4a3555" stroke-width="3" fill="none" stroke-linecap="round"/>' : '';
   const bintang = suasana === 'senang' ? '<text x="6" y="22" font-size="16">⭐</text><text x="78" y="26" font-size="16">✨</text>' : '';
   $('maskot').innerHTML =
-    '<ellipse cx="30" cy="22" rx="10" ry="20" fill="#ff8fb1" transform="rotate(-15 30 22)"/>' +
-    '<ellipse cx="70" cy="22" rx="10" ry="20" fill="#ff8fb1" transform="rotate(15 70 22)"/>' +
-    '<ellipse cx="30" cy="24" rx="4" ry="12" fill="#ffd0df" transform="rotate(-15 30 24)"/>' +
-    '<ellipse cx="70" cy="24" rx="4" ry="12" fill="#ffd0df" transform="rotate(15 70 24)"/>' +
-    '<ellipse cx="50" cy="60" rx="38" ry="32" fill="#ff8fb1"/>' +
-    '<ellipse cx="50" cy="70" rx="22" ry="17" fill="#ffd0df"/>' +
-    mata +
-    '<ellipse cx="22" cy="62" rx="7" ry="4" fill="#ff5a8c" opacity=".45"/>' +
-    '<ellipse cx="78" cy="62" rx="7" ry="4" fill="#ff5a8c" opacity=".45"/>' +
-    mulut + bintang;
+    // telinga besar
+    '<ellipse cx="17" cy="52" rx="16" ry="23" fill="#ff8fb1"/>' +
+    '<ellipse cx="83" cy="52" rx="16" ry="23" fill="#ff8fb1"/>' +
+    '<ellipse cx="19" cy="53" rx="9" ry="15" fill="#ffd0df"/>' +
+    '<ellipse cx="81" cy="53" rx="9" ry="15" fill="#ffd0df"/>' +
+    // kepala
+    '<ellipse cx="50" cy="50" rx="31" ry="31" fill="#ff8fb1"/>' +
+    '<ellipse cx="50" cy="34" rx="14" ry="8" fill="#ffd0df" opacity=".6"/>' +
+    belalai +
+    mata + alis +
+    '<ellipse cx="26" cy="60" rx="7" ry="4" fill="#ff5a8c" opacity=".45"/>' +
+    '<ellipse cx="74" cy="60" rx="7" ry="4" fill="#ff5a8c" opacity=".45"/>' +
+    bintang;
 }
 
 // ----- Perhitungan (BigInt, aman untuk angka besar) -----
@@ -201,7 +218,10 @@ function hitung() {
       a + ' = ' + n + ' × ' + q + ' + ' + r + '<br>' +
       'Jadi hasil bagi = ' + q + ' dan sisanya = <b>' + r + '</b>.' +
       (a < 0n ? '<br>Karena a negatif, sisa dibuat tetap tidak negatif (0 sampai ' + (n - 1n) + ').' : '') +
-      '</div>';
+      '</div>' +
+      '<div class="penjelasan"><b>Penjelasan:</b> ' + n + ' masuk ke ' + a + ' sebanyak ' + q +
+      ' kali penuh. Yang tersisa adalah ' + r + ', dan sisa selalu lebih kecil dari n (' + n +
+      '). Makanya ' + a + ' mod ' + n + ' = ' + r + '.</div>';
     if (n <= 24n) {
       html += '<div class="kotak">';
       for (let i = 0n; i < n; i++) html += '<span class="' + (i === r ? 'pilih' : '') + '">' + i + '</span>';
@@ -214,6 +234,7 @@ function hitung() {
     if (b === null) return tampilSalah('Isi b (bilangan kedua) dengan bilangan bulat, ya.');
     const ra = mod(a, n), rb = mod(b, n);
     const sama = ra === rb;
+    const sel = a - b;
     $('keluaran').innerHTML =
       '<div class="rumus">' + a + ' ≡ ' + b + ' (mod ' + n + ')</div>' +
       '<div class="angka">' + (sama ? 'Benar!' : 'Salah') + '</div>' +
@@ -222,6 +243,13 @@ function hitung() {
       b + ' mod ' + n + ' = ' + rb + '<br>' +
       (sama ? 'Sisanya sama, jadi keduanya kongruen.'
             : 'Sisanya beda, jadi keduanya tidak kongruen.') +
+      '</div>' +
+      '<div class="penjelasan"><b>Penjelasan:</b> ' +
+      (sama
+        ? 'Benar, karena ' + a + ' dan ' + b + ' sama-sama bersisa ' + ra + ' jika dibagi ' + n +
+          '. Cara lain: selisihnya ' + a + ' − ' + b + ' = ' + sel + ' habis dibagi ' + n + '.'
+        : 'Salah, karena ' + a + ' bersisa ' + ra + ' sedangkan ' + b + ' bersisa ' + rb + ' jika dibagi ' + n +
+          '. Selisihnya ' + a + ' − ' + b + ' = ' + sel + ' tidak habis dibagi ' + n + ', jadi keduanya tidak kongruen.') +
       '</div>';
     maskot(sama ? 'senang' : 'bingung');
   }
