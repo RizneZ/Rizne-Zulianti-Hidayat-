@@ -2,8 +2,8 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title> Rizne Zulianti Hidayat - 262505006- Kalkulator Modulo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title> Rizne Zulianti Hidayat - 262505006 - Modulus - Kalkulator Modulo</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
 <style>
   * { box-sizing:border-box; }
@@ -20,11 +20,13 @@
   .tab button { flex:1; font-family:inherit; font-size:.95rem; font-weight:800; padding:8px;
                 border:0; border-radius:999px; background:#f1e6ff; color:#8a63c8; cursor:pointer; }
   .tab button.aktif { background:#9775fa; color:#fff; box-shadow:0 3px 0 #6f4fd0; }
-  .baris { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+  .baris { display:flex; flex-wrap:wrap; align-items:center; gap:4px 8px; margin-bottom:12px; }
   .baris label { width:40px; font-weight:800; text-align:center; font-size:1.2rem; }
   .baris input { flex:1; min-width:0; font-family:inherit; font-size:1.3rem; font-weight:800;
                  padding:8px 14px; border:3px solid #ffd0e6; border-radius:16px; color:#5a4470; outline:none; }
   .baris input:focus { border-color:#ff7eb6; }
+  .ket { width:100%; padding-left:48px; font-size:.85rem; line-height:1.3; color:#8a63c8; }
+  .ket b { color:#e0559a; }
   #barisB { display:none; }
   .hitung { width:100%; font-family:inherit; font-size:1.2rem; font-weight:800; padding:11px;
             border:0; border-radius:999px; background:#ff7eb6; color:#fff; cursor:pointer;
@@ -68,9 +70,21 @@
     <button id="tabKong">Kongruen</button>
   </div>
 
-  <div class="baris"><label for="a">a</label><input id="a" type="text" inputmode="numeric" placeholder="contoh: 17"></div>
-  <div class="baris" id="barisB"><label for="b">b</label><input id="b" type="text" inputmode="numeric" placeholder="contoh: 2"></div>
-  <div class="baris"><label for="n">n</label><input id="n" type="text" inputmode="numeric" placeholder="contoh: 5"></div>
+  <div class="baris">
+    <label for="a">a</label>
+    <input id="a" type="text" inputmode="numeric" placeholder="contoh: 17">
+    <div class="ket" id="ketA"></div>
+  </div>
+  <div class="baris" id="barisB">
+    <label for="b">b</label>
+    <input id="b" type="text" inputmode="numeric" placeholder="contoh: 2">
+    <div class="ket" id="ketB"></div>
+  </div>
+  <div class="baris">
+    <label for="n">n</label>
+    <input id="n" type="text" inputmode="numeric" placeholder="contoh: 5">
+    <div class="ket" id="ketN"></div>
+  </div>
 
   <button class="hitung" id="hitung">Hitung!</button>
 
@@ -94,6 +108,18 @@
 <script>
 let mode = 'sisa';
 const $ = id => document.getElementById(id);
+
+// ----- Keterangan a, b, n (berubah sesuai mode) -----
+function isiKeterangan() {
+  if (mode === 'sisa') {
+    $('ketA').innerHTML = '<b>a</b> = bilangan yang akan dibagi';
+    $('ketN').innerHTML = '<b>n</b> = pembagi (modulus), harus lebih dari 0';
+  } else {
+    $('ketA').innerHTML = '<b>a</b> = bilangan pertama yang dibandingkan';
+    $('ketB').innerHTML = '<b>b</b> = bilangan kedua yang dibandingkan';
+    $('ketN').innerHTML = '<b>n</b> = pembagi (modulus), harus lebih dari 0. Cek apakah a dan b punya sisa yang sama saat dibagi n.';
+  }
+}
 
 // ----- Bunga matahari -----
 function isiBunga() {
@@ -163,8 +189,8 @@ function tampilSalah(pesan) {
 function hitung() {
   const a = ambilInt($('a').value);
   const n = ambilInt($('n').value);
-  if (a === null) return tampilSalah('Isi a dengan bilangan bulat, ya.');
-  if (n === null) return tampilSalah('Isi n dengan bilangan bulat, ya.');
+  if (a === null) return tampilSalah('Isi a (bilangan yang dibagi) dengan bilangan bulat, ya.');
+  if (n === null) return tampilSalah('Isi n (pembagi) dengan bilangan bulat, ya.');
   if (n <= 0n) return tampilSalah('n harus lebih besar dari 0.');
 
   if (mode === 'sisa') {
@@ -185,7 +211,7 @@ function hitung() {
     maskot('senang');
   } else {
     const b = ambilInt($('b').value);
-    if (b === null) return tampilSalah('Isi b dengan bilangan bulat, ya.');
+    if (b === null) return tampilSalah('Isi b (bilangan kedua) dengan bilangan bulat, ya.');
     const ra = mod(a, n), rb = mod(b, n);
     const sama = ra === rb;
     $('keluaran').innerHTML =
@@ -208,6 +234,7 @@ function setMode(m) {
   $('tabKong').classList.toggle('aktif', m === 'kong');
   $('barisB').style.display = m === 'kong' ? 'flex' : 'none';
   $('keluaran').innerHTML = '';
+  isiKeterangan();
   maskot('biasa');
 }
 $('tabSisa').onclick = () => setMode('sisa');
@@ -215,6 +242,7 @@ $('tabKong').onclick = () => setMode('kong');
 $('hitung').onclick = hitung;
 ['a', 'b', 'n'].forEach(id => $(id).addEventListener('keydown', e => { if (e.key === 'Enter') hitung(); }));
 
+isiKeterangan();
 maskot('biasa');
 </script>
 </body>
