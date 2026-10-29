@@ -3,273 +3,167 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rizne Zulianti Hidayat - 262505006 - Kalkulator Aritmatika Modular </title>
+<title> Rizne Zulianti Hidayat - 262505006 o</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
 <style>
+  * { box-sizing:border-box; }
   body { margin:0; min-height:100vh; display:flex; flex-direction:column; align-items:center;
-         font-family:'Baloo 2','Comic Sans MS',cursive;
-         background:linear-gradient(160deg,#ffd6ec,#d6e9ff 55%,#d8ffe0); color:#5a4470; }
-  h1 { font-size:2rem; font-weight:800; margin:14px 0 0;
+         font-family:'Baloo 2','Comic Sans MS',cursive; color:#5a4470; padding:0 12px 28px;
+         background:linear-gradient(160deg,#ffd6ec,#d6e9ff 55%,#d8ffe0); }
+  h1 { font-size:2rem; font-weight:800; margin:16px 0 0; text-align:center;
        background:linear-gradient(90deg,#ff6b6b,#ffa94d,#f5c400,#40c057,#339af0,#9775fa);
        -webkit-background-clip:text; background-clip:text; color:transparent; }
-  p { margin:0 0 12px; font-size:.95rem; text-align:center; padding:0 12px; }
-  canvas { width:480px; max-width:96vw; height:auto; border:6px solid #fff; border-radius:26px;
-           box-shadow:0 8px 0 #f7a8d0, 0 14px 24px rgba(150,90,170,.3); touch-action:none; }
-  .pad { display:grid; grid-template-columns:repeat(3,58px); gap:8px; margin:20px 0 14px; }
-  .pad button { font-size:1.3rem; height:50px; border:0; border-radius:50%; background:#fff;
-                color:#e0559a; box-shadow:0 4px 0 #f7a8d0; cursor:pointer; }
-  .pad button:active { transform:translateY(3px); box-shadow:0 1px 0 #f7a8d0; }
-  .aksi { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-bottom:20px; }
-  .aksi button { font-family:inherit; font-size:1rem; font-weight:800; padding:10px 16px; border:0;
-                 border-radius:999px; color:#fff; cursor:pointer; box-shadow:0 4px 0 rgba(0,0,0,.18); }
-  .aksi button:active { transform:translateY(3px); box-shadow:0 1px 0 rgba(0,0,0,.18); }
-  #lompat { background:#ff7eb6; } #sapa { background:#ffa94d; }
-  #warna { background:#51cf66; }  #pesta { background:#748ffc; }
+  .sub { margin:0 0 12px; text-align:center; }
+  .kartu { width:100%; max-width:440px; background:#fff; border-radius:26px; padding:18px;
+           box-shadow:0 8px 0 #f7a8d0, 0 14px 24px rgba(150,90,170,.25); }
+  .tab { display:flex; gap:8px; margin-bottom:14px; }
+  .tab button { flex:1; font-family:inherit; font-size:.95rem; font-weight:800; padding:8px;
+                border:0; border-radius:999px; background:#f1e6ff; color:#8a63c8; cursor:pointer; }
+  .tab button.aktif { background:#9775fa; color:#fff; box-shadow:0 3px 0 #6f4fd0; }
+  .baris { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+  .baris label { width:40px; font-weight:800; text-align:center; font-size:1.2rem; }
+  .baris input { flex:1; min-width:0; font-family:inherit; font-size:1.3rem; font-weight:800;
+                 padding:8px 14px; border:3px solid #ffd0e6; border-radius:16px; color:#5a4470; outline:none; }
+  .baris input:focus { border-color:#ff7eb6; }
+  #barisB { display:none; }
+  .hitung { width:100%; font-family:inherit; font-size:1.2rem; font-weight:800; padding:11px;
+            border:0; border-radius:999px; background:#ff7eb6; color:#fff; cursor:pointer;
+            box-shadow:0 5px 0 #d9548f; }
+  .hitung:active { transform:translateY(3px); box-shadow:0 2px 0 #d9548f; }
+  .hasil { margin-top:16px; text-align:center; }
+  .maskot { width:96px; height:96px; }
+  .angka { font-size:2.6rem; font-weight:800; color:#e0559a; line-height:1.1; word-break:break-all; }
+  .rumus { font-weight:800; color:#339af0; font-size:1.1rem; margin:4px 0; word-break:break-all; }
+  .langkah { text-align:left; background:#f6f0ff; border-radius:16px; padding:10px 14px;
+             margin-top:10px; font-size:.95rem; line-height:1.5; }
+  .kotak { display:flex; flex-wrap:wrap; gap:5px; justify-content:center; margin-top:12px; }
+  .kotak span { width:28px; height:28px; border-radius:9px; display:grid; place-items:center;
+                font-size:.8rem; font-weight:800; background:#e9f3ff; color:#6b8fb8; }
+  .kotak span.pilih { background:#ff7eb6; color:#fff; transform:scale(1.2); box-shadow:0 3px 0 #d9548f; }
+  .salah { color:#d6336c; font-weight:800; }
 </style>
 </head>
 <body>
-<h1>Karakter Lucu</h1>
-<p>Gerak: panah / WASD &nbsp;•&nbsp; Lompat: Spasi</p>
-<canvas id="c" width="480" height="300"></canvas>
+<h1>Kalkulator Modulo</h1>
+<p class="sub">Cari sisa bagi dengan mudah</p>
 
-<div class="pad">
-  <span></span><button data-k="up">▲</button><span></span>
-  <button data-k="left">◀</button><button data-k="down">▼</button><button data-k="right">▶</button>
-</div>
-<div class="aksi">
-  <button id="lompat">Lompat</button>
-  <button id="sapa">Sapa</button>
-  <button id="warna">Ganti warna</button>
-  <button id="pesta">Pesta!</button>
+<div class="kartu">
+  <div class="tab">
+    <button id="tabSisa" class="aktif">Sisa bagi</button>
+    <button id="tabKong">Kongruen</button>
+  </div>
+
+  <div class="baris"><label for="a">a</label><input id="a" type="text" inputmode="numeric" placeholder="contoh: 17"></div>
+  <div class="baris" id="barisB"><label for="b">b</label><input id="b" type="text" inputmode="numeric" placeholder="contoh: 2"></div>
+  <div class="baris"><label for="n">n</label><input id="n" type="text" inputmode="numeric" placeholder="contoh: 5"></div>
+
+  <button class="hitung" id="hitung">Hitung!</button>
+
+  <div class="hasil">
+    <svg class="maskot" id="maskot" viewBox="0 0 100 100" aria-hidden="true"></svg>
+    <div id="keluaran"></div>
+  </div>
 </div>
 
 <script>
-const cv = document.getElementById('c');
-const ctx = cv.getContext('2d');
-const W = cv.width, H = cv.height;
+let mode = 'sisa';
+const $ = id => document.getElementById(id);
 
-// [warna badan, warna perut]
-const WARNA = [['#ff8fb1','#ffd0df'],['#ffb86b','#ffe0bd'],['#ffe16b','#fff3b8'],
-               ['#7fe0a0','#c8f5d6'],['#6bc7ff','#c4e8ff'],['#b69cff','#ddd2ff']];
-const K = { x:240, y:210, arah:1, lompat:0, v:0, langkah:0, jalan:false,
-            warna:0, pesan:'', sisa:0, kedip:0 };
-const tombol = {};
-const partikel = [];
-let t = 0;
-
-const awan = [{x:60,y:40,v:.2},{x:220,y:70,v:.12},{x:400,y:35,v:.17}];
-const bunga = [];
-for (let i = 0; i < 14; i++)
-  bunga.push({ x:(i*71+25)%460+10, y:185+(i*47)%100, c:WARNA[i%6][0] });
-
-function oval(x, y, rx, ry, c, rot = 0) {
-  ctx.fillStyle = c;
-  ctx.beginPath();
-  ctx.ellipse(x, y, Math.max(rx, .1), Math.max(ry, .1), rot, 0, Math.PI * 2);
-  ctx.fill();
+// ----- Maskot -----
+function maskot(suasana) {
+  const mata = suasana === 'bingung'
+    ? '<circle cx="36" cy="48" r="5" fill="#4a3555"/><circle cx="64" cy="48" r="8" fill="#4a3555"/><circle cx="66" cy="45" r="2.5" fill="#fff"/>'
+    : suasana === 'senang'
+    ? '<path d="M30 50q6-9 12 0M58 50q6-9 12 0" stroke="#4a3555" stroke-width="4" fill="none" stroke-linecap="round"/>'
+    : '<ellipse cx="36" cy="48" rx="5.5" ry="7" fill="#4a3555"/><ellipse cx="64" cy="48" rx="5.5" ry="7" fill="#4a3555"/><circle cx="34" cy="45" r="2" fill="#fff"/><circle cx="62" cy="45" r="2" fill="#fff"/>';
+  const mulut = suasana === 'bingung'
+    ? '<path d="M42 70q8-6 16 0" stroke="#4a3555" stroke-width="3" fill="none" stroke-linecap="round"/>'
+    : suasana === 'senang'
+    ? '<path d="M40 64q10 14 20 0z" fill="#c2395f"/>'
+    : '<path d="M43 64q7 8 14 0" stroke="#4a3555" stroke-width="3" fill="none" stroke-linecap="round"/>';
+  const bintang = suasana === 'senang' ? '<text x="6" y="22" font-size="16">⭐</text><text x="78" y="26" font-size="16">✨</text>' : '';
+  $('maskot').innerHTML =
+    '<ellipse cx="30" cy="22" rx="10" ry="20" fill="#ff8fb1" transform="rotate(-15 30 22)"/>' +
+    '<ellipse cx="70" cy="22" rx="10" ry="20" fill="#ff8fb1" transform="rotate(15 70 22)"/>' +
+    '<ellipse cx="30" cy="24" rx="4" ry="12" fill="#ffd0df" transform="rotate(-15 30 24)"/>' +
+    '<ellipse cx="70" cy="24" rx="4" ry="12" fill="#ffd0df" transform="rotate(15 70 24)"/>' +
+    '<ellipse cx="50" cy="60" rx="38" ry="32" fill="#ff8fb1"/>' +
+    '<ellipse cx="50" cy="70" rx="22" ry="17" fill="#ffd0df"/>' +
+    mata +
+    '<ellipse cx="22" cy="62" rx="7" ry="4" fill="#ff5a8c" opacity=".45"/>' +
+    '<ellipse cx="78" cy="62" rx="7" ry="4" fill="#ff5a8c" opacity=".45"/>' +
+    mulut + bintang;
 }
 
-function latar() {
-  const g = ctx.createLinearGradient(0, 0, 0, 170);
-  g.addColorStop(0, '#ffd1f0'); g.addColorStop(1, '#c9e8ff');
-  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+// ----- Perhitungan (BigInt, aman untuk angka besar) -----
+function ambilInt(teks) {
+  const s = teks.trim().replace(/\s+/g, '');
+  if (!/^-?\d+$/.test(s)) return null;
+  return BigInt(s);
+}
+function mod(a, n) { return ((a % n) + n) % n; }
 
-  // pelangi
-  ['#ff6b6b','#ffa94d','#ffe066','#69db7c','#4dabf7','#9775fa'].forEach((c, i) => {
-    ctx.strokeStyle = c; ctx.lineWidth = 10;
-    ctx.beginPath(); ctx.arc(380, 175, 110 - i * 10, Math.PI, 0); ctx.stroke();
-  });
-
-  // awan bergerak
-  awan.forEach(a => {
-    a.x += a.v; if (a.x > W + 60) a.x = -60;
-    oval(a.x, a.y, 18, 14, '#fff');
-    oval(a.x + 18, a.y + 4, 14, 11, '#fff');
-    oval(a.x - 18, a.y + 4, 14, 11, '#fff');
-  });
-
-  // tanah
-  ctx.fillStyle = '#a4eaa4'; ctx.fillRect(0, 170, W, H - 170);
-  ctx.fillStyle = '#8be28b'; ctx.fillRect(0, 170, W, 8);
-
-  // bunga
-  bunga.forEach(b => {
-    ctx.strokeStyle = '#5cb85c'; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(b.x, b.y); ctx.lineTo(b.x, b.y + 12); ctx.stroke();
-    for (let i = 0; i < 5; i++) {
-      const a = i * Math.PI * 2 / 5;
-      oval(b.x + Math.cos(a) * 5, b.y + Math.sin(a) * 5, 4, 4, b.c);
-    }
-    oval(b.x, b.y, 3, 3, '#fff7a8');
-  });
+function tampilSalah(pesan) {
+  maskot('bingung');
+  $('keluaran').innerHTML = '<p class="salah">' + pesan + '</p>';
 }
 
-function gambarKarakter() {
-  const k = K, [w, wt] = WARNA[k.warna];
-  const napas = Math.sin(t * .08) * .04;
-  let sx = 1 - napas, sy = 1 + napas;
-  if (k.lompat > 0) { sx = .92; sy = 1.12; }
-  else if (k.jalan) { const b = Math.abs(Math.sin(k.langkah)); sy = 1 - b * .08; sx = 1 + b * .06; }
-  const hop = k.jalan && k.lompat === 0 ? Math.abs(Math.sin(k.langkah)) * 7 : 0;
-  const x = k.x, y = k.y - k.lompat - hop;
-  const ayun = k.jalan ? Math.sin(k.langkah) * 5 : 0;
-  const goyang = Math.sin(t * .1) * .05;
+function hitung() {
+  const a = ambilInt($('a').value);
+  const n = ambilInt($('n').value);
+  if (a === null) return tampilSalah('Isi a dengan bilangan bulat, ya.');
+  if (n === null) return tampilSalah('Isi n dengan bilangan bulat, ya.');
+  if (n <= 0n) return tampilSalah('n harus lebih besar dari 0.');
 
-  // bayangan
-  oval(x, k.y + 36, 26 - k.lompat / 6, 7, 'rgba(0,0,0,.15)');
-
-  // telinga
-  [-1, 1].forEach(s => {
-    oval(x + s * 16, y - 34 * sy, 11, 22, '#fff', s * .25 + goyang);
-    oval(x + s * 16, y - 34 * sy, 8, 19, w, s * .25 + goyang);
-    oval(x + s * 16, y - 33 * sy, 4, 12, '#ffb3d1', s * .25 + goyang);
-  });
-
-  // kaki
-  [-1, 1].forEach(s => {
-    oval(x + s * 12 + ayun * s, y + 29 * sy, 11, 8, '#fff');
-    oval(x + s * 12 + ayun * s, y + 29 * sy, 9, 6, w);
-  });
-
-  // tangan (melambai saat menyapa)
-  const lambai = k.sisa > 0 ? Math.sin(t * .35) * 10 : 0;
-  oval(x - 31 * sx, y + 4, 9, 11, '#fff'); oval(x - 31 * sx, y + 4, 7, 9, w);
-  oval(x + 31 * sx, y + 4 - Math.max(lambai, 0) - (k.sisa > 0 ? 8 : 0), 9, 11, '#fff');
-  oval(x + 31 * sx, y + 4 - Math.max(lambai, 0) - (k.sisa > 0 ? 8 : 0), 7, 9, w);
-
-  // badan + perut
-  oval(x, y, 33 * sx, 31 * sy, '#fff');
-  oval(x, y, 30 * sx, 28 * sy, w);
-  oval(x, y + 10 * sy, 17 * sx, 14 * sy, wt);
-
-  // wajah
-  const mx = k.arah * 2;
-  [-11, 11].forEach(dx => {
-    if (k.kedip > 0) {
-      ctx.strokeStyle = '#4a3555'; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
-      ctx.beginPath(); ctx.moveTo(x + dx + mx - 5, y - 6); ctx.lineTo(x + dx + mx + 5, y - 6); ctx.stroke();
-    } else {
-      oval(x + dx + mx, y - 6, 5.5, 7, '#4a3555');
-      oval(x + dx + mx - 2, y - 9, 2.2, 2.6, '#fff');
-      oval(x + dx + mx + 2, y - 4, 1.2, 1.2, '#fff');
+  if (mode === 'sisa') {
+    const r = mod(a, n);
+    const q = (a - r) / n;
+    let html = '<div class="rumus">' + a + ' mod ' + n + ' =</div><div class="angka">' + r + '</div>' +
+      '<div class="langkah"><b>Langkahnya:</b><br>' +
+      a + ' = ' + n + ' × ' + q + ' + ' + r + '<br>' +
+      'Jadi hasil bagi = ' + q + ' dan sisanya = <b>' + r + '</b>.' +
+      (a < 0n ? '<br>Karena a negatif, sisa dibuat tetap tidak negatif (0 sampai ' + (n - 1n) + ').' : '') +
+      '</div>';
+    if (n <= 24n) {
+      html += '<div class="kotak">';
+      for (let i = 0n; i < n; i++) html += '<span class="' + (i === r ? 'pilih' : '') + '">' + i + '</span>';
+      html += '</div>';
     }
-    oval(x + dx * 1.75 + mx, y + 6, 6, 3.5, 'rgba(255,90,140,.45)');
-  });
-  if (k.lompat > 0) {
-    oval(x + mx, y + 10, 4, 5, '#c2395f');
+    $('keluaran').innerHTML = html;
+    maskot('senang');
   } else {
-    ctx.strokeStyle = '#4a3555'; ctx.lineWidth = 2; ctx.lineCap = 'round';
-    ctx.beginPath(); ctx.arc(x + mx, y + 6, 5, .15 * Math.PI, .85 * Math.PI); ctx.stroke();
-  }
-
-  // dasi kupu-kupu
-  oval(x - 8, y + 20 * sy, 8, 5, '#5b6cff', .5);
-  oval(x + 8, y + 20 * sy, 8, 5, '#5b6cff', -.5);
-  oval(x, y + 20 * sy, 3.5, 3.5, '#ffd43b');
-
-  // balon ucapan
-  if (k.sisa > 0) {
-    ctx.font = '800 15px "Baloo 2", sans-serif';
-    const lebar = ctx.measureText(k.pesan).width + 22;
-    const bx = x - lebar / 2, by = y - 92;
-    ctx.fillStyle = '#fff';
-    ctx.beginPath(); ctx.roundRect(bx, by, lebar, 28, 14); ctx.fill();
-    ctx.beginPath(); ctx.moveTo(x - 6, by + 27); ctx.lineTo(x + 6, by + 27); ctx.lineTo(x, by + 38); ctx.fill();
-    ctx.fillStyle = '#e0559a';
-    ctx.fillText(k.pesan, bx + 11, by + 20);
+    const b = ambilInt($('b').value);
+    if (b === null) return tampilSalah('Isi b dengan bilangan bulat, ya.');
+    const ra = mod(a, n), rb = mod(b, n);
+    const sama = ra === rb;
+    $('keluaran').innerHTML =
+      '<div class="rumus">' + a + ' ≡ ' + b + ' (mod ' + n + ')</div>' +
+      '<div class="angka">' + (sama ? 'Benar!' : 'Salah') + '</div>' +
+      '<div class="langkah"><b>Langkahnya:</b><br>' +
+      a + ' mod ' + n + ' = ' + ra + '<br>' +
+      b + ' mod ' + n + ' = ' + rb + '<br>' +
+      (sama ? 'Sisanya sama, jadi keduanya kongruen.'
+            : 'Sisanya beda, jadi keduanya tidak kongruen.') +
+      '</div>';
+    maskot(sama ? 'senang' : 'bingung');
   }
 }
 
-function percik(n, pesta) {
-  for (let i = 0; i < n; i++) {
-    partikel.push({
-      x: pesta ? Math.random() * W : K.x + (Math.random() - .5) * 30,
-      y: pesta ? -10 : K.y + 30,
-      vx: (Math.random() - .5) * (pesta ? 2 : 2.5),
-      vy: pesta ? 1 + Math.random() * 2.5 : -Math.random() * 1.8,
-      life: pesta ? 150 : 32,
-      c: WARNA[Math.floor(Math.random() * 6)][0],
-      s: pesta ? 18 : 13,
-      b: ['★', '♥', '✦'][Math.floor(Math.random() * 3)]
-    });
-  }
+// ----- Tab -----
+function setMode(m) {
+  mode = m;
+  $('tabSisa').classList.toggle('aktif', m === 'sisa');
+  $('tabKong').classList.toggle('aktif', m === 'kong');
+  $('barisB').style.display = m === 'kong' ? 'flex' : 'none';
+  $('keluaran').innerHTML = '';
+  maskot('biasa');
 }
+$('tabSisa').onclick = () => setMode('sisa');
+$('tabKong').onclick = () => setMode('kong');
+$('hitung').onclick = hitung;
+['a', 'b', 'n'].forEach(id => $(id).addEventListener('keydown', e => { if (e.key === 'Enter') hitung(); }));
 
-function gambarPartikel() {
-  for (let i = partikel.length - 1; i >= 0; i--) {
-    const p = partikel[i];
-    p.x += p.vx; p.y += p.vy; p.life--;
-    if (p.life <= 0) { partikel.splice(i, 1); continue; }
-    ctx.globalAlpha = Math.min(1, p.life / 20);
-    ctx.fillStyle = p.c; ctx.font = p.s + 'px sans-serif';
-    ctx.fillText(p.b, p.x, p.y);
-    ctx.globalAlpha = 1;
-  }
-}
-
-function perbarui() {
-  const k = K;
-  let dx = 0, dy = 0;
-  if (tombol.left) dx--; if (tombol.right) dx++;
-  if (tombol.up) dy--;   if (tombol.down) dy++;
-  k.jalan = dx !== 0 || dy !== 0;
-  if (k.jalan) {
-    if (dx) k.arah = dx;
-    k.x += dx * 3; k.y += dy * 3; k.langkah += .35;
-    if (t % 5 === 0) percik(1, false);
-  }
-  k.x = Math.max(40, Math.min(W - 40, k.x));
-  k.y = Math.max(150, Math.min(H - 50, k.y));
-
-  if (k.lompat > 0 || k.v > 0) {
-    k.lompat += k.v; k.v -= .8;
-    if (k.lompat <= 0) { k.lompat = 0; k.v = 0; percik(6, false); }
-  }
-  if (k.sisa > 0) k.sisa--;
-  if (k.kedip > 0) k.kedip--; else if (Math.random() < .006) k.kedip = 8;
-}
-
-function loop() {
-  t++;
-  perbarui();
-  latar();
-  gambarKarakter();
-  gambarPartikel();
-  requestAnimationFrame(loop);
-}
-
-// aksi
-function lompat() { if (!K.lompat) { K.v = 11; percik(8, false); } }
-function sapa() { K.pesan = 'Halo, teman! 💖'; K.sisa = 130; }
-function gantiWarna() { K.warna = (K.warna + 1) % WARNA.length; percik(10, false); }
-function pesta() { percik(60, true); K.pesan = 'Yeay, pesta! 🎉'; K.sisa = 130; }
-
-// keyboard
-const peta = { ArrowLeft:'left', a:'left', ArrowRight:'right', d:'right',
-               ArrowUp:'up', w:'up', ArrowDown:'down', s:'down' };
-addEventListener('keydown', e => {
-  const n = peta[e.key.length === 1 ? e.key.toLowerCase() : e.key];
-  if (n) { tombol[n] = true; e.preventDefault(); }
-  if (e.code === 'Space') { lompat(); e.preventDefault(); }
-});
-addEventListener('keyup', e => {
-  const n = peta[e.key.length === 1 ? e.key.toLowerCase() : e.key];
-  if (n) tombol[n] = false;
-});
-
-// tombol di layar
-document.querySelectorAll('.pad button').forEach(b => {
-  const n = b.dataset.k;
-  b.addEventListener('pointerdown', () => tombol[n] = true);
-  ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev =>
-    b.addEventListener(ev, () => tombol[n] = false));
-});
-document.getElementById('lompat').onclick = lompat;
-document.getElementById('sapa').onclick = sapa;
-document.getElementById('warna').onclick = gantiWarna;
-document.getElementById('pesta').onclick = pesta;
-
-loop();
+maskot('biasa');
 </script>
 </body>
 </html>
