@@ -1,1 +1,275 @@
-kalkulator modulo
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rizne Zulianti Hidayat - 262505006 - Kalkulator Aritmatika Modular </title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; min-height:100vh; display:flex; flex-direction:column; align-items:center;
+         font-family:'Baloo 2','Comic Sans MS',cursive;
+         background:linear-gradient(160deg,#ffd6ec,#d6e9ff 55%,#d8ffe0); color:#5a4470; }
+  h1 { font-size:2rem; font-weight:800; margin:14px 0 0;
+       background:linear-gradient(90deg,#ff6b6b,#ffa94d,#f5c400,#40c057,#339af0,#9775fa);
+       -webkit-background-clip:text; background-clip:text; color:transparent; }
+  p { margin:0 0 12px; font-size:.95rem; text-align:center; padding:0 12px; }
+  canvas { width:480px; max-width:96vw; height:auto; border:6px solid #fff; border-radius:26px;
+           box-shadow:0 8px 0 #f7a8d0, 0 14px 24px rgba(150,90,170,.3); touch-action:none; }
+  .pad { display:grid; grid-template-columns:repeat(3,58px); gap:8px; margin:20px 0 14px; }
+  .pad button { font-size:1.3rem; height:50px; border:0; border-radius:50%; background:#fff;
+                color:#e0559a; box-shadow:0 4px 0 #f7a8d0; cursor:pointer; }
+  .pad button:active { transform:translateY(3px); box-shadow:0 1px 0 #f7a8d0; }
+  .aksi { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-bottom:20px; }
+  .aksi button { font-family:inherit; font-size:1rem; font-weight:800; padding:10px 16px; border:0;
+                 border-radius:999px; color:#fff; cursor:pointer; box-shadow:0 4px 0 rgba(0,0,0,.18); }
+  .aksi button:active { transform:translateY(3px); box-shadow:0 1px 0 rgba(0,0,0,.18); }
+  #lompat { background:#ff7eb6; } #sapa { background:#ffa94d; }
+  #warna { background:#51cf66; }  #pesta { background:#748ffc; }
+</style>
+</head>
+<body>
+<h1>Karakter Lucu</h1>
+<p>Gerak: panah / WASD &nbsp;•&nbsp; Lompat: Spasi</p>
+<canvas id="c" width="480" height="300"></canvas>
+
+<div class="pad">
+  <span></span><button data-k="up">▲</button><span></span>
+  <button data-k="left">◀</button><button data-k="down">▼</button><button data-k="right">▶</button>
+</div>
+<div class="aksi">
+  <button id="lompat">Lompat</button>
+  <button id="sapa">Sapa</button>
+  <button id="warna">Ganti warna</button>
+  <button id="pesta">Pesta!</button>
+</div>
+
+<script>
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+const W = cv.width, H = cv.height;
+
+// [warna badan, warna perut]
+const WARNA = [['#ff8fb1','#ffd0df'],['#ffb86b','#ffe0bd'],['#ffe16b','#fff3b8'],
+               ['#7fe0a0','#c8f5d6'],['#6bc7ff','#c4e8ff'],['#b69cff','#ddd2ff']];
+const K = { x:240, y:210, arah:1, lompat:0, v:0, langkah:0, jalan:false,
+            warna:0, pesan:'', sisa:0, kedip:0 };
+const tombol = {};
+const partikel = [];
+let t = 0;
+
+const awan = [{x:60,y:40,v:.2},{x:220,y:70,v:.12},{x:400,y:35,v:.17}];
+const bunga = [];
+for (let i = 0; i < 14; i++)
+  bunga.push({ x:(i*71+25)%460+10, y:185+(i*47)%100, c:WARNA[i%6][0] });
+
+function oval(x, y, rx, ry, c, rot = 0) {
+  ctx.fillStyle = c;
+  ctx.beginPath();
+  ctx.ellipse(x, y, Math.max(rx, .1), Math.max(ry, .1), rot, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function latar() {
+  const g = ctx.createLinearGradient(0, 0, 0, 170);
+  g.addColorStop(0, '#ffd1f0'); g.addColorStop(1, '#c9e8ff');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+
+  // pelangi
+  ['#ff6b6b','#ffa94d','#ffe066','#69db7c','#4dabf7','#9775fa'].forEach((c, i) => {
+    ctx.strokeStyle = c; ctx.lineWidth = 10;
+    ctx.beginPath(); ctx.arc(380, 175, 110 - i * 10, Math.PI, 0); ctx.stroke();
+  });
+
+  // awan bergerak
+  awan.forEach(a => {
+    a.x += a.v; if (a.x > W + 60) a.x = -60;
+    oval(a.x, a.y, 18, 14, '#fff');
+    oval(a.x + 18, a.y + 4, 14, 11, '#fff');
+    oval(a.x - 18, a.y + 4, 14, 11, '#fff');
+  });
+
+  // tanah
+  ctx.fillStyle = '#a4eaa4'; ctx.fillRect(0, 170, W, H - 170);
+  ctx.fillStyle = '#8be28b'; ctx.fillRect(0, 170, W, 8);
+
+  // bunga
+  bunga.forEach(b => {
+    ctx.strokeStyle = '#5cb85c'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(b.x, b.y); ctx.lineTo(b.x, b.y + 12); ctx.stroke();
+    for (let i = 0; i < 5; i++) {
+      const a = i * Math.PI * 2 / 5;
+      oval(b.x + Math.cos(a) * 5, b.y + Math.sin(a) * 5, 4, 4, b.c);
+    }
+    oval(b.x, b.y, 3, 3, '#fff7a8');
+  });
+}
+
+function gambarKarakter() {
+  const k = K, [w, wt] = WARNA[k.warna];
+  const napas = Math.sin(t * .08) * .04;
+  let sx = 1 - napas, sy = 1 + napas;
+  if (k.lompat > 0) { sx = .92; sy = 1.12; }
+  else if (k.jalan) { const b = Math.abs(Math.sin(k.langkah)); sy = 1 - b * .08; sx = 1 + b * .06; }
+  const hop = k.jalan && k.lompat === 0 ? Math.abs(Math.sin(k.langkah)) * 7 : 0;
+  const x = k.x, y = k.y - k.lompat - hop;
+  const ayun = k.jalan ? Math.sin(k.langkah) * 5 : 0;
+  const goyang = Math.sin(t * .1) * .05;
+
+  // bayangan
+  oval(x, k.y + 36, 26 - k.lompat / 6, 7, 'rgba(0,0,0,.15)');
+
+  // telinga
+  [-1, 1].forEach(s => {
+    oval(x + s * 16, y - 34 * sy, 11, 22, '#fff', s * .25 + goyang);
+    oval(x + s * 16, y - 34 * sy, 8, 19, w, s * .25 + goyang);
+    oval(x + s * 16, y - 33 * sy, 4, 12, '#ffb3d1', s * .25 + goyang);
+  });
+
+  // kaki
+  [-1, 1].forEach(s => {
+    oval(x + s * 12 + ayun * s, y + 29 * sy, 11, 8, '#fff');
+    oval(x + s * 12 + ayun * s, y + 29 * sy, 9, 6, w);
+  });
+
+  // tangan (melambai saat menyapa)
+  const lambai = k.sisa > 0 ? Math.sin(t * .35) * 10 : 0;
+  oval(x - 31 * sx, y + 4, 9, 11, '#fff'); oval(x - 31 * sx, y + 4, 7, 9, w);
+  oval(x + 31 * sx, y + 4 - Math.max(lambai, 0) - (k.sisa > 0 ? 8 : 0), 9, 11, '#fff');
+  oval(x + 31 * sx, y + 4 - Math.max(lambai, 0) - (k.sisa > 0 ? 8 : 0), 7, 9, w);
+
+  // badan + perut
+  oval(x, y, 33 * sx, 31 * sy, '#fff');
+  oval(x, y, 30 * sx, 28 * sy, w);
+  oval(x, y + 10 * sy, 17 * sx, 14 * sy, wt);
+
+  // wajah
+  const mx = k.arah * 2;
+  [-11, 11].forEach(dx => {
+    if (k.kedip > 0) {
+      ctx.strokeStyle = '#4a3555'; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(x + dx + mx - 5, y - 6); ctx.lineTo(x + dx + mx + 5, y - 6); ctx.stroke();
+    } else {
+      oval(x + dx + mx, y - 6, 5.5, 7, '#4a3555');
+      oval(x + dx + mx - 2, y - 9, 2.2, 2.6, '#fff');
+      oval(x + dx + mx + 2, y - 4, 1.2, 1.2, '#fff');
+    }
+    oval(x + dx * 1.75 + mx, y + 6, 6, 3.5, 'rgba(255,90,140,.45)');
+  });
+  if (k.lompat > 0) {
+    oval(x + mx, y + 10, 4, 5, '#c2395f');
+  } else {
+    ctx.strokeStyle = '#4a3555'; ctx.lineWidth = 2; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.arc(x + mx, y + 6, 5, .15 * Math.PI, .85 * Math.PI); ctx.stroke();
+  }
+
+  // dasi kupu-kupu
+  oval(x - 8, y + 20 * sy, 8, 5, '#5b6cff', .5);
+  oval(x + 8, y + 20 * sy, 8, 5, '#5b6cff', -.5);
+  oval(x, y + 20 * sy, 3.5, 3.5, '#ffd43b');
+
+  // balon ucapan
+  if (k.sisa > 0) {
+    ctx.font = '800 15px "Baloo 2", sans-serif';
+    const lebar = ctx.measureText(k.pesan).width + 22;
+    const bx = x - lebar / 2, by = y - 92;
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.roundRect(bx, by, lebar, 28, 14); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(x - 6, by + 27); ctx.lineTo(x + 6, by + 27); ctx.lineTo(x, by + 38); ctx.fill();
+    ctx.fillStyle = '#e0559a';
+    ctx.fillText(k.pesan, bx + 11, by + 20);
+  }
+}
+
+function percik(n, pesta) {
+  for (let i = 0; i < n; i++) {
+    partikel.push({
+      x: pesta ? Math.random() * W : K.x + (Math.random() - .5) * 30,
+      y: pesta ? -10 : K.y + 30,
+      vx: (Math.random() - .5) * (pesta ? 2 : 2.5),
+      vy: pesta ? 1 + Math.random() * 2.5 : -Math.random() * 1.8,
+      life: pesta ? 150 : 32,
+      c: WARNA[Math.floor(Math.random() * 6)][0],
+      s: pesta ? 18 : 13,
+      b: ['★', '♥', '✦'][Math.floor(Math.random() * 3)]
+    });
+  }
+}
+
+function gambarPartikel() {
+  for (let i = partikel.length - 1; i >= 0; i--) {
+    const p = partikel[i];
+    p.x += p.vx; p.y += p.vy; p.life--;
+    if (p.life <= 0) { partikel.splice(i, 1); continue; }
+    ctx.globalAlpha = Math.min(1, p.life / 20);
+    ctx.fillStyle = p.c; ctx.font = p.s + 'px sans-serif';
+    ctx.fillText(p.b, p.x, p.y);
+    ctx.globalAlpha = 1;
+  }
+}
+
+function perbarui() {
+  const k = K;
+  let dx = 0, dy = 0;
+  if (tombol.left) dx--; if (tombol.right) dx++;
+  if (tombol.up) dy--;   if (tombol.down) dy++;
+  k.jalan = dx !== 0 || dy !== 0;
+  if (k.jalan) {
+    if (dx) k.arah = dx;
+    k.x += dx * 3; k.y += dy * 3; k.langkah += .35;
+    if (t % 5 === 0) percik(1, false);
+  }
+  k.x = Math.max(40, Math.min(W - 40, k.x));
+  k.y = Math.max(150, Math.min(H - 50, k.y));
+
+  if (k.lompat > 0 || k.v > 0) {
+    k.lompat += k.v; k.v -= .8;
+    if (k.lompat <= 0) { k.lompat = 0; k.v = 0; percik(6, false); }
+  }
+  if (k.sisa > 0) k.sisa--;
+  if (k.kedip > 0) k.kedip--; else if (Math.random() < .006) k.kedip = 8;
+}
+
+function loop() {
+  t++;
+  perbarui();
+  latar();
+  gambarKarakter();
+  gambarPartikel();
+  requestAnimationFrame(loop);
+}
+
+// aksi
+function lompat() { if (!K.lompat) { K.v = 11; percik(8, false); } }
+function sapa() { K.pesan = 'Halo, teman! 💖'; K.sisa = 130; }
+function gantiWarna() { K.warna = (K.warna + 1) % WARNA.length; percik(10, false); }
+function pesta() { percik(60, true); K.pesan = 'Yeay, pesta! 🎉'; K.sisa = 130; }
+
+// keyboard
+const peta = { ArrowLeft:'left', a:'left', ArrowRight:'right', d:'right',
+               ArrowUp:'up', w:'up', ArrowDown:'down', s:'down' };
+addEventListener('keydown', e => {
+  const n = peta[e.key.length === 1 ? e.key.toLowerCase() : e.key];
+  if (n) { tombol[n] = true; e.preventDefault(); }
+  if (e.code === 'Space') { lompat(); e.preventDefault(); }
+});
+addEventListener('keyup', e => {
+  const n = peta[e.key.length === 1 ? e.key.toLowerCase() : e.key];
+  if (n) tombol[n] = false;
+});
+
+// tombol di layar
+document.querySelectorAll('.pad button').forEach(b => {
+  const n = b.dataset.k;
+  b.addEventListener('pointerdown', () => tombol[n] = true);
+  ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev =>
+    b.addEventListener(ev, () => tombol[n] = false));
+});
+document.getElementById('lompat').onclick = lompat;
+document.getElementById('sapa').onclick = sapa;
+document.getElementById('warna').onclick = gantiWarna;
+document.getElementById('pesta').onclick = pesta;
+
+loop();
+</script>
+</body>
+</html>
