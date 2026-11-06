@@ -1,0 +1,3357 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#201a16">
+  <title>The Math Detective — Confidential Academic Case File</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #29231f;
+      --muted-ink: #a69b8c;
+      --paper: #d6c8ae;
+      --paper-light: #e9e5dc;
+      --brown: #29231f;
+      --red: #663d3d;
+      --gold: #a69b8c;
+      --night: #171717;
+      --serif: Georgia, "Times New Roman", serif;
+      --mono: "Courier New", monospace;
+      --sans: Arial, Helvetica, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      min-height: 100vh;
+      color: var(--paper-light);
+      background:
+        radial-gradient(ellipse at 50% 30%, #29231f 0, transparent 56%),
+        repeating-linear-gradient(3deg, transparent 0 5px, #ffffff05 6px, transparent 7px),
+        var(--night);
+      font-family: var(--sans);
+    }
+    button, a { font: inherit; }
+    button:focus-visible, a:focus-visible {
+      outline: 2px solid #e1b45f;
+      outline-offset: 5px;
+    }
+
+    .cover-screen {
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      padding: 48px 20px;
+      perspective: 1400px;
+      overflow: hidden;
+    }
+    .folder {
+      position: relative;
+      width: min(100%, 560px);
+      padding: 24px 20px 20px;
+      border-radius: 4px 8px 7px 5px;
+      background:
+        linear-gradient(112deg, #59483baa, transparent 42%),
+        repeating-linear-gradient(0deg, #ffffff08 0 1px, transparent 1px 4px),
+        linear-gradient(145deg, #29231f, #211d1a 70%, #171717);
+      box-shadow: 0 35px 75px #000b, 0 8px 20px #0008, inset 0 1px #ffffff18;
+      transform-origin: left center;
+      transition: transform 950ms cubic-bezier(.68,-.08,.24,1), opacity 500ms ease;
+      isolation: isolate;
+    }
+    .folder::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      top: -19px;
+      left: 0;
+      width: 43%;
+      height: 24px;
+      border-radius: 5px 9px 0 0;
+      background: linear-gradient(110deg, #59483b, #29231f);
+      box-shadow: inset 0 1px #ffffff16;
+    }
+    .folder::after {
+      content: "";
+      position: absolute;
+      z-index: -2;
+      inset: 9px -8px -8px 8px;
+      border-radius: 4px;
+      background: #a69b8c;
+      transform: rotate(1.2deg);
+      box-shadow: 0 12px 30px #0007;
+    }
+    .folder.opening {
+      transform: rotateY(-83deg) translateX(-14%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .paper {
+      position: relative;
+      padding: clamp(24px, 6vw, 42px);
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 10% 12%, #59483b12 0 1px, transparent 2px),
+        radial-gradient(ellipse at 82% 76%, #59483b12 0 1px, transparent 2px),
+        repeating-linear-gradient(0deg, transparent 0 27px, #59483b1a 28px),
+        linear-gradient(135deg, #e9e5dc, #d6c8ae);
+      box-shadow: 0 3px 12px #160f0c80, inset 0 0 45px #9a77421c;
+      transform: rotate(-.35deg);
+    }
+    .paper::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border: 1px solid #76624755;
+      pointer-events: none;
+    }
+    .clip {
+      position: absolute;
+      z-index: 2;
+      top: -36px;
+      right: 42px;
+      width: 35px;
+      height: 74px;
+      border: 3px solid #aeb0a4;
+      border-radius: 18px 18px 11px 11px;
+      transform: rotate(8deg);
+      filter: drop-shadow(2px 3px 2px #0008);
+    }
+    .clip::after {
+      content: "";
+      position: absolute;
+      inset: 6px 5px 5px;
+      border: 2px solid #777a72;
+      border-radius: 12px 12px 8px 8px;
+    }
+    .topline, .case-number, .classification, .status,
+    .subject-label, .identity-copy, .open-button, .motto {
+      font-family: var(--mono);
+      text-transform: uppercase;
+      letter-spacing: .12em;
+    }
+    .topline {
+      margin: 0 0 32px;
+      text-align: center;
+      font-size: .73rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+    }
+    .cover-heading {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2rem, 9.5vw, 3.8rem);
+      line-height: .92;
+      text-align: center;
+      letter-spacing: .055em;
+    }
+    .case-number {
+      display: block;
+      margin-top: 9px;
+      font-size: clamp(.65rem, 2.8vw, .95rem);
+      font-weight: 700;
+      letter-spacing: .18em;
+      line-height: 1.35;
+    }
+    .subtitle {
+      margin: 20px 0 25px;
+      text-align: center;
+      font: .65rem/1.5 var(--mono);
+      letter-spacing: .12em;
+    }
+    .cover-tagline { margin: -10px 0 13px; color: #59483b; font: 700 clamp(.7rem, 2.4vw, .88rem)/1.5 var(--sans); text-align: center; }
+    .cover-description { max-width: 410px; margin: 0 auto 18px; color: #59483b; font: .83rem/1.65 var(--sans); text-align: center; }
+    .identity-row {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      align-items: center;
+      gap: 18px;
+      padding: 17px 0;
+      border-top: 1px solid #66543b66;
+      border-bottom: 1px solid #66543b66;
+    }
+    .id-photo {
+      position: relative;
+      width: 90px;
+      height: 112px;
+      overflow: hidden;
+      border: 4px solid #d8c8a9;
+      outline: 1px solid #594735;
+      background: #8e795b;
+      filter: sepia(.35) contrast(.96);
+      box-shadow: 2px 3px 7px #30231855;
+    }
+    .id-photo svg { display: block; width: 100%; height: 100%; }
+    .subject-label {
+      margin: 0 0 7px;
+      font-size: .6rem;
+      color: #665b4c;
+    }
+    .subject-name {
+      margin: 0 0 13px;
+      font-family: var(--serif);
+      font-size: clamp(1.15rem, 4vw, 1.6rem);
+      font-weight: 700;
+    }
+    .identity-copy {
+      margin: 5px 0;
+      font-size: .58rem;
+      line-height: 1.5;
+      letter-spacing: .055em;
+    }
+    .identity-copy strong { color: var(--red); }
+    .stamp {
+      position: absolute;
+      right: 21px;
+      bottom: 96px;
+      display: grid;
+      width: 102px;
+      height: 102px;
+      place-items: center;
+      border: 4px double var(--red);
+      border-radius: 50%;
+      color: var(--red);
+      font-size: .69rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-align: center;
+      line-height: 1.35;
+      transform: rotate(-17deg);
+      opacity: .8;
+      mix-blend-mode: multiply;
+    }
+    .stamp::before, .stamp::after {
+      content: "";
+      position: absolute;
+      width: 13px;
+      height: 13px;
+      border: 1px solid var(--red);
+      border-radius: 50%;
+    }
+    .stamp::before { top: 7px; }
+    .stamp::after { bottom: 7px; }
+    .fingerprint {
+      display: block;
+      width: 43px;
+      height: 43px;
+      margin: 19px auto 10px;
+      color: #59483b;
+      opacity: .7;
+    }
+    .open-button {
+      display: block;
+      width: min(100%, 300px);
+      margin: 17px auto 0;
+      padding: 14px 18px;
+      border: 1px solid #33271d;
+      color: var(--paper-light);
+      background: linear-gradient(#59483b, #29231f);
+      box-shadow: 0 4px 0 #211811, 0 7px 12px #281e1540;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .open-button:hover {
+      background: linear-gradient(#59483b, #29231f);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #211811, 0 10px 15px #281e1540;
+    }
+    .open-button:active { transform: translateY(3px); box-shadow: 0 1px 0 #211811; }
+    .motto {
+      margin: 15px 0 0;
+      color: #665b4c;
+      font-size: .58rem;
+      letter-spacing: .04em;
+      text-align: center;
+      text-transform: none;
+      font-style: italic;
+    }
+
+    .portfolio {
+      display: none;
+      position: relative;
+      min-height: 100vh;
+      overflow: visible;
+      background:
+        radial-gradient(ellipse at 50% 42%, #29231f, transparent 54%),
+        repeating-linear-gradient(2deg, transparent 0 5px, #ffffff05 6px, transparent 7px),
+        #171717;
+      opacity: 0;
+    }
+    .portfolio.visible { display: block; animation: reveal .65s ease forwards; }
+    @keyframes reveal { from { opacity: 0; } to { opacity: 1; } }
+    .board-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 58px;
+      padding: 10px clamp(14px, 4vw, 42px);
+      border-bottom: 1px solid #9a74434d;
+      background: linear-gradient(90deg, #171717f5, #29231ff2 50%, #171717f5);
+      box-shadow: 0 8px 25px #0006;
+    }
+    .board-brand { color: #a69b8c; font: 700 .68rem var(--mono); letter-spacing: .14em; }
+    .board-tools { display: flex; align-items: center; gap: 10px; }
+    .edit-status { color: #bdad93; font-size: .63rem; }
+    .tool-button, .back-button {
+      padding: 9px 12px;
+      border: 1px solid #a69b8c80;
+      color: var(--paper-light);
+      background: #29231f;
+      font-size: .62rem;
+      letter-spacing: .1em;
+      cursor: pointer;
+      transition: background .2s ease, transform .2s ease;
+    }
+    .tool-button:hover, .back-button:hover { background: #59483b; transform: translateY(-1px); }
+    .tool-button[aria-pressed="true"] { border-color: #a69b8c; color: #e9e5dc; }
+    .menu-icon { display: inline-grid; gap: 3px; width: 15px; margin-right: 5px; vertical-align: middle; }
+    .menu-icon i { display: block; height: 1px; background: currentColor; }
+    .case-index {
+      position: absolute;
+      z-index: 8;
+      top: calc(100% + 1px);
+      right: clamp(12px, 4vw, 42px);
+      width: min(390px, calc(100vw - 24px));
+      max-height: min(72vh, calc(100dvh - 76px));
+      overflow: auto;
+      padding: 14px;
+      border: 1px solid #a69b8c99;
+      color: #e9e5dc;
+      background:
+        repeating-linear-gradient(0deg, #ffffff05 0 1px, transparent 1px 5px),
+        linear-gradient(145deg, #29231f, #171717);
+      box-shadow: 0 18px 38px #000b, inset 0 0 24px #0008;
+    }
+    .case-index:not([hidden]) { display: block; animation: evidence-reveal .2s ease both; }
+    .case-index-heading { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #a69b8c66; }
+    .case-index-heading strong { color: #d6c8ae; font: .57rem var(--mono); letter-spacing: .13em; }
+    .case-index-heading span { color: #a69b8c; font: .47rem var(--mono); }
+    .case-index-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+    .case-index-link {
+      display: block;
+      min-width: 0;
+      padding: 9px 8px;
+      border: 1px solid #a69b8c4d;
+      color: #e9e5dc;
+      background: #29231f;
+      font: .53rem/1.35 var(--mono);
+      text-align: left;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .case-index-link:hover, .case-index-link[aria-current] { border-color: #a69b8c; background: #59483b; }
+    .case-index-link small { display: block; margin-top: 3px; color: #a69b8c; font: .42rem var(--mono); }
+    .board-area {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: clamp(8px, 1.8vh, 18px);
+      min-height: calc(100svh - 112px);
+      padding: clamp(8px, 2vh, 18px) clamp(12px, 4vw, 46px);
+      scroll-margin-top: 72px;
+    }
+    .board-heading { display: flex; align-items: end; justify-content: space-between; gap: 10px; }
+    .board-heading h1 {
+      margin: 0;
+      color: #e4d5b9;
+      font: 400 clamp(1.25rem, 3.2vw, 2rem)/1.1 var(--serif);
+      text-shadow: 0 2px 18px #9d332955;
+    }
+    .board-heading p { margin: 4px 0 0; color: #887966; font-size: .62rem; }
+    .board-caption { color: #a77a4b; font-size: .59rem; letter-spacing: .12em; text-align: right; }
+    .case-board {
+      position: relative;
+      display: grid;
+      grid-template: repeat(2, minmax(0, 1fr)) / repeat(3, minmax(0, 1fr));
+      grid-template-areas: "bio subject experience" ". study .";
+      gap: clamp(8px, 2vw, 22px);
+      width: min(100%, 1030px);
+      height: min(67vh, 650px);
+      min-height: 390px;
+      margin: auto;
+      padding: clamp(10px, 2vw, 22px);
+      border: 9px solid #38271d;
+      outline: 1px solid #a87c4b66;
+      background:
+        radial-gradient(ellipse at 50% 45%, #88603a22, transparent 58%),
+        radial-gradient(ellipse at 50% 50%, transparent 38%, #090706aa 100%),
+        repeating-linear-gradient(0deg, #ffffff04 0 1px, transparent 1px 5px),
+        linear-gradient(135deg, #493423, #302118 48%, #211813);
+      box-shadow: 0 24px 65px #000c, inset 0 0 45px #090604cc;
+      isolation: isolate;
+    }
+    .evidence-threads {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      pointer-events: none;
+    }
+    .evidence-threads path {
+      fill: none;
+      stroke: #663d3d;
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: .86;
+      filter: drop-shadow(0 2px 2px #090604);
+    }
+    .evidence-threads.is-tracing path {
+      stroke-dasharray: 12 9;
+      animation: thread-trace 1.15s linear infinite;
+      filter: drop-shadow(0 0 5px #d1553a) drop-shadow(0 2px 2px #090604);
+    }
+    @keyframes thread-trace { to { stroke-dashoffset: -42; } }
+    .evidence-threads circle { fill: #663d3d; stroke: #a69b8c; stroke-width: 2; }
+    .threads-mobile { display: none; }
+    .trace-token {
+      position: absolute;
+      z-index: 4;
+      top: 50%;
+      left: 50%;
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      padding: 0;
+      border: 2px solid #a69b8c;
+      border-radius: 50%;
+      color: #f0dfbd;
+      background: radial-gradient(circle at 35% 30%, #59483b, #29231f 75%);
+      box-shadow: 0 0 0 4px #17100caa, 0 5px 13px #000b, 0 0 15px #663d3d77;
+      transform: translate(-50%, -50%);
+      transition: left .65s cubic-bezier(.2,.8,.2,1), top .65s cubic-bezier(.2,.8,.2,1), rotate .65s ease;
+      cursor: pointer;
+    }
+    .trace-token:hover { rotate: 28deg; }
+    .trace-token svg { width: 23px; height: 23px; }
+    .trace-token[aria-pressed="true"] { animation: clue-throb 1.1s ease-in-out infinite alternate; }
+    @keyframes clue-throb { to { box-shadow: 0 0 0 6px #17100cbb, 0 5px 13px #000b, 0 0 24px #e3523b; } }
+    .trace-hint {
+      position: absolute;
+      z-index: 4;
+      top: 12px;
+      right: 15px;
+      padding: 5px 8px;
+      border: 1px solid #997548aa;
+      color: #c5a16b;
+      background: #100b09c9;
+      font: .5rem var(--mono);
+      letter-spacing: .12em;
+      pointer-events: none;
+    }
+    .board-stamp {
+      position: absolute;
+      right: 13px;
+      bottom: 11px;
+      z-index: 0;
+      display: grid;
+      width: 66px;
+      height: 66px;
+      place-items: center;
+      border: 3px double #a83b30a8;
+      border-radius: 50%;
+      color: #a83b30b8;
+      font: 700 .43rem/1.35 var(--mono);
+      letter-spacing: .06em;
+      text-align: center;
+      transform: rotate(13deg);
+      pointer-events: none;
+    }
+    .board-stamp::before, .board-stamp::after {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border: 1px solid currentColor;
+      border-radius: 50%;
+    }
+    .board-stamp::before { top: 4px; }
+    .board-stamp::after { bottom: 4px; }
+    .board-card.is-traced { animation: clue-found .75s ease; }
+    @keyframes clue-found {
+      0%, 100% { filter: none; }
+      35% { filter: drop-shadow(0 0 14px #df643e); }
+    }
+    .case-card {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      min-width: 0;
+      padding: clamp(9px, 1.6vw, 17px);
+      border: 1px solid #a69b8c;
+      color: var(--ink);
+      text-align: left;
+      background:
+        repeating-linear-gradient(0deg, transparent 0 27px, #59483b12 28px),
+        linear-gradient(135deg, #e9e5dc, #d6c8ae);
+      box-shadow: 3px 8px 20px #000a, inset 0 0 22px #59483b18;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .case-card::after {
+      content: "CLASSIFIED · 001";
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 3px 5px;
+      border: 1px solid #8e342b66;
+      color: #8e342b;
+      background: #e6d5b5c9;
+      font: 700 .38rem var(--mono);
+      letter-spacing: .09em;
+      transform: rotate(-3deg);
+    }
+    .case-card > .card-index, .case-card > .card-title, .case-card > .card-subtitle {
+      position: relative;
+      z-index: 1;
+    }
+    .case-card:hover { z-index: 2; transform: translateY(-4px) rotate(0deg) !important; box-shadow: 4px 11px 18px #160f0c99; }
+    .case-card::before {
+      content: "";
+      position: absolute;
+      top: 7px;
+      right: 9px;
+      width: 8px;
+      height: 8px;
+      border: 2px solid #663d3d;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px #0007;
+      z-index: 3;
+    }
+    .gift-wrap { position: absolute; z-index: 2; inset: 0; overflow: hidden; pointer-events: none; }
+    .gift-ribbon {
+      position: absolute;
+      display: block;
+      background: linear-gradient(90deg, #59483b, #663d3d 48%, #59483b);
+      box-shadow: 0 1px 3px #21120d88, inset 0 0 4px #e2a56d55;
+      transition: transform .5s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
+    }
+    .gift-ribbon.vertical { top: 0; bottom: 0; left: 50%; width: 13px; transform: translateX(-50%); }
+    .gift-ribbon.horizontal { top: 50%; right: 0; left: 0; height: 11px; transform: translateY(-50%); }
+    .gift-bow {
+      position: absolute;
+      top: calc(50% - 13px);
+      left: calc(50% - 19px);
+      width: 38px;
+      height: 26px;
+      transition: transform .35s ease, opacity .25s ease;
+    }
+    .gift-bow::before, .gift-bow::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      width: 17px;
+      height: 16px;
+      border: 4px solid #9d3329;
+      border-radius: 80% 20% 75% 25%;
+      background: #d8bd8c;
+      box-shadow: 0 1px 3px #21120d88;
+    }
+    .gift-bow::before { left: 0; transform: rotate(28deg); }
+    .gift-bow::after { right: 0; transform: scaleX(-1) rotate(28deg); }
+    .case-card.is-opening { z-index: 4; animation: gift-pop .58s cubic-bezier(.2,.75,.2,1) both; }
+    .case-card.is-opening .gift-ribbon.vertical { transform: translate(-50%, -115%) rotate(9deg); }
+    .case-card.is-opening .gift-ribbon.horizontal { transform: translate(115%, -50%) rotate(5deg); }
+    .case-card.is-opening .gift-bow { transform: translateY(-20px) rotate(25deg) scale(1.35); opacity: 0; }
+    .case-card.is-opening .gift-wrap { overflow: visible; }
+    @keyframes gift-pop {
+      0% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+      35% { transform: scale(1.06) rotate(-1deg); filter: brightness(1.18); }
+      100% { transform: scale(.92) rotate(2deg); filter: brightness(1.04); opacity: .55; }
+    }
+    .case-card.is-opening > :not(.gift-wrap) { animation: clue-pop .58s ease both; }
+    @keyframes clue-pop { 0%,35% { opacity: 1; } 100% { opacity: .28; } }
+    .evidence-prop {
+      position: absolute;
+      z-index: 2;
+      width: 56px;
+      height: 56px;
+      color: #bda06e;
+      opacity: .7;
+      pointer-events: none;
+      filter: drop-shadow(0 3px 4px #0009);
+    }
+    .magnifier-prop { top: 13px; right: 14px; transform: rotate(-17deg); }
+    .clue-prop { bottom: 12px; left: 12px; width: 30px; height: 38px; transform: rotate(-10deg); }
+    .evidence-tag {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      padding: 3px 5px;
+      border: 1px solid #a0372d;
+      color: #87332a;
+      background: #e7d9bb;
+      font: 700 .43rem var(--mono);
+      letter-spacing: .08em;
+      transform: rotate(-7deg);
+    }
+    .case-card[data-area="bio"] { grid-area: bio; transform: rotate(1deg); }
+    .case-card[data-area="experience"] { grid-area: experience; transform: rotate(-.8deg); }
+    .case-card[data-area="study"] { grid-area: study; transform: rotate(.8deg); }
+    .card-index { color: #81362b; font-size: .57rem; letter-spacing: .13em; }
+    .card-title { margin: 6px 0 2px; color: #302219; font: 700 clamp(.88rem, 1.8vw, 1.2rem)/1.1 var(--serif); }
+    .card-subtitle { color: #61513d; font-size: .58rem; line-height: 1.4; }
+    .card-fingerprint {
+      position: absolute;
+      right: 9px;
+      bottom: 8px;
+      width: clamp(24px, 4vw, 38px);
+      height: clamp(24px, 4vw, 38px);
+      color: #5c4935;
+      opacity: .66;
+    }
+    .subject-card {
+      position: relative;
+      z-index: 1;
+      grid-area: subject;
+      align-self: center;
+      justify-self: center;
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      gap: 7px;
+      width: min(100%, 220px);
+      aspect-ratio: 1.12;
+      padding: 12px;
+      border: 1px solid #c5a974;
+      outline: 4px double #c5a97466;
+      color: var(--paper-light);
+      text-align: center;
+      background:
+        radial-gradient(ellipse at center, #38271c 0, #17110e 75%),
+        #211813;
+      box-shadow: 0 12px 30px #000c, inset 0 0 32px #000a;
+      transform: rotate(-1deg);
+    }
+    .subject-card::before {
+      content: "SUBJECT OF INTEREST";
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      padding: 4px 7px;
+      border: 1px solid #9d3329;
+      color: #e2c99e;
+      background: #72251f;
+      font: 700 .42rem var(--mono);
+      letter-spacing: .08em;
+      transform: translateX(-50%) rotate(-2deg);
+      white-space: nowrap;
+    }
+    .subject-card::after {
+      content: "";
+      position: absolute;
+      top: -5px;
+      left: calc(50% - 4px);
+      width: 9px;
+      height: 9px;
+      border: 2px solid #d4ae70;
+      border-radius: 50%;
+      background: #922f26;
+      box-shadow: 0 2px 4px #0009;
+    }
+    .subject-photo {
+      width: clamp(48px, 8vh, 75px);
+      height: clamp(56px, 10vh, 88px);
+      overflow: hidden;
+      border: 3px solid #d8c8a9;
+      background: #8e795b;
+      filter: sepia(.35) contrast(.96);
+    }
+    .subject-photo svg { display: block; width: 100%; height: 100%; }
+    .subject-kicker { color: #c7ac7a; font-size: .52rem; letter-spacing: .14em; }
+    .subject-name { margin: 0; font: 700 clamp(.9rem, 2vw, 1.25rem)/1.1 var(--serif); }
+    .subject-fingerprint { position: absolute; right: 10px; bottom: 9px; width: 31px; height: 31px; color: #ad8b59; opacity: .58; }
+    .board-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 0 clamp(14px, 4vw, 42px) 10px;
+      color: #695b4a;
+      font-size: .56rem;
+    }
+    .back-button { position: static; flex: 0 0 auto; }
+    .case-dialog {
+      width: min(560px, calc(100vw - 28px));
+      max-height: min(80dvh, 620px);
+      padding: 0;
+      overflow: auto;
+      border: 1px solid #8b714d;
+      color: var(--ink);
+      background:
+        repeating-linear-gradient(0deg, transparent 0 27px, #8b74431a 28px),
+        linear-gradient(135deg, #f0e6d0, #ded0b1);
+      box-shadow: 0 24px 80px #000c;
+    }
+    .case-dialog::backdrop { background: #080706c9; backdrop-filter: blur(4px); }
+    .case-dialog[open] { animation: evidence-reveal .38s cubic-bezier(.16,.84,.35,1) both; }
+    @keyframes evidence-reveal {
+      from { opacity: 0; transform: translateY(28px) scale(.86) rotate(-2deg); }
+      to { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
+    }
+    .dialog-inner { position: relative; padding: clamp(22px, 5vw, 40px); }
+    .experience-dialog {
+      width: min(980px, calc(100vw - 28px));
+      max-height: min(800px, calc(100dvh - 28px));
+      border: 8px solid #493324;
+      outline: 1px solid #c0a574;
+      background:
+        repeating-linear-gradient(0deg, #ffffff08 0 1px, transparent 1px 5px),
+        linear-gradient(140deg, #654a30, #493523 48%, #3c2b20);
+      box-shadow: 0 24px 80px #000c, inset 0 0 25px #1b120d88;
+    }
+    .experience-dialog .dialog-inner { padding: clamp(10px, 2vw, 18px); }
+    .experience-dialog > .dialog-inner > .dialog-index { color: #d3a26b; }
+    .experience-dialog > .dialog-inner > .dialog-title { color: #eee1c8; }
+    .experience-map {
+      position: relative;
+      min-height: 430px;
+      padding: clamp(15px, 3vw, 28px);
+      overflow: hidden;
+      border: 1px solid #786344;
+      color: #e9dcc2;
+      background:
+        radial-gradient(ellipse at 50% 40%, #9067412b, transparent 54%),
+        radial-gradient(ellipse at 50% 50%, transparent 35%, #090706ad 100%),
+        repeating-linear-gradient(0deg, #ffffff05 0 1px, transparent 1px 5px),
+        linear-gradient(145deg, #302219, #17120f 70%);
+      box-shadow: inset 0 0 36px #080604bb, 0 5px 16px #100b08aa;
+    }
+    .experience-map:not([hidden]), .activity-detail:not([hidden]) { animation: evidence-reveal .32s cubic-bezier(.16,.84,.35,1) both; }
+    .experience-map::before, .experience-map::after {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      top: 50%;
+      left: 18%;
+      width: 64%;
+      height: 2px;
+      background: #a23028;
+      box-shadow: 0 0 8px #c34a37aa;
+      transform: rotate(-7deg);
+      pointer-events: none;
+    }
+    .experience-map::after { transform: rotate(7deg); }
+    .experience-map-heading {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 25px;
+      padding: 0 40px 12px 0;
+      border-bottom: 1px solid #b3956170;
+    }
+    .experience-map-kicker { margin: 0 0 5px; color: #c28e58; font: .57rem var(--mono); letter-spacing: .16em; }
+    .experience-map-heading h3 { margin: 0; color: #efe1c5; font: 400 clamp(1.25rem, 3vw, 2rem)/1.1 var(--serif); }
+    .experience-map-heading p { max-width: 240px; margin: 0; color: #a99980; font: .55rem/1.5 var(--mono); text-align: right; }
+    .experience-map-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(10px, 2vw, 22px);
+    }
+    .activity-file {
+      position: relative;
+      display: grid;
+      min-width: 0;
+      min-height: 210px;
+      align-content: space-between;
+      gap: 16px;
+      padding: 17px 14px 14px;
+      border: 1px solid #8d744e;
+      color: #33271d;
+      text-align: left;
+      background:
+        linear-gradient(155deg, transparent 0 81%, #aa8d6040 81.2% 81.8%, transparent 82%),
+        repeating-linear-gradient(0deg, transparent 0 24px, #8b74431a 25px),
+        linear-gradient(135deg, #e6d8bc, #c8b48c);
+      box-shadow: 4px 9px 18px #0009, inset 0 0 18px #73552a20;
+      transform: rotate(-1deg);
+      transition: transform .22s ease, box-shadow .22s ease;
+      cursor: pointer;
+    }
+    .activity-file:nth-child(2) { transform: rotate(1.1deg) translateY(14px); }
+    .activity-file:nth-child(3) { transform: rotate(-.6deg) translateY(-4px); }
+    .activity-file:hover, .activity-file:focus-visible {
+      z-index: 2;
+      box-shadow: 0 0 0 2px #c59a63, 5px 13px 22px #000b;
+      transform: translateY(-5px) rotate(0);
+    }
+    .activity-file::before {
+      content: "";
+      position: absolute;
+      top: 9px;
+      right: 10px;
+      width: 9px;
+      height: 9px;
+      border: 2px solid #a0372d;
+      border-radius: 50%;
+      box-shadow: 0 1px 4px #0008;
+    }
+    .activity-file-top, .activity-file-bottom { display: flex; justify-content: space-between; gap: 8px; color: #7d382e; font: .48rem var(--mono); letter-spacing: .08em; }
+    .activity-file-title { display: block; margin: 9px 0 4px; color: #302219; font: 700 clamp(1rem, 2vw, 1.35rem)/1.05 var(--serif); }
+    .activity-file-subtitle { display: block; color: #67543d; font: .57rem/1.5 var(--mono); }
+    .activity-file-bottom { align-items: center; padding-top: 9px; border-top: 1px dashed #7e694c7a; color: #794034; }
+    .activity-file-seal {
+      position: absolute;
+      right: 14px;
+      bottom: 47px;
+      display: grid;
+      width: 45px;
+      height: 45px;
+      place-items: center;
+      border: 2px double #9e3b30a8;
+      border-radius: 50%;
+      color: #9e3b30b8;
+      font: 700 .42rem/1.2 var(--mono);
+      text-align: center;
+      transform: rotate(12deg);
+    }
+    .experience-map-note { position: relative; z-index: 1; margin: 27px 0 0; color: #b19d7f; font: .5rem/1.5 var(--mono); text-align: center; letter-spacing: .08em; }
+    .activity-detail {
+      position: relative;
+      min-height: 380px;
+      padding: clamp(14px, 2.5vw, 24px);
+      border: 1px solid #806b4d;
+      color: #30251d;
+      background:
+        repeating-linear-gradient(0deg, transparent 0 27px, #8b74431a 28px),
+        linear-gradient(135deg, #f0e6d0, #ded0b1);
+      box-shadow: 0 8px 24px #100b08aa, inset 0 0 25px #9a77421c;
+    }
+    .activity-detail-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #806b4d66;
+    }
+    .activity-detail-kicker { margin: 0 0 4px; color: #8c362b; font: .52rem var(--mono); letter-spacing: .14em; }
+    .activity-detail-header h3 { margin: 0; color: #30251d; font: 700 clamp(1.15rem, 3vw, 1.8rem)/1.1 var(--serif); overflow-wrap: anywhere; }
+    .activity-back {
+      flex: 0 0 auto;
+      padding: 8px 10px;
+      border: 1px solid #79674b;
+      color: #eee1c8;
+      background: #493324;
+      font: .5rem var(--mono);
+      cursor: pointer;
+    }
+    .activity-back:hover { background: #68452e; }
+    .activity-detail-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(230px, .95fr); gap: clamp(14px, 3vw, 28px); align-items: stretch; }
+    .activity-notes { display: grid; align-content: start; gap: 10px; }
+    .activity-meta { display: flex; flex-wrap: wrap; gap: 7px; color: #80513a; font: .53rem var(--mono); }
+    .activity-meta span { padding: 5px 7px; border: 1px solid #967b557a; background: #e7d9bb9c; }
+    .activity-description { min-height: 110px; margin: 0; padding: 13px; border-left: 3px solid #8c362b; color: #4a3c2d; background: #e6d8bdb8; font: .85rem/1.7 var(--serif); }
+    .activity-evidence-label { margin: 0; color: #8c362b; font: .52rem var(--mono); letter-spacing: .14em; }
+    .activity-gallery { display: grid; align-content: start; gap: 9px; }
+    .activity-gallery-heading { display: flex; justify-content: space-between; gap: 8px; color: #8c362b; font: .5rem var(--mono); letter-spacing: .12em; }
+    .activity-photo-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .activity-photo {
+      position: relative;
+      display: grid;
+      min-width: 0;
+      min-height: 175px;
+      aspect-ratio: 4 / 5;
+      place-items: center;
+      overflow: hidden;
+      border: 1px solid #8d744e;
+      background:
+        repeating-linear-gradient(135deg, #ffffff08 0 1px, transparent 1px 8px),
+        radial-gradient(ellipse at center, #604b34, #201813 76%);
+      box-shadow: inset 0 0 22px #080604bb, 0 5px 12px #30221966;
+    }
+    .activity-photo:nth-child(2) { transform: translateY(9px) rotate(.6deg); }
+    .activity-photo:nth-child(3) { transform: translateY(-4px) rotate(-.6deg); }
+    .activity-photo::before {
+      content: "PHOTO EVIDENCE";
+      position: absolute;
+      z-index: 1;
+      top: 9px;
+      left: 9px;
+      padding: 4px 6px;
+      border: 1px solid #c0a5748a;
+      color: #d7c19a;
+      background: #17110edb;
+      font: .43rem var(--mono);
+      letter-spacing: .12em;
+      pointer-events: none;
+    }
+    .activity-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: sepia(.24) contrast(1.04); }
+    .activity-photo-empty { display: grid; place-items: center; gap: 8px; padding: 12px 7px; color: #bfaa82; text-align: center; font: .46rem/1.5 var(--mono); }
+    .activity-photo-empty svg { width: 35px; height: 35px; opacity: .7; }
+    .activity-photo-actions {
+      position: absolute;
+      z-index: 2;
+      right: 4px;
+      bottom: 5px;
+      left: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 4px;
+    }
+    .photo-action {
+      display: none;
+      justify-content: center;
+      padding: 5px 4px;
+      border: 1px solid #b99b6d;
+      color: #f0e7d3;
+      background: #211713eF;
+      font: .48rem var(--mono);
+      cursor: pointer;
+    }
+    .photo-action:hover { background: #553a29; }
+    .portfolio.editing .photo-action { display: inline-flex; }
+    .photo-action input { display: none; }
+    .activity-photo-status { position: absolute; z-index: 2; right: 4px; bottom: 46px; left: 4px; margin: 0; color: #f1d8ae; font: .4rem/1.3 var(--mono); text-align: center; text-shadow: 0 1px 4px #000; }
+    .activity-photo.has-image .activity-photo-empty { display: none; }
+    .activity-photo:not(.has-image) img { display: none; }
+    .activity-detail-footer { display: flex; justify-content: space-between; gap: 10px; margin-top: 15px; padding-top: 8px; border-top: 1px dashed #806b4d77; color: #806b4d; font: .45rem var(--mono); letter-spacing: .08em; }
+    .portfolio.editing .activity-edit-hint { display: block; }
+    .activity-edit-hint { display: none; margin: 0; color: #80513a; font: .53rem/1.5 var(--mono); }
+    .bio-dialog {
+      width: min(820px, calc(100vw - 28px));
+      max-height: min(760px, calc(100dvh - 28px));
+      overflow: auto;
+      border: 8px solid #493324;
+      outline: 1px solid #c0a574;
+      background:
+        repeating-linear-gradient(0deg, #ffffff08 0 1px, transparent 1px 5px),
+        linear-gradient(140deg, #654a30, #493523 48%, #3c2b20);
+    }
+    .bio-dialog .dialog-inner { padding: clamp(10px, 2vw, 18px); }
+    .bio-dialog > .dialog-inner > .dialog-index,
+    .bio-dialog > .dialog-inner > .dialog-title { display: none; }
+    .bio-dialog .bio-panel { display: block; margin: 0; font: inherit; }
+    .bio-dossier {
+      position: relative;
+      display: grid;
+      gap: 14px;
+      padding: clamp(16px, 3.5vw, 30px);
+      border: 1px solid #88724d;
+      color: #30251d;
+      background:
+        radial-gradient(ellipse at 12% 18%, #8d74421a 0 1px, transparent 2px),
+        repeating-linear-gradient(0deg, transparent 0 29px, #8b74431a 30px),
+        linear-gradient(135deg, #f0e6d0, #ded0b1);
+      box-shadow: 0 4px 14px #1a120c88, inset 0 0 30px #9a77421c;
+    }
+    .bio-filebar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #79674b66;
+      color: #79674b;
+      font: .57rem var(--mono);
+      letter-spacing: .12em;
+    }
+    .bio-filebar strong { color: #8c362b; }
+    .bio-subject {
+      display: grid;
+      grid-template-columns: minmax(110px, 160px) minmax(0, 1fr);
+      gap: clamp(16px, 4vw, 30px);
+      align-items: center;
+    }
+    .bio-portrait {
+      position: relative;
+      padding: 8px 8px 25px;
+      border: 1px solid #85704e;
+      background: #c8b58f;
+      box-shadow: 3px 5px 10px #32231755;
+      transform: rotate(-2deg);
+    }
+    .bio-portrait svg:first-child { display: block; width: 100%; aspect-ratio: 4 / 5; border: 3px solid #f0e6d0; background: #9d896b; filter: sepia(.35); }
+    .bio-student-photo { position: absolute; inset: 5px 5px 19px; z-index: 1; width: calc(100% - 10px); height: calc(100% - 24px); object-fit: cover; filter: sepia(.2); }
+    .id-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .subject-photo { position: relative; }
+    .subject-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .bio-portrait::after {
+      content: "FOTO SUBJEK · 001";
+      position: absolute;
+      right: 3px;
+      bottom: 7px;
+      left: 3px;
+      color: #554632;
+      font: .43rem var(--mono);
+      letter-spacing: .08em;
+      text-align: center;
+    }
+    .bio-scan {
+      position: absolute;
+      right: -17px;
+      bottom: 1px;
+      width: 48px;
+      height: 48px;
+      color: #493c2c;
+      opacity: .63;
+      transform: rotate(11deg);
+    }
+    .bio-profile { min-width: 0; }
+    .bio-kicker { margin: 0 0 6px; color: #8c362b; font-size: .59rem; letter-spacing: .15em; }
+    .bio-name { margin: 0 0 7px; color: #30251d; font: 700 clamp(1.7rem, 5.5vw, 2.8rem)/1 var(--serif); overflow-wrap: anywhere; }
+    .bio-summary { margin: 0; color: #685a45; font: .8rem/1.6 var(--serif); }
+    .bio-stamp {
+      position: absolute;
+      top: 48px;
+      right: 20px;
+      padding: 5px 8px;
+      border: 2px solid #9d3329a8;
+      color: #9d3329bd;
+      font: 700 .5rem var(--mono);
+      letter-spacing: .08em;
+      transform: rotate(9deg);
+      pointer-events: none;
+    }
+    .bio-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+    .bio-fact {
+      position: relative;
+      min-width: 0;
+      padding: 10px 12px;
+      border-left: 3px solid #8c362b;
+      background: #e4d7bdcc;
+      box-shadow: 0 2px 6px #44321c18;
+    }
+    .bio-fact::after {
+      content: "";
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 7px;
+      height: 7px;
+      border: 1px solid #9d3329;
+      border-radius: 50%;
+    }
+    .bio-fact-label { display: block; margin-bottom: 4px; color: #877354; font: .5rem var(--mono); letter-spacing: .12em; text-transform: uppercase; }
+    .bio-fact-value { display: block; min-height: 1.2em; color: #30251d; font: 700 .85rem/1.35 var(--serif); overflow-wrap: anywhere; }
+    .bio-note { position: relative; padding: 12px 15px; border: 1px dashed #917b55; background: #e9ddc4a8; }
+    .bio-note h3 { margin: 0 0 6px; color: #84392d; font: 700 .61rem var(--mono); letter-spacing: .12em; }
+    .bio-note p { margin: 0; color: #44392a; font: .86rem/1.65 var(--serif); }
+    .bio-signoff { display: flex; justify-content: space-between; gap: 10px; color: #79674b; font: .48rem var(--mono); letter-spacing: .07em; }
+    .dialog-close {
+      position: absolute;
+      z-index: 5;
+      top: 12px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
+      border: 1px solid #79674b80;
+      color: #47382a;
+      background: #e8dcc0;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    .dialog-index { margin: 0 0 12px; color: #8c362b; font-size: .65rem; letter-spacing: .14em; }
+    .dialog-title { margin: 0 38px 13px 0; font: 400 clamp(1.8rem, 7vw, 2.65rem)/1.08 var(--serif); }
+    .dialog-content { font: .92rem/1.75 var(--serif); }
+    .dialog-content p { margin: 0 0 12px; }
+    .dialog-content p:last-child { margin-bottom: 0; }
+    .dialog-content ul { margin: 10px 0 0; padding-left: 20px; }
+    .foundation-dialog {
+      width: min(760px, calc(100vw - 28px));
+      max-height: min(720px, calc(100dvh - 28px));
+      border: 7px solid #29231f;
+      outline: 1px solid #a69b8c;
+      color: #29231f;
+      background:
+        repeating-linear-gradient(0deg, transparent 0 27px, #59483b13 28px),
+        linear-gradient(135deg, #e9e5dc, #d6c8ae);
+      box-shadow: 0 24px 80px #000c, inset 0 0 28px #59483b1c;
+    }
+    .foundation-dialog .dialog-inner { padding: clamp(18px, 4vw, 36px); }
+    .foundation-heading { margin: 0 38px 18px 0; }
+    .foundation-kicker { margin: 0 0 7px; color: #663d3d; font: 700 .59rem var(--mono); letter-spacing: .16em; }
+    .foundation-heading h2 { margin: 0; color: #29231f; font: 700 clamp(1.55rem, 5vw, 2.45rem)/1.08 var(--serif); }
+    .foundation-body {
+      position: relative;
+      min-height: 240px;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      border: 1px dashed #59483b99;
+      background:
+        radial-gradient(circle at 50% 35%, #59483b0b 0 1px, transparent 2px),
+        repeating-linear-gradient(0deg, transparent 0 27px, #59483b12 28px),
+        #d6c8ae77;
+      text-align: center;
+    }
+    .foundation-body::before {
+      content: "SECTION FOUNDATION · CLASSIFIED";
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      color: #663d3d;
+      font: .46rem var(--mono);
+      letter-spacing: .1em;
+    }
+    .foundation-placeholder { max-width: 380px; }
+    .foundation-placeholder svg { width: 44px; height: 44px; margin-bottom: 8px; color: #59483b; opacity: .8; }
+    .foundation-placeholder strong { display: block; color: #29231f; font: 700 .78rem var(--mono); letter-spacing: .08em; }
+    .foundation-placeholder p { margin: 7px 0 0; color: #59483b; font: .77rem/1.6 var(--sans); }
+    .math-tools-body { display: block; padding: 38px clamp(14px, 3vw, 26px) 20px; text-align: left; }
+    .tools-intro { max-width: 670px; margin: 0 auto 18px !important; color: #47382a; font: .84rem/1.65 var(--sans); }
+    .tool-index-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .tool-index-card { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; padding: 15px; border: 1px solid #806b4d99; background: #e9e5dca8; box-shadow: 3px 4px 0 #59483b1c; }
+    .tool-index-number { color: #663d3d; font: 700 .51rem var(--mono); letter-spacing: .12em; }
+    .tool-index-card h3 { margin: 7px 0; color: #29231f; font: 700 1.15rem/1.2 var(--serif); }
+    .tool-index-card p { margin: 0 0 8px !important; color: #59483b; font: .74rem/1.55 var(--sans); }
+    .tool-index-card .tool-example { margin-top: auto !important; color: #663d3d; font: .48rem/1.5 var(--mono); letter-spacing: .03em; }
+    .tool-index-card .archive-action { margin-top: 6px; }
+    .tool-index-card:focus-within { outline: 2px solid #663d3d; outline-offset: 2px; }
+    .tool-launch-highlight { outline: 3px solid #8c362b !important; outline-offset: 4px; }
+    .calculator-card { transition: outline-color .2s ease, box-shadow .2s ease; }
+    .conclusion-body { display: block; padding: 36px clamp(16px, 3.5vw, 30px) 22px; text-align: left; }
+    .conclusion-lead { margin: 0 0 9px !important; color: #663d3d; font: 700 .54rem var(--mono); letter-spacing: .13em; }
+    .conclusion-copy { color: #47382a; font: .91rem/1.8 var(--serif); }
+    .conclusion-findings { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; margin: 18px 0; }
+    .conclusion-findings article { padding: 12px; border: 1px solid #806b4d7a; background: #e9e5dc9c; }
+    .conclusion-findings span { display: block; margin-bottom: 7px; color: #8c362b; font: .48rem var(--mono); letter-spacing: .1em; }
+    .conclusion-findings strong { color: #29231f; font: 700 .8rem/1.3 var(--serif); }
+    .conclusion-findings p { margin: 6px 0 0 !important; color: #59483b; font: .68rem/1.55 var(--sans); }
+    .conclusion-signoff { margin: 16px 0 0 !important; padding-top: 10px; border-top: 1px solid #806b4d66; color: #663d3d; font: 700 .48rem var(--mono); letter-spacing: .08em; }
+    .conclusion-signoff span { padding: 0 5px; }
+    .student-photo-actions .photo-edit-hint { flex: 1 1 260px; color: #59483b; font: .67rem/1.5 var(--sans); }
+    .foundation-footer { display: flex; justify-content: space-between; gap: 12px; margin-top: 12px; color: #59483b; font: .47rem var(--mono); letter-spacing: .08em; }
+    .page-sections { padding: 18px clamp(14px, 4vw, 46px) 90px; }
+    .archive-section {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      padding: clamp(24px, 5vw, 52px) 0;
+      scroll-margin-top: 80px;
+    }
+    .archive-section + .archive-section { border-top: 1px solid #a69b8c2e; }
+    .archive-heading { margin: 0 0 22px; }
+    .archive-kicker { margin: 0 0 7px; color: #a69b8c; font: 700 .59rem var(--mono); letter-spacing: .16em; }
+    .archive-heading h2 { margin: 0; color: #e9e5dc; font: 400 clamp(1.7rem, 5vw, 2.7rem)/1.08 var(--serif); }
+    .archive-heading p { max-width: 700px; margin: 8px 0 0; color: #a69b8c; font: .85rem/1.65 var(--sans); }
+    .identity-record {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+      gap: clamp(16px, 3vw, 28px);
+      padding: clamp(16px, 3vw, 30px);
+      border: 1px solid #a69b8c85;
+      color: #29231f;
+      background:
+        repeating-linear-gradient(0deg, transparent 0 27px, #59483b12 28px),
+        linear-gradient(135deg, #e9e5dc, #d6c8ae);
+      box-shadow: 0 18px 38px #0008, inset 0 0 28px #59483b18;
+    }
+    .identity-subject { grid-column: 1 / -1; display: grid; grid-template-columns: 150px minmax(0, 1fr); align-content: start; gap: 18px; padding: 5px 0 18px; border-bottom: 1px solid #59483b45; }
+    .student-photo-frame {
+      position: relative;
+      display: grid;
+      width: 138px;
+      aspect-ratio: 4 / 5;
+      place-items: center;
+      overflow: hidden;
+      border: 6px solid #d6c8ae;
+      outline: 1px solid #59483b;
+      color: #59483b;
+      background: #c4b397;
+      box-shadow: 3px 6px 15px #29231f45;
+    }
+    .student-photo-frame svg { width: 52px; height: 52px; }
+    .student-photo-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .student-photo-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .student-photo-action, .archive-action {
+      display: inline-flex;
+      min-height: 38px;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 12px;
+      border: 1px solid #59483b;
+      color: #e9e5dc;
+      background: #29231f;
+      font: 700 .58rem var(--mono);
+      letter-spacing: .08em;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .student-photo-action:hover, .archive-action:hover { background: #59483b; }
+    .student-photo-action input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+    .student-identity { min-width: 0; }
+    .identity-mark { display: flex; flex-wrap: wrap; gap: 7px; margin: 0 0 10px; }
+    .identity-mark span { padding: 5px 7px; border: 1px solid #663d3d8a; color: #663d3d; font: 700 .48rem var(--mono); letter-spacing: .08em; }
+    .student-name { min-height: 1.15em; margin: 0; color: #29231f; font: 700 clamp(2rem, 5vw, 3.4rem)/1.08 var(--serif); overflow-wrap: anywhere; }
+    .student-number { margin: 10px 0 18px; color: #59483b; font: .75rem var(--mono); letter-spacing: .07em; }
+    .student-description { max-width: 760px; min-height: 5em; margin: 0; color: #44392a; font: 1rem/1.8 var(--serif); }
+    .student-story-label { display: block; margin-bottom: 7px; color: #663d3d; font: 700 .53rem var(--mono); letter-spacing: .12em; }
+    .identity-academics { grid-column: 1 / -1; }
+    .identity-section-label { margin: 0 0 10px; padding-bottom: 8px; border-bottom: 1px solid #59483b55; color: #663d3d; font: 700 .64rem var(--mono); letter-spacing: .12em; }
+    .academic-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .academic-fact { min-width: 0; min-height: 68px; padding: 11px; border: 1px solid #59483b30; background: #e9e5dca6; }
+    .academic-fact dt { margin-bottom: 5px; color: #796b57; font: .49rem var(--mono); letter-spacing: .09em; text-transform: uppercase; }
+    .academic-fact dd { margin: 0; color: #29231f; font: 700 .84rem/1.4 var(--serif); overflow-wrap: anywhere; }
+    .education-record { grid-column: 1 / -1; padding: 14px; border-left: 3px solid #663d3d; background: #d6c8ae8a; }
+    .education-record h3 { margin: 0 0 6px; color: #663d3d; font: 700 .58rem var(--mono); letter-spacing: .12em; }
+    .education-record p { margin: 4px 0 0; color: #44392a; font: .83rem/1.6 var(--sans); }
+    .identity-stamp { position: absolute; right: 14px; top: 14px; padding: 6px 8px; border: 2px double #663d3d9c; color: #663d3d; font: 700 .48rem var(--mono); letter-spacing: .08em; transform: rotate(7deg); }
+    .archive-card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: clamp(17px, 3vw, 28px);
+      border: 1px solid #a69b8c70;
+      background:
+        repeating-linear-gradient(0deg, transparent 0 27px, #ffffff08 28px),
+        linear-gradient(135deg, #29231f, #171717);
+      box-shadow: 0 12px 30px #0005;
+    }
+    .archive-card p { max-width: 670px; margin: 0; color: #d6c8ae; font: .87rem/1.7 var(--sans); }
+    .archive-card .archive-action { flex: 0 0 auto; }
+    .top-button {
+      position: fixed;
+      z-index: 15;
+      right: 18px;
+      bottom: 18px;
+      display: none;
+      padding: 11px 14px;
+      border: 1px solid #a69b8c99;
+      color: #e9e5dc;
+      background: #29231fee;
+      box-shadow: 0 5px 18px #0008;
+      font: 700 .57rem var(--mono);
+      letter-spacing: .08em;
+      cursor: pointer;
+    }
+    .top-button.visible { display: block; }
+    .foundation-dialog > .dialog-inner > .dialog-index,
+    .foundation-dialog > .dialog-inner > .dialog-title { display: none; }
+    .foundation-panel { font-family: var(--sans); }
+    .foundation-panel .foundation-heading { padding-right: 35px; }
+    .study-dialog {
+      width: min(1120px, calc(100vw - 24px));
+      height: min(900px, calc(100dvh - 24px));
+      max-height: calc(100dvh - 24px);
+      overflow: hidden;
+      border: 8px solid #493324;
+      outline: 1px solid #c0a574;
+      background:
+        repeating-linear-gradient(0deg, #ffffff08 0 1px, transparent 1px 5px),
+        linear-gradient(140deg, #654a30, #493523 48%, #3c2b20);
+      box-shadow: 0 24px 80px #000c, inset 0 0 25px #1b120d88;
+    }
+    .study-dialog .dialog-inner {
+      display: grid;
+      grid-template-rows: minmax(0, 1fr);
+      gap: 0;
+      height: 100%;
+      padding: clamp(11px, 2vw, 20px);
+    }
+    .study-dialog > .dialog-inner > .dialog-index,
+    .study-dialog > .dialog-inner > .dialog-title { display: none; }
+    .study-dialog [data-case-panel="study"] {
+      display: grid;
+      grid-row: 1 / -1;
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: clamp(7px, 1.5vh, 13px);
+      min-height: 0;
+      margin: 0;
+      padding: clamp(11px, 2vw, 20px);
+      border: 1px solid #88724d;
+      background:
+        radial-gradient(ellipse at 12% 18%, #8d74421a 0 1px, transparent 2px),
+        repeating-linear-gradient(0deg, transparent 0 27px, #8b74431a 28px),
+        linear-gradient(135deg, #f0e6d0, #ded0b1);
+      box-shadow: 0 4px 14px #1a120c88, inset 0 0 30px #9a77421c;
+      font: inherit;
+    }
+    .study-heading { position: relative; padding-right: 42px; }
+    .study-eyebrow { margin: 0 0 5px; color: #8d362c; font-size: .62rem; letter-spacing: .16em; }
+    .study-heading::after {
+      content: "CONFIDENTIAL";
+      position: absolute;
+      right: 3px;
+      bottom: 1px;
+      padding: 5px 7px;
+      border: 2px solid #9d3329a8;
+      color: #9d3329bd;
+      font: 700 .48rem var(--mono);
+      letter-spacing: .08em;
+      transform: rotate(-9deg);
+    }
+    .study-dialog .dialog-title { margin: 0 0 4px; color: #30251d; font-size: clamp(1.7rem, 4vw, 2.45rem); }
+    .study-subtitle { margin: 0; color: #685a45; font: .78rem/1.5 var(--mono); }
+    .study-grid {
+      position: relative;
+      display: grid;
+      grid-template: repeat(2, minmax(0, 1fr)) / repeat(2, minmax(0, 1fr));
+      gap: clamp(8px, 1.5vw, 14px);
+      min-height: 0;
+    }
+    .study-grid::before {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      inset: 0;
+      pointer-events: none;
+      opacity: .5;
+      background:
+        linear-gradient(25deg, transparent 48.8%, #9d3329 49%, #9d3329 49.25%, transparent 49.45%),
+        linear-gradient(155deg, transparent 49.2%, #9d3329 49.4%, #9d3329 49.65%, transparent 49.85%);
+    }
+    .calculator-card {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+      min-height: 0;
+      overflow: auto;
+      overscroll-behavior: contain;
+      padding: clamp(10px, 1.5vw, 17px);
+      border: 1px solid #9b835c;
+      background:
+        radial-gradient(ellipse at 20% 30%, #91744810 0 1px, transparent 2px),
+        repeating-linear-gradient(0deg, transparent 0 22px, #8b74431a 23px),
+        linear-gradient(135deg, #f0e6d0, #e1d4b8);
+      box-shadow: 0 5px 13px #21170d55, inset 0 0 18px #9a774214;
+    }
+    .calculator-card::before {
+      content: "";
+      position: absolute;
+      top: 7px;
+      right: 9px;
+      width: 9px;
+      height: 9px;
+      border: 2px solid #9d3329;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px #0007;
+    }
+    .calculator-kicker { margin: 0 0 4px; color: #8c362b; font-size: .52rem; letter-spacing: .12em; }
+    .calculator-card h3 { margin: 0 0 8px; color: #30251d; font: 700 clamp(.93rem, 1.8vw, 1.16rem)/1.1 var(--serif); }
+    .calculator-form { display: grid; gap: 7px; }
+    .calculator-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+    .calculator-fields.three-fields { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .calculator-field { display: grid; min-width: 0; gap: 3px; color: #685a45; font-size: .54rem; }
+    .calculator-field input, .calculator-field select {
+      width: 100%;
+      min-width: 0;
+      height: 30px;
+      padding: 4px 7px;
+      border: 1px solid #9a8766;
+      border-radius: 2px;
+      color: #30251d;
+      background: #f8f1df;
+      font: .75rem var(--mono);
+    }
+    .calculator-field input:focus, .calculator-field select:focus { outline: 2px solid #a34a37; outline-offset: 1px; }
+    .calculator-submit {
+      justify-self: start;
+      padding: 7px 10px;
+      border: 1px solid #493324;
+      border-radius: 2px;
+      color: #f0e7d3;
+      background: #493324;
+      font: 700 .59rem var(--mono);
+      letter-spacing: .045em;
+      cursor: pointer;
+    }
+    .calculator-submit:hover { background: #68452e; }
+    .calculator-result {
+      min-height: 28px;
+      max-height: 165px;
+      margin-top: 6px;
+      padding: 5px 7px;
+      overflow: auto;
+      border-left: 3px solid #9d3329;
+      color: #30251d;
+      background: #e6d8bdb8;
+      font: .58rem/1.45 var(--mono);
+      overflow-wrap: anywhere;
+    }
+    .calculator-result:empty { display: none; }
+    .calculation-heading { margin: 0 0 3px !important; color: #663d3d; font: 700 .48rem var(--mono) !important; letter-spacing: .1em; }
+    .calculator-result p { margin: 0; }
+    .calculator-result p + p { margin-top: 2px; }
+    .calculator-result.is-error { border-left-color: #b94a3f; color: #8e3028; background: #f2dfd3; }
+    .calculation-controls { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+    .calculation-control {
+      padding: 5px 7px;
+      border: 1px solid #79684f;
+      color: #493324;
+      background: #eee3cb;
+      font: 700 .48rem var(--mono);
+      letter-spacing: .04em;
+      cursor: pointer;
+    }
+    .calculation-control:hover { background: #d6c8ae; }
+    .calculation-details { margin-top: 5px; padding-top: 5px; border-top: 1px dashed #79684f88; }
+    .calculation-details[hidden] { display: none; }
+    .calculation-details p + p { margin-top: 3px; }
+    .calculation-status { display: block; margin-top: 4px; color: #526044; font: 700 .48rem var(--mono); }
+    .calculator-result.is-error .calculation-status { color: #8e3028; }
+    .foundation-body.interactive-foundation {
+      display: block;
+      min-height: 0;
+      padding: clamp(14px, 3vw, 24px);
+      text-align: left;
+    }
+    .foundation-body.interactive-foundation::before { content: none; }
+    .archive-field { display: grid; gap: 5px; color: #59483b; font: 700 .58rem var(--mono); letter-spacing: .04em; }
+    .archive-field input, .archive-field textarea, .archive-field select, .archive-filter {
+      width: 100%;
+      min-width: 0;
+      padding: 9px 10px;
+      border: 1px solid #8a795f;
+      border-radius: 2px;
+      color: #29231f;
+      background: #f4eddd;
+      font: .78rem/1.5 var(--sans);
+    }
+    .archive-field textarea { min-height: 72px; resize: vertical; }
+    .archive-form { display: grid; gap: 12px; }
+    .archive-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .archive-form-actions, .archive-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .archive-feedback { min-height: 1.4em; margin: 0; color: #526044; font: .68rem/1.5 var(--mono); }
+    .archive-list { display: grid; gap: 10px; margin-top: 18px; }
+    .archive-entry { padding: 13px; border: 1px solid #59483b55; background: #e9e5dca6; }
+    .archive-entry-head { display: flex; align-items: start; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+    .archive-entry h3 { margin: 0; color: #29231f; font: 700 .95rem/1.35 var(--serif); }
+    .archive-entry-meta { margin: 2px 0 0; color: #77684f; font: .52rem var(--mono); }
+    .archive-entry p { margin: 8px 0 0; color: #44392a; font: .78rem/1.55 var(--sans); overflow-wrap: anywhere; }
+    .archive-entry-actions { display: flex; flex-wrap: wrap; gap: 6px; flex: 0 0 auto; }
+    .archive-entry .archive-action { min-height: 30px; padding: 6px 8px; font-size: .48rem; }
+    .archive-empty { margin: 0; padding: 18px; border: 1px dashed #59483b77; color: #59483b; font: .75rem/1.55 var(--sans); text-align: center; }
+    .progress-summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-bottom: 14px; }
+    .progress-stat { padding: 10px; border: 1px solid #59483b38; background: #e9e5dca6; }
+    .progress-stat strong { display: block; color: #29231f; font: 700 1.15rem var(--serif); }
+    .progress-stat span { display: block; margin-top: 3px; color: #77684f; font: .46rem/1.4 var(--mono); }
+    .progress-track { height: 12px; overflow: hidden; border: 1px solid #59483b; background: #c4b397; }
+    .progress-fill { width: 0; height: 100%; background: #59483b; transition: width .25s ease; }
+    .progress-caption { display: flex; justify-content: space-between; gap: 8px; margin: 6px 0 15px; color: #59483b; font: .55rem var(--mono); }
+    .progress-list { display: grid; gap: 7px; }
+    .progress-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(135px, .7fr); align-items: center; gap: 10px; padding: 9px 10px; border: 1px solid #59483b38; background: #e9e5dca6; }
+    .progress-row strong { color: #29231f; font: 700 .76rem/1.4 var(--serif); }
+    .progress-explainer { max-width: 700px; margin: 0 0 14px !important; color: #59483b; font: .75rem/1.6 var(--sans); text-align: left; }
+    .progress-topic { min-width: 0; }
+    .progress-topic small { display: block; margin-top: 3px; color: #685a45; font: .64rem/1.45 var(--sans); }
+    .progress-row select { width: 100%; min-width: 0; padding: 7px; border: 1px solid #8a795f; color: #29231f; background: #f4eddd; font: .55rem var(--mono); }
+    .formula-toolbar { display: grid; grid-template-columns: minmax(0, 1fr) minmax(130px, .4fr); gap: 8px; margin-bottom: 12px; }
+    .formula-list { display: grid; gap: 8px; }
+    .formula-item { border: 1px solid #59483b55; background: #e9e5dca6; }
+    .formula-item summary { padding: 11px 13px; color: #29231f; font: 700 .82rem var(--serif); cursor: pointer; }
+    .formula-item[open] summary { border-bottom: 1px solid #59483b44; }
+    .formula-detail { padding: 12px 13px; }
+    .formula-equation { display: inline-block; margin: 0 0 8px !important; padding: 7px 10px; border-left: 3px solid #663d3d; color: #29231f !important; background: #d6c8ae; font: 700 .78rem/1.5 var(--mono) !important; }
+    .formula-detail p, .formula-detail li { color: #44392a; font: .76rem/1.55 var(--sans); }
+    .formula-detail ul { margin: 5px 0 8px; padding-left: 18px; }
+    .quiz-question { margin: 0 0 13px; padding: 12px; border: 1px solid #59483b44; background: #e9e5dca6; }
+    .quiz-question legend { padding: 0 5px; color: #29231f; font: 700 .78rem/1.5 var(--serif); }
+    .quiz-options { display: grid; gap: 6px; margin-top: 7px; }
+    .quiz-option { display: flex; align-items: start; gap: 8px; color: #44392a; font: .73rem/1.45 var(--sans); cursor: pointer; }
+    .quiz-option input { margin-top: 3px; accent-color: #59483b; }
+    .quiz-result { margin-top: 12px; padding: 10px 12px; border-left: 3px solid #59483b; color: #29231f; background: #e9e5dc; font: .76rem/1.55 var(--sans); }
+    .quiz-result:empty { display: none; }
+    .quiz-result.is-error { border-left-color: #663d3d; color: #663d3d; }
+    .study-note { margin: 5px 0 0; color: #685a45; font: .5rem/1.35 var(--mono); }
+    .edit-hint { display: none; margin: 13px 0 0; color: #80513a; font: .65rem/1.5 var(--mono); }
+    .portfolio.editing [data-editable] {
+      outline: 1px dashed #9d3329;
+      outline-offset: 3px;
+      cursor: text;
+    }
+    .portfolio.editing [data-editable]:focus { background: #fff3d4; color: var(--ink); }
+    .portfolio.editing .edit-hint { display: block; }
+    .save-notice { position: fixed; z-index: 8; right: 14px; bottom: 12px; color: #c6b99f; font-size: .6rem; }
+    [hidden] { display: none !important; }
+
+    @media (max-width: 640px) {
+      .cover-screen { padding: 38px 17px; }
+      .folder { padding: 18px 14px 14px; }
+      .paper { padding: 28px 20px 23px; }
+      .topline { margin-bottom: 26px; font-size: .65rem; }
+      .identity-row { grid-template-columns: 75px 1fr; gap: 14px; }
+      .id-photo { width: 75px; height: 96px; }
+      .stamp { right: 13px; bottom: 95px; width: 83px; height: 83px; font-size: .57rem; }
+      .fingerprint { width: 36px; height: 36px; margin-top: 15px; }
+      .board-header { min-height: 64px; flex-wrap: wrap; gap: 5px 8px; padding: 7px 12px; }
+      .board-brand { flex: 1 0 100%; font-size: .57rem; }
+      .board-tools { width: 100%; justify-content: space-between; gap: 6px; }
+      .edit-status { max-width: 145px; overflow: hidden; font-size: .53rem; text-overflow: ellipsis; white-space: nowrap; }
+      .tool-button { padding: 8px 9px; font-size: .56rem; }
+      .case-index { right: 8px; width: min(340px, calc(100vw - 16px)); max-height: min(68dvh, calc(100dvh - 76px)); }
+      .case-index-list { grid-template-columns: 1fr; }
+      .board-area { min-height: calc(100svh - 120px); }
+      .board-area { gap: 8px; padding: 8px 9px 7px; }
+      .board-heading h1 { font-size: 1.23rem; }
+      .board-heading p, .board-caption { font-size: .52rem; }
+      .case-board {
+        grid-template: .72fr repeat(2, minmax(0, 1fr)) / repeat(2, minmax(0, 1fr));
+        grid-template-areas: "subject subject" "bio experience" "study study";
+        gap: 7px;
+        width: 100%;
+        height: 60vh;
+        min-height: 360px;
+        border-width: 6px;
+        padding: 8px;
+      }
+      .threads-desktop { display: none; }
+      .threads-mobile { display: block; }
+      .trace-token { width: 36px; height: 36px; }
+      .trace-token svg { width: 20px; height: 20px; }
+      .trace-hint { top: 6px; right: 7px; font-size: .42rem; }
+      .board-stamp { width: 49px; height: 49px; font-size: .35rem; }
+      .bio-dialog { width: calc(100vw - 16px); max-height: calc(100dvh - 16px); border-width: 5px; }
+      .bio-dialog .dialog-inner { padding: 6px; }
+      .bio-dossier { gap: 9px; padding: 13px; }
+      .bio-filebar { font-size: .48rem; }
+      .bio-subject { grid-template-columns: 90px minmax(0, 1fr); gap: 15px; }
+      .bio-portrait { padding: 5px 5px 19px; }
+      .bio-portrait::after { font-size: .34rem; }
+      .bio-scan { right: -12px; width: 36px; height: 36px; }
+      .bio-kicker { font-size: .49rem; }
+      .bio-name { font-size: clamp(1.35rem, 7vw, 2rem); }
+      .bio-summary { font-size: .69rem; }
+      .bio-stamp { position: static; justify-self: end; margin-top: -4px; font-size: .4rem; }
+      .bio-facts { gap: 6px; }
+      .bio-fact { padding: 8px; }
+      .bio-fact-label { font-size: .42rem; }
+      .bio-fact-value { font-size: .72rem; }
+      .bio-note { padding: 9px 10px; }
+      .bio-note h3 { font-size: .53rem; }
+      .bio-note p { font-size: .76rem; }
+      .bio-signoff { font-size: .4rem; }
+      .subject-card { width: min(100%, 235px); aspect-ratio: auto; grid-template-columns: auto 1fr; justify-items: start; justify-self: center; align-items: center; gap: 3px 10px; text-align: left; }
+      .subject-photo { grid-row: span 3; width: 47px; height: 57px; }
+      .subject-kicker { align-self: end; }
+      .subject-name { align-self: start; font-size: .92rem; }
+      .subject-fingerprint { right: 7px; bottom: 5px; width: 25px; height: 25px; }
+      .case-card { padding: 9px; }
+      .card-index { font-size: .5rem; }
+      .card-title { margin-top: 5px; font-size: .88rem; }
+      .card-subtitle { max-width: 90%; font-size: .51rem; }
+      .card-fingerprint { width: 24px; height: 24px; right: 5px; bottom: 4px; }
+      .case-card[data-area="study"] { transform: rotate(.5deg); }
+      .board-footer { padding: 0 10px 7px; font-size: .48rem; }
+      .back-button { left: 8px; bottom: 6px; padding: 7px 9px; font-size: .52rem; }
+      .save-notice { right: 8px; bottom: 8px; font-size: .52rem; }
+      .study-dialog { width: calc(100vw - 12px); height: calc(100dvh - 12px); max-height: calc(100dvh - 12px); }
+      .experience-dialog { width: calc(100vw - 12px); max-height: calc(100dvh - 12px); border-width: 5px; }
+      .experience-dialog .dialog-inner { padding: 6px; }
+      .experience-map { min-height: 0; padding: 12px; }
+      .experience-map-heading { align-items: flex-start; flex-direction: column; gap: 5px; margin-bottom: 15px; padding-right: 28px; }
+      .experience-map-heading p { max-width: none; text-align: left; }
+      .experience-map-grid { grid-template-columns: 1fr; gap: 10px; }
+      .activity-file, .activity-file:nth-child(2), .activity-file:nth-child(3) { min-height: 130px; gap: 9px; padding: 12px; transform: none; }
+      .activity-file-title { margin-top: 5px; }
+      .activity-file-seal { right: 12px; bottom: 39px; width: 38px; height: 38px; font-size: .37rem; }
+      .experience-map-note { margin-top: 14px; }
+      .activity-detail { min-height: 0; padding: 12px; }
+      .activity-detail-header { align-items: flex-start; }
+      .activity-back { padding: 7px; font-size: .44rem; }
+      .activity-detail-grid { grid-template-columns: 1fr; gap: 12px; }
+      .activity-description { min-height: 65px; }
+      .activity-photo-grid { gap: 6px; }
+      .activity-photo { min-height: 0; aspect-ratio: 3 / 4; }
+      .activity-photo-empty { gap: 5px; padding: 9px 3px; font-size: .36rem; }
+      .activity-photo-empty svg { width: 25px; height: 25px; }
+      .activity-photo::before { top: 5px; left: 4px; padding: 3px; font-size: .33rem; }
+      .activity-photo-actions { right: 3px; bottom: 4px; left: 3px; gap: 3px; }
+      .photo-action { padding: 4px 2px; font-size: .36rem; }
+      .activity-photo-status { right: 2px; bottom: 41px; left: 2px; font-size: .34rem; }
+      .activity-detail-footer { font-size: .4rem; }
+      .study-dialog .dialog-inner { gap: 0; padding: 7px; }
+      .study-dialog [data-case-panel="study"] { gap: 6px; padding: 9px; }
+      .study-heading { padding-right: 29px; }
+      .study-eyebrow { font-size: .5rem; }
+      .study-dialog .dialog-title { margin-bottom: 2px; font-size: 1.5rem; }
+      .study-subtitle { font-size: .59rem; line-height: 1.35; }
+      .study-grid { gap: 6px; }
+      .calculator-card { padding: 7px; }
+      .calculator-kicker { font-size: .44rem; }
+      .calculator-card h3 { margin-bottom: 5px; font-size: .83rem; }
+      .calculator-form { gap: 5px; }
+      .calculator-fields { gap: 4px; }
+      .calculator-field { font-size: .48rem; }
+      .calculator-field input, .calculator-field select { height: 26px; padding: 3px 4px; font-size: .64rem; }
+      .calculator-submit { padding: 6px 7px; font-size: .52rem; }
+      .calculator-result { max-height: 51px; margin-top: 4px; padding: 4px 5px; font-size: .51rem; }
+      .calculator-result.has-calculation { max-height: 130px; }
+      .calculation-control { padding: 4px 5px; font-size: .4rem; }
+      .archive-form-grid, .formula-toolbar { grid-template-columns: 1fr; }
+      .progress-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .progress-row { grid-template-columns: 1fr; gap: 5px; }
+      .archive-entry-head { flex-direction: column; }
+      .study-note { margin-top: 3px; font-size: .44rem; }
+      .page-sections { padding: 8px 12px 76px; }
+      .archive-section { padding: 28px 0; scroll-margin-top: 84px; }
+      .archive-heading { margin-bottom: 15px; }
+      .identity-record { grid-template-columns: 1fr; gap: 16px; padding: 15px; }
+      .identity-subject { grid-template-columns: 96px minmax(0, 1fr); gap: 12px; }
+      .student-photo-frame { width: 96px; border-width: 4px; }
+      .student-photo-frame svg { width: 40px; height: 40px; }
+      .student-photo-actions { grid-column: 1 / -1; }
+      .student-name { font-size: clamp(1.55rem, 7vw, 2.25rem); }
+      .student-description { min-height: 4em; font-size: .88rem; }
+      .student-number { margin: 7px 0 12px; }
+      .tool-index-grid, .conclusion-findings { grid-template-columns: 1fr; }
+      .tool-index-card { padding: 12px; }
+      .math-tools-body, .conclusion-body { padding: 34px 12px 15px; }
+      .student-photo-action { min-height: 34px; padding: 7px 5px; font-size: .47rem; }
+      .identity-academics, .education-record { grid-column: 1; }
+      .academic-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+      .academic-fact { min-height: 60px; padding: 8px; }
+      .academic-fact dt { font-size: .43rem; }
+      .academic-fact dd { font-size: .75rem; }
+      .identity-stamp { right: 9px; top: 9px; font-size: .4rem; }
+      .archive-card { align-items: stretch; flex-direction: column; gap: 14px; }
+      .archive-card .archive-action { width: 100%; }
+      .top-button { right: 10px; bottom: 10px; padding: 10px; font-size: .5rem; }
+    }
+    @media (max-height: 620px) {
+      .study-dialog .dialog-inner { gap: 6px; padding: 8px; }
+      .study-dialog [data-case-panel="study"] { gap: 6px; }
+      .study-grid { gap: 5px; }
+      .calculator-card { padding: 6px; }
+      .calculator-note { display: none; }
+      .calculator-result { max-height: 40px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="cover-screen" id="cover" aria-label="Sampul berkas investigasi">
+      <article class="folder" id="folder">
+        <div class="paper">
+          <span class="clip" aria-hidden="true"></span>
+          <p class="topline">CONFIDENTIAL · CASE FILE</p>
+          <h1 class="cover-heading">THE MATH<br>DETECTIVE<span class="case-number">CASE NO. 2026-UTS-MI</span></h1>
+          <p class="cover-tagline">Every Number Has a Story. Every Formula Holds a Clue.</p>
+          <p class="cover-description">Berkas rahasia dokumentasi perjalanan belajar, proses penyelidikan, dan temuan dalam Matematika Informatika.</p>
+          <p class="subtitle">Personal Investigation</p>
+
+          <div class="identity-row">
+            <div class="id-photo" id="coverStudentPhoto" role="img" aria-label="Foto mahasiswa">
+              <svg viewBox="0 0 90 112" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect width="90" height="112" fill="#9d896b"/>
+                <path d="M5 112c3-26 15-37 40-38 25 1 37 12 40 38" fill="#3c352e"/>
+                <path d="M27 72c3 9 10 14 18 14s15-5 18-14l-4-10H31z" fill="#c6ad88"/>
+                <ellipse cx="45" cy="42" rx="23" ry="28" fill="#d2b998"/>
+                <path d="M22 43c-3-26 7-37 25-37 21 0 29 15 22 40l-5-17c-8 0-22-4-29-12-1 9-5 18-13 26z" fill="#352c25"/>
+                <path d="M36 47h4m10 0h4" stroke="#382f27" stroke-width="2" stroke-linecap="round"/>
+                <path d="M41 61c3 2 6 2 9 0" fill="none" stroke="#735443" stroke-width="2" stroke-linecap="round"/>
+                <path d="M10 15h12M10 15v12M80 15H68M80 15v12M10 97h12M10 97V85M80 97H68M80 97V85" fill="none" stroke="#e1d0b1" stroke-width="1" opacity=".8"/>
+              </svg>
+              <img id="coverStudentPhotoImage" alt="" hidden>
+            </div>
+            <div>
+              <p class="subject-label">Subject</p>
+              <p class="subject-name" data-editable="subject-name">[Nama Lengkap]</p>
+              <p class="identity-copy"><strong>Classification:</strong> Top Secret</p>
+              <p class="identity-copy"><strong>Status:</strong> Active Investigation</p>
+            </div>
+          </div>
+
+          <div class="stamp" aria-label="Stempel confidential">CONFIDENTIAL</div>
+          <svg class="fingerprint" viewBox="0 0 48 48" fill="none" aria-label="Ikon sidik jari">
+            <path d="M24 5c-10 0-17 7-17 17m34 0c0-10-7-17-17-17M12 24c0-7 5-12 12-12s12 5 12 12m-27 4c0 8 2 13 5 17m27-17c0 7-2 12-5 16M17 25c0-4 3-7 7-7s7 3 7 7c0 8-1 13-3 18m-12-4c-2-5-3-9-3-14m22 0c0 4 0 7-1 10m-9-10c0 10-1 15-2 19" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+          <button class="open-button" id="openInvestigation" type="button" aria-controls="portfolio">OPEN INVESTIGATION</button>
+          <p class="motto">“Every person has a story. Let's uncover mine.”</p>
+        </div>
+      </article>
+    </section>
+
+    <div class="portfolio" id="portfolio" aria-hidden="true">
+      <header class="board-header">
+        <div class="board-brand">THE MATH DETECTIVE · CASE FILE #001</div>
+        <div class="board-tools">
+          <button class="back-button" id="backToCover" type="button">CLOSE FILE</button>
+          <button class="tool-button" id="caseIndexButton" type="button" aria-label="Buka navigasi utama" aria-expanded="false" aria-controls="caseIndex"><span class="menu-icon" aria-hidden="true"><i></i><i></i><i></i></span><span>NAVIGATION</span></button>
+          <span class="edit-status" id="editStatus" aria-live="polite">Perubahan tersimpan di browser ini</span>
+          <button class="tool-button" id="editButton" type="button" aria-pressed="false">Edit File</button>
+        </div>
+      </header>
+      <nav class="case-index" id="caseIndex" aria-label="Index berkas investigasi" hidden>
+        <div class="case-index-heading"><strong>INVESTIGATION INDEX</strong><span>2026 · CLASSIFIED</span></div>
+        <div class="case-index-list">
+          <a class="case-index-link" href="#homeSection" data-section-link="home">Home<small>MAIN BOARD</small></a>
+          <a class="case-index-link" href="#bioSection" data-section-link="bio">Personal Biodata<small>SUBJECT FILE</small></a>
+          <a class="case-index-link" href="#studySection" data-section-link="study">Bukti Belajar<small>LEARNING EVIDENCE</small></a>
+          <a class="case-index-link" href="#mathToolsSection" data-section-link="math-tools">Mathematics Tools<small>CALCULATOR LAB</small></a>
+          <a class="case-index-link" href="#formulaLibrarySection" data-section-link="formula-library">Formula Library<small>FORMULA ARCHIVE</small></a>
+          <a class="case-index-link" href="#learningJournalSection" data-section-link="learning-journal">Learning Journal<small>FIELD NOTES</small></a>
+          <a class="case-index-link" href="#quizChallengeSection" data-section-link="quiz-challenge">Quiz Challenge<small>CASE CHALLENGE</small></a>
+          <a class="case-index-link" href="#learningProgressSection" data-section-link="learning-progress">Learning Progress<small>PROGRESS LOG</small></a>
+          <a class="case-index-link" href="#experienceSection" data-section-link="experience">Pengalaman Berharga<small>CASE HISTORY</small></a>
+          <a class="case-index-link" href="#conclusionSection" data-section-link="conclusion">Conclusion<small>FINAL REPORT</small></a>
+        </div>
+      </nav>
+
+      <section class="board-area" id="homeSection" aria-labelledby="boardTitle" tabindex="-1">
+        <div class="board-heading">
+          <div>
+            <h1 id="boardTitle" tabindex="-1">THE MATH DETECTIVE</h1>
+            <p>Papan investigasi · Every Number Has a Story. Every Formula Holds a Clue.</p>
+          </div>
+          <span class="board-caption">3 BERKAS · 1 SUBJEK</span>
+        </div>
+
+        <section class="case-board" aria-label="Papan investigasi interaktif">
+          <svg class="evidence-threads threads-desktop" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M288 166 C360 120 402 132 470 208 S620 280 706 172"/>
+            <path d="M491 272 C448 344 452 389 505 448"/>
+            <circle cx="288" cy="166" r="6"/><circle cx="706" cy="172" r="6"/><circle cx="505" cy="448" r="6"/>
+          </svg>
+          <svg class="evidence-threads threads-mobile" viewBox="0 0 400 600" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M182 107 C132 166 130 212 102 268 S163 298 298 278"/>
+            <path d="M215 112 C270 170 270 215 302 267 S232 303 200 417"/>
+            <circle cx="102" cy="268" r="6"/><circle cx="298" cy="278" r="6"/><circle cx="200" cy="417" r="6"/>
+          </svg>
+          <span class="trace-hint" id="traceHint">KLIK KACA PEMBESAR · TELUSURI PETUNJUK</span>
+          <button class="trace-token" id="traceToken" type="button" aria-label="Telusuri petunjuk di sepanjang benang" aria-pressed="false">
+            <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+              <circle cx="19" cy="19" r="12" stroke="currentColor" stroke-width="3"/>
+              <path d="m28 28 13 13" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="19" cy="19" r="6" stroke="#d88d59" stroke-width="1.5"/>
+            </svg>
+          </button>
+          <span class="board-stamp" aria-hidden="true">CASE<br>UNDER<br>REVIEW</span>
+          <button class="case-card board-card" type="button" data-area="bio" data-case="bio" aria-haspopup="dialog">
+            <svg class="evidence-prop magnifier-prop" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+              <circle cx="26" cy="25" r="16" stroke="currentColor" stroke-width="5"/>
+              <path d="m38 37 17 17" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+              <circle cx="26" cy="25" r="9" stroke="#9d3329" stroke-width="1.5" opacity=".8"/>
+            </svg>
+            <span class="card-index">FILE 01 · SUBJECT</span>
+            <span class="card-title">Biodata</span>
+            <span class="card-subtitle">Identitas &amp; profil singkat</span>
+            <svg class="card-fingerprint" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M24 5c-10 0-17 7-17 17m34 0c0-10-7-17-17-17M12 24c0-7 5-12 12-12s12 5 12 12m-27 4c0 8 2 13 5 17m27-17c0 7-2 12-5 16M17 25c0-4 3-7 7-7s7 3 7 7c0 8-1 13-3 18m-12-4c-2-5-3-9-3-14m22 0c0 4 0 7-1 10m-9-10c0 10-1 15-2 19" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            <span class="evidence-tag">EVIDENCE 01</span>
+            <span class="gift-wrap" aria-hidden="true"><span class="gift-ribbon vertical"></span><span class="gift-ribbon horizontal"></span><span class="gift-bow"></span></span>
+          </button>
+          <button class="case-card board-card" type="button" data-area="experience" data-case="experience" aria-haspopup="dialog">
+            <svg class="evidence-prop clue-prop" viewBox="0 0 36 48" fill="none" aria-hidden="true">
+              <path d="M6 4h17l8 8v32H6z" fill="#d9c7a2" stroke="currentColor" stroke-width="2"/>
+              <path d="M23 4v9h8M11 21h15M11 27h15M11 33h11" stroke="#8c362b" stroke-width="2"/>
+              <path d="M9 10h8" stroke="#68583f" stroke-width="2"/>
+            </svg>
+            <span class="card-index">FILE 02 · CASE HISTORY</span>
+            <span class="card-title">Pengalaman</span>
+            <span class="card-subtitle">Proyek, organisasi &amp; peran</span>
+            <svg class="card-fingerprint" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M24 5c-10 0-17 7-17 17m34 0c0-10-7-17-17-17M12 24c0-7 5-12 12-12s12 5 12 12m-27 4c0 8 2 13 5 17m27-17c0 7-2 12-5 16M17 25c0-4 3-7 7-7s7 3 7 7c0 8-1 13-3 18m-12-4c-2-5-3-9-3-14m22 0c0 4 0 7-1 10m-9-10c0 10-1 15-2 19" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            <span class="evidence-tag">EVIDENCE 02</span>
+            <span class="gift-wrap" aria-hidden="true"><span class="gift-ribbon vertical"></span><span class="gift-ribbon horizontal"></span><span class="gift-bow"></span></span>
+          </button>
+
+          <button class="subject-card board-card" type="button" data-case="bio" aria-haspopup="dialog" aria-label="Buka profil subjek">
+            <span class="subject-photo" id="boardStudentPhoto" aria-hidden="true">
+              <svg viewBox="0 0 90 112" xmlns="http://www.w3.org/2000/svg"><rect width="90" height="112" fill="#9d896b"/><path d="M5 112c3-26 15-37 40-38 25 1 37 12 40 38" fill="#3c352e"/><path d="M27 72c3 9 10 14 18 14s15-5 18-14l-4-10H31z" fill="#c6ad88"/><ellipse cx="45" cy="42" rx="23" ry="28" fill="#d2b998"/><path d="M22 43c-3-26 7-37 25-37 21 0 29 15 22 40l-5-17c-8 0-22-4-29-12-1 9-5 18-13 26z" fill="#352c25"/></svg>
+              <img id="boardStudentPhotoImage" alt="" hidden>
+            </span>
+            <span class="subject-kicker">SUBJECT · #001</span>
+            <span class="subject-name" data-editable="subject-name">[Nama Lengkap]</span>
+            <svg class="subject-fingerprint" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M24 5c-10 0-17 7-17 17m34 0c0-10-7-17-17-17M12 24c0-7 5-12 12-12s12 5 12 12m-27 4c0 8 2 13 5 17m27-17c0 7-2 12-5 16M17 25c0-4 3-7 7-7s7 3 7 7c0 8-1 13-3 18m-12-4c-2-5-3-9-3-14m22 0c0 4 0 7-1 10m-9-10c0 10-1 15-2 19" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          </button>
+
+          <button class="case-card board-card" type="button" data-area="study" data-case="study" aria-haspopup="dialog">
+            <svg class="evidence-prop magnifier-prop" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+              <circle cx="26" cy="25" r="16" stroke="currentColor" stroke-width="5"/>
+              <path d="m38 37 17 17" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+              <circle cx="26" cy="25" r="9" stroke="#9d3329" stroke-width="1.5" opacity=".8"/>
+            </svg>
+            <span class="card-index">FILE 03 · MATHEMATICS</span>
+            <span class="card-title">Bukti Belajar</span>
+            <span class="card-subtitle">Matematika Informatika · kalkulator interaktif</span>
+            <svg class="card-fingerprint" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M24 5c-10 0-17 7-17 17m34 0c0-10-7-17-17-17M12 24c0-7 5-12 12-12s12 5 12 12m-27 4c0 8 2 13 5 17m27-17c0 7-2 12-5 16M17 25c0-4 3-7 7-7s7 3 7 7c0 8-1 13-3 18m-12-4c-2-5-3-9-3-14m22 0c0 4 0 7-1 10m-9-10c0 10-1 15-2 19" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            <span class="evidence-tag">EVIDENCE 03</span>
+            <span class="gift-wrap" aria-hidden="true"><span class="gift-ribbon vertical"></span><span class="gift-ribbon horizontal"></span><span class="gift-bow"></span></span>
+          </button>
+        </section>
+      </section>
+      <footer class="board-footer">
+        <span>“Every person has a story. Let's uncover mine.”</span>
+        <span>FINGERPRINTS FOUND · 03</span>
+      </footer>
+      <div class="page-sections">
+        <section class="archive-section" id="bioSection" data-page-section="bio" aria-labelledby="bioSectionTitle" tabindex="-1">
+          <header class="archive-heading">
+            <p class="archive-kicker">STUDENT PROFILE · DOCUMENT CLASSIFICATION: CONFIDENTIAL</p>
+            <h2 id="bioSectionTitle">Personal Biodata</h2>
+            <p>IDENTITY RECORD · Catatan identitas mahasiswa dalam berkas investigasi akademik.</p>
+          </header>
+          <article class="identity-record">
+            <span class="identity-stamp">VERIFIED RECORD</span>
+            <div class="identity-subject">
+              <div class="student-photo-frame" id="studentPhotoFrame">
+                <svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect x="5" y="8" width="38" height="32" rx="1" stroke="currentColor" stroke-width="1.5"/><circle cx="24" cy="19" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M12 37c1-7 5-10 12-10s11 3 12 10" stroke="currentColor" stroke-width="1.5"/><path d="m8 6 32 36" stroke="#663d3d" stroke-width="1.5"/></svg>
+                <img id="studentPhotoPreview" alt="Foto mahasiswa" hidden>
+              </div>
+              <div class="student-identity">
+                <div class="identity-mark"><span>STUDENT PROFILE</span><span>IDENTITY RECORD</span></div>
+                <h3 class="student-name" data-editable="subject-name">[Nama mahasiswa]</h3>
+                <p class="student-number">NIM: <span data-editable="student-id">[Isi NIM]</span></p>
+                <span class="student-story-label">SEDIKIT TENTANG MANUSIA DI BALIK BERKAS</span>
+                <p class="student-description" data-editable="about">[Ceritakan diri Anda dengan kata-kata sendiri: hal yang Anda minati, nilai yang penting bagi Anda, dan alasan memilih untuk terus belajar. Bagian ini dapat diperpanjang atau diubah melalui Edit File.]</p>
+              </div>
+              <div class="student-photo-actions">
+                <label class="student-photo-action">PILIH FOTO SENDIRI<input id="studentPhotoInput" type="file" accept="image/*" aria-label="Pilih foto pribadi mahasiswa"></label>
+                <button class="student-photo-action" id="studentPhotoRemove" type="button">HAPUS FOTO</button>
+                <span class="photo-edit-hint">Foto pilihan Anda akan tampil pada sampul, papan, dan berkas identitas. Disimpan di browser ini.</span>
+                <span id="studentPhotoStatus" class="edit-status" aria-live="polite"></span>
+              </div>
+            </div>
+            <section class="identity-academics" aria-labelledby="academicRecordTitle">
+              <h3 class="identity-section-label" id="academicRecordTitle">ACADEMIC RECORD · 2026/2027</h3>
+              <dl class="academic-grid">
+                <div class="academic-fact"><dt>Fakultas</dt><dd>Komputer</dd></div>
+                <div class="academic-fact"><dt>Program Studi / Smt</dt><dd>SI-R-1</dd></div>
+                <div class="academic-fact"><dt>Nama Dosen</dt><dd>Iin, M.Kom</dd></div>
+                <div class="academic-fact"><dt>Mata Kuliah</dt><dd>Matematika Informatika</dd></div>
+                <div class="academic-fact"><dt>Jadwal Ujian</dt><dd aria-label="Belum diisi"></dd></div>
+                <div class="academic-fact"><dt>Sifat Ujian</dt><dd>Project</dd></div>
+                <div class="academic-fact"><dt>Tahun Akademik</dt><dd>2026/2027</dd></div>
+              </dl>
+            </section>
+            <section class="education-record" aria-labelledby="educationRecordTitle">
+              <h3 id="educationRecordTitle">INFORMASI PENDIDIKAN</h3>
+              <p data-editable="school">[Nama perguruan tinggi]</p>
+              <p data-editable="education">[Tambahkan informasi pendidikan atau riwayat studi.]</p>
+            </section>
+          </article>
+        </section>
+        <section class="archive-section" id="studySection" data-page-section="study" aria-labelledby="studySectionTitle" tabindex="-1">
+          <header class="archive-heading"><p class="archive-kicker">EVIDENCE FILE · MATHEMATICS INFORMATIKA</p><h2 id="studySectionTitle">Bukti Belajar</h2><p>Perjalanan belajar Matematika Informatika bersama Pa Iin TA 20261</p></header>
+          <div class="archive-card"><p>Dokumentasi konsep dan kalkulator interaktif tersimpan dalam berkas bukti belajar.</p><button class="archive-action" type="button" data-open-record="study">BUKA BUKTI BELAJAR</button></div>
+        </section>
+        <section class="archive-section" id="mathToolsSection" data-page-section="math-tools" aria-labelledby="mathToolsTitle" tabindex="-1">
+          <header class="archive-heading"><p class="archive-kicker">CASE FILE · TOOL ARCHIVE</p><h2 id="mathToolsTitle">Mathematics Tools</h2><p>Peralatan hitung untuk menelusuri pola dan menyelesaikan kasus matematika.</p></header>
+          <div class="archive-card"><p>Empat alat interaktif: modulo, pengecek kongruensi, konversi sistem bilangan, serta kombinatorika. Setiap alat membuka kalkulator dan langkah hitung yang sama di Bukti Belajar.</p><button class="archive-action" type="button" data-open-record="math-tools">BUKA TOOL ARCHIVE</button></div>
+        </section>
+        <section class="archive-section" id="formulaLibrarySection" data-page-section="formula-library" aria-labelledby="formulaLibraryTitle" tabindex="-1">
+          <header class="archive-heading"><p class="archive-kicker">CASE FILE · REFERENCE ARCHIVE</p><h2 id="formulaLibraryTitle">Formula Library</h2><p>Rak rumus, definisi, dan catatan konsep sebagai referensi investigasi.</p></header>
+          <div class="archive-card"><p>Lima catatan rumus berisi konsep, simbol, contoh penyelesaian, pencarian, filter kategori, dan tautan ke kalkulator terkait.</p><button class="archive-action" type="button" data-open-record="formula-library">BUKA FORMULA LIBRARY</button></div>
+        </section>
+        <section class="archive-section" id="learningJournalSection" data-page-section="learning-journal" aria-labelledby="learningJournalTitle" tabindex="-1">
+          <header class="archive-heading"><p class="archive-kicker">FIELD NOTES · DAILY OBSERVATIONS</p><h2 id="learningJournalTitle">Learning Journal</h2><p>Catatan proses belajar, temuan, dan pertanyaan selama investigasi.</p></header>
+          <div class="archive-card"><p>Jurnal siap diisi dengan catatan pembelajaran pribadi.</p><button class="archive-action" type="button" data-open-record="learning-journal">BUKA LEARNING JOURNAL</button></div>
+        </section>
+        <section class="archive-section" id="quizChallengeSection" data-page-section="quiz-challenge" aria-labelledby="quizChallengeTitle" tabindex="-1">
+          <header class="archive-heading"><p class="archive-kicker">CASE CHALLENGE · TEST YOUR REASONING</p><h2 id="quizChallengeTitle">Quiz Challenge</h2><p>Tantangan untuk menguji pemahaman konsep dan strategi pemecahan masalah.</p></header>
+          <div class="archive-card"><p>Ruang tantangan dapat dikembangkan menjadi latihan dan kuis.</p><button class="archive-action" type="button" data-open-record="quiz-challenge">BUKA QUIZ CHALLENGE</button></div>
+        </section>
+        <section class="archive-section" id="learningProgressSection" data-page-section="learning-progress" aria-labelledby="learningProgressTitle" tabindex="-1">
+          <header class="archive-heading"><p class="archive-kicker">PROGRESS LOG · INVESTIGATION STATUS</p><h2 id="learningProgressTitle">Learning Progress</h2><p>Rekam perkembangan materi dan target belajar dari waktu ke waktu.</p></header>
+          <div class="archive-card"><p>Lacak status lima materi secara mandiri. Aktivitas kalkulator mencatat materi yang mulai dipelajari; persentase selesai mengikuti status yang Anda pilih.</p><button class="archive-action" type="button" data-open-record="learning-progress">BUKA LEARNING PROGRESS</button></div>
+        </section>
+        <section class="archive-section" id="experienceSection" data-page-section="experience" aria-labelledby="experienceSectionTitle" tabindex="-1">
+          <header class="archive-heading"><p class="archive-kicker">CASE HISTORY · PERSONAL EVIDENCE</p><h2 id="experienceSectionTitle">Pengalaman Berharga</h2><p>Jejak kegiatan tersimpan sebagai peta investigasi dengan galeri bukti foto.</p></header>
+          <div class="archive-card"><p>Buka peta untuk menelusuri tiga berkas pengalaman dan masing-masing galeri foto.</p><button class="archive-action" type="button" data-open-record="experience">BUKA PETA PENGALAMAN</button></div>
+        </section>
+        <section class="archive-section" id="conclusionSection" data-page-section="conclusion" aria-labelledby="conclusionTitle" tabindex="-1">
+          <header class="archive-heading"><p class="archive-kicker">FINAL REPORT · CASE FILE #001</p><h2 id="conclusionTitle">Conclusion</h2><p>Ringkasan akhir dan refleksi perjalanan belajar.</p></header>
+          <div class="archive-card"><p>Ringkasan konsep Matematika Informatika, temuan utama, dan arahan refleksi yang dapat disunting agar sesuai dengan pengalaman belajar Anda.</p><button class="archive-action" type="button" data-open-record="conclusion">BUKA FINAL REPORT</button></div>
+        </section>
+      </div>
+      <button class="top-button" id="backToTop" type="button" aria-label="Kembali ke atas">↑ BACK TO TOP</button>
+      <span class="save-notice" id="saveNotice" role="status"></span>
+
+      <dialog class="case-dialog" id="caseDialog" aria-labelledby="dialogTitle">
+        <div class="dialog-inner">
+          <button class="dialog-close" id="closeDialog" type="button" aria-label="Tutup berkas">×</button>
+          <p class="dialog-index" id="dialogIndex"></p>
+          <h2 class="dialog-title" id="dialogTitle"></h2>
+          <div class="dialog-content bio-panel" data-case-panel="bio" hidden>
+            <div class="bio-dossier">
+              <div class="bio-filebar"><span>PERSONAL DOSSIER · NO. 001</span><strong>ACTIVE CASE</strong></div>
+              <span class="bio-stamp">CONFIDENTIAL</span>
+              <div class="bio-subject">
+                <div class="bio-portrait" aria-label="Foto identitas subjek">
+                  <svg viewBox="0 0 90 112" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="90" height="112" fill="#9d896b"/><path d="M5 112c3-26 15-37 40-38 25 1 37 12 40 38" fill="#3c352e"/><path d="M27 72c3 9 10 14 18 14s15-5 18-14l-4-10H31z" fill="#c6ad88"/><ellipse cx="45" cy="42" rx="23" ry="28" fill="#d2b998"/><path d="M22 43c-3-26 7-37 25-37 21 0 29 15 22 40l-5-17c-8 0-22-4-29-12-1 9-5 18-13 26z" fill="#352c25"/><path d="M36 47h4m10 0h4" stroke="#382f27" stroke-width="2" stroke-linecap="round"/><path d="M41 61c3 2 6 2 9 0" fill="none" stroke="#735443" stroke-width="2" stroke-linecap="round"/></svg>
+                  <img class="bio-student-photo" id="bioStudentPhotoImage" alt="Foto mahasiswa" hidden>
+                  <svg class="bio-scan" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M24 5c-10 0-17 7-17 17m34 0c0-10-7-17-17-17M12 24c0-7 5-12 12-12s12 5 12 12m-27 4c0 8 2 13 5 17m27-17c0 7-2 12-5 16M17 25c0-4 3-7 7-7s7 3 7 7c0 8-1 13-3 18m-12-4c-2-5-3-9-3-14m22 0c0 4 0 7-1 10m-9-10c0 10-1 15-2 19" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                </div>
+                <div class="bio-profile">
+                  <p class="bio-kicker">IDENTITY RECORD · SUBJECT 001</p>
+                  <h3 class="bio-name" data-editable="subject-name">[Nama Lengkap]</h3>
+                  <p class="bio-summary" data-editable="about">[Tuliskan perkenalan singkat, nilai yang Anda pegang, dan hal yang membuat Anda bersemangat.]</p>
+                </div>
+              </div>
+              <div class="bio-facts">
+                <div class="bio-fact"><span class="bio-fact-label">Tanggal &amp; tempat lahir</span><span class="bio-fact-value" data-editable="birth">[Kota, tanggal lahir]</span></div>
+                <div class="bio-fact"><span class="bio-fact-label">Lokasi saat ini</span><span class="bio-fact-value" data-editable="city">[Kota, Indonesia]</span></div>
+                <div class="bio-fact"><span class="bio-fact-label">Bidang yang diminati</span><span class="bio-fact-value" data-editable="interest">[Bidang minat]</span></div>
+                <div class="bio-fact"><span class="bio-fact-label">Status berkas</span><span class="bio-fact-value">Subjek sedang diamati</span></div>
+              </div>
+              <div class="bio-note"><h3>CATATAN PENYIDIK</h3><p data-editable="about">[Tuliskan perkenalan singkat, nilai yang Anda pegang, dan hal yang membuat Anda bersemangat.]</p><p class="edit-hint">Aktifkan Edit File, lalu klik teks bertanda untuk mengubah profil.</p></div>
+              <div class="bio-signoff"><span>SIDIK JARI COCOK · IDENTITAS TERCATAT</span><span>FILE 01 / 03</span></div>
+            </div>
+          </div>
+          <div class="dialog-content experience-panel" data-case-panel="experience" hidden>
+            <section class="experience-map" id="experienceMap" aria-label="Peta investigasi pengalaman">
+              <header class="experience-map-heading">
+                <div>
+                  <p class="experience-map-kicker">CASE HISTORY · BERKAS 02 / 03</p>
+                  <h3>Peta Jejak Kegiatan</h3>
+                </div>
+                <p>Tiga berkas terhubung oleh satu benang merah.<br>Pilih segel untuk membuka bukti.</p>
+              </header>
+              <div class="experience-map-grid">
+                <button class="activity-file" type="button" data-activity-open="1" aria-controls="activityDetail1" aria-expanded="false">
+                  <span class="activity-file-top"><span>FILE 01 · TIMELINE</span><span>01</span></span>
+                  <span><span class="activity-file-title" data-activity-card-title="1">Jejak Pertama</span><span class="activity-file-subtitle">CATATAN KEGIATAN · TERSEGEL</span></span>
+                  <span class="activity-file-bottom"><span>BUKA BERKAS</span><span>→</span></span>
+                  <span class="activity-file-seal" aria-hidden="true">OPEN<br>CASE</span>
+                </button>
+                <button class="activity-file" type="button" data-activity-open="2" aria-controls="activityDetail2" aria-expanded="false">
+                  <span class="activity-file-top"><span>FILE 02 · FIELD NOTES</span><span>02</span></span>
+                  <span><span class="activity-file-title" data-activity-card-title="2">Operasi Kedua</span><span class="activity-file-subtitle">CATATAN KEGIATAN · TERSEGEL</span></span>
+                  <span class="activity-file-bottom"><span>BUKA BERKAS</span><span>→</span></span>
+                  <span class="activity-file-seal" aria-hidden="true">OPEN<br>CASE</span>
+                </button>
+                <button class="activity-file" type="button" data-activity-open="3" aria-controls="activityDetail3" aria-expanded="false">
+                  <span class="activity-file-top"><span>FILE 03 · FINAL REPORT</span><span>03</span></span>
+                  <span><span class="activity-file-title" data-activity-card-title="3">Bukti Terakhir</span><span class="activity-file-subtitle">CATATAN KEGIATAN · TERSEGEL</span></span>
+                  <span class="activity-file-bottom"><span>BUKA BERKAS</span><span>→</span></span>
+                  <span class="activity-file-seal" aria-hidden="true">OPEN<br>CASE</span>
+                </button>
+              </div>
+              <p class="experience-map-note">BENANG MERAH DITEMUKAN · KLIK SALAH SATU BERKAS UNTUK MEMERIKSA DETAIL DAN FOTO KEGIATAN</p>
+            </section>
+
+            <section class="activity-detail" id="activityDetail1" data-activity-detail="1" aria-labelledby="activityTitle1" hidden>
+              <header class="activity-detail-header">
+                <div><p class="activity-detail-kicker">FIELD REPORT · FILE 01</p><h3 id="activityTitle1" data-editable="experience-title-1">[Nama Kegiatan Pertama]</h3></div>
+                <button class="activity-back" type="button" data-activity-back aria-label="Tutup berkas ini dan kembali ke peta kegiatan">← PETA KEGIATAN</button>
+              </header>
+              <div class="activity-detail-grid">
+                <div class="activity-notes">
+                  <div class="activity-meta"><span data-editable="experience-date-1">[Periode kegiatan]</span><span data-editable="experience-place-1">[Organisasi / lokasi]</span></div>
+                  <p class="activity-evidence-label">CATATAN PENYIDIK</p>
+                  <p class="activity-description" data-editable="experience-text-1">[Tuliskan peran, tanggung jawab, dan hal penting yang Anda pelajari dari kegiatan ini.]</p>
+                  <p class="activity-edit-hint">Aktifkan Edit File untuk mengubah detail dan menambahkan hingga tiga foto bukti kegiatan.</p>
+                </div>
+                <div class="activity-gallery">
+                  <div class="activity-gallery-heading"><span>GALERI BUKTI · 01 / 03</span><span>MAX 3 FOTO</span></div>
+                  <div class="activity-photo-grid">
+                    <div class="activity-photo" data-photo-slot="1-1">
+                      <div class="activity-photo-empty" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><rect x="5" y="8" width="38" height="31" rx="1" stroke="currentColor" stroke-width="1.5"/><circle cx="17" cy="19" r="4" stroke="currentColor" stroke-width="1.5"/><path d="m8 35 12-11 7 6 5-5 8 10" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="m9 6 30 35" stroke="#b94a3f" stroke-width="1.5"/></svg><span>FOTO 01<br>BUKTI BELUM ADA</span></div>
+                      <img data-photo-preview alt="Foto bukti kegiatan pertama, foto satu" hidden><p class="activity-photo-status" data-photo-status="1-1" aria-live="polite"></p>
+                      <div class="activity-photo-actions"><label class="photo-action">TAMBAH<input type="file" accept="image/*" data-photo-input="1-1" aria-label="Tambah foto satu untuk kegiatan pertama"></label><button class="photo-action" type="button" data-photo-remove="1-1">HAPUS</button></div>
+                    </div>
+                    <div class="activity-photo" data-photo-slot="1-2">
+                      <div class="activity-photo-empty" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><rect x="5" y="8" width="38" height="31" rx="1" stroke="currentColor" stroke-width="1.5"/><circle cx="17" cy="19" r="4" stroke="currentColor" stroke-width="1.5"/><path d="m8 35 12-11 7 6 5-5 8 10" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="m9 6 30 35" stroke="#b94a3f" stroke-width="1.5"/></svg><span>FOTO 02<br>BUKTI BELUM ADA</span></div>
+                      <img data-photo-preview alt="Foto bukti kegiatan pertama, foto dua" hidden><p class="activity-photo-status" data-photo-status="1-2" aria-live="polite"></p>
+                      <div class="activity-photo-actions"><label class="photo-action">TAMBAH<input type="file" accept="image/*" data-photo-input="1-2" aria-label="Tambah foto dua untuk kegiatan pertama"></label><button class="photo-action" type="button" data-photo-remove="1-2">HAPUS</button></div>
+                    </div>
+                    <div class="activity-photo" data-photo-slot="1-3">
+                      <div class="activity-photo-empty" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><rect x="5" y="8" width="38" height="31" rx="1" stroke="currentColor" stroke-width="1.5"/><circle cx="17" cy="19" r="4" stroke="currentColor" stroke-width="1.5"/><path d="m8 35 12-11 7 6 5-5 8 10" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="m9 6 30 35" stroke="#b94a3f" stroke-width="1.5"/></svg><span>FOTO 03<br>BUKTI BELUM ADA</span></div>
+                      <img data-photo-preview alt="Foto bukti kegiatan pertama, foto tiga" hidden><p class="activity-photo-status" data-photo-status="1-3" aria-live="polite"></p>
+                      <div class="activity-photo-actions"><label class="photo-action">TAMBAH<input type="file" accept="image/*" data-photo-input="1-3" aria-label="Tambah foto tiga untuk kegiatan pertama"></label><button class="photo-action" type="button" data-photo-remove="1-3">HAPUS</button></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <footer class="activity-detail-footer"><span>EVIDENCE 01 · SUBJECT FILE #001</span><span>STATUS: ACTIVE</span></footer>
+            </section>
+
+            <section class="activity-detail" id="activityDetail2" data-activity-detail="2" aria-labelledby="activityTitle2" hidden>
+              <header class="activity-detail-header">
+                <div><p class="activity-detail-kicker">FIELD REPORT · FILE 02</p><h3 id="activityTitle2" data-editable="experience-title-2">[Nama Kegiatan Kedua]</h3></div>
+                <button class="activity-back" type="button" data-activity-back aria-label="Tutup berkas ini dan kembali ke peta kegiatan">← PETA KEGIATAN</button>
+              </header>
+              <div class="activity-detail-grid">
+                <div class="activity-notes">
+                  <div class="activity-meta"><span data-editable="experience-date-2">[Periode kegiatan]</span><span data-editable="experience-place-2">[Organisasi / lokasi]</span></div>
+                  <p class="activity-evidence-label">CATATAN PENYIDIK</p>
+                  <p class="activity-description" data-editable="experience-text-2">[Jelaskan kontribusi, proses, dan hasil kegiatan kedua ini.]</p>
+                  <p class="activity-edit-hint">Aktifkan Edit File untuk mengubah detail dan menambahkan hingga tiga foto bukti kegiatan.</p>
+                </div>
+                <div class="activity-gallery">
+                  <div class="activity-gallery-heading"><span>GALERI BUKTI · 02 / 03</span><span>MAX 3 FOTO</span></div>
+                  <div class="activity-photo-grid">
+                    <div class="activity-photo" data-photo-slot="2-1">
+                      <div class="activity-photo-empty" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><rect x="5" y="8" width="38" height="31" rx="1" stroke="currentColor" stroke-width="1.5"/><circle cx="17" cy="19" r="4" stroke="currentColor" stroke-width="1.5"/><path d="m8 35 12-11 7 6 5-5 8 10" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="m9 6 30 35" stroke="#b94a3f" stroke-width="1.5"/></svg><span>FOTO 01<br>BUKTI BELUM ADA</span></div>
+                      <img data-photo-preview alt="Foto bukti kegiatan kedua, foto satu" hidden><p class="activity-photo-status" data-photo-status="2-1" aria-live="polite"></p>
+                      <div class="activity-photo-actions"><label class="photo-action">TAMBAH<input type="file" accept="image/*" data-photo-input="2-1" aria-label="Tambah foto satu untuk kegiatan kedua"></label><button class="photo-action" type="button" data-photo-remove="2-1">HAPUS</button></div>
+                    </div>
+                    <div class="activity-photo" data-photo-slot="2-2">
+                      <div class="activity-photo-empty" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><rect x="5" y="8" width="38" height="31" rx="1" stroke="currentColor" stroke-width="1.5"/><circle cx="17" cy="19" r="4" stroke="currentColor" stroke-width="1.5"/><path d="m8 35 12-11 7 6 5-5 8 10" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="m9 6 30 35" stroke="#b94a3f" stroke-width="1.5"/></svg><span>FOTO 02<br>BUKTI BELUM ADA</span></div>
+                      <img data-photo-preview alt="Foto bukti kegiatan kedua, foto dua" hidden><p class="activity-photo-status" data-photo-status="2-2" aria-live="polite"></p>
+                      <div class="activity-photo-actions"><label class="photo-action">TAMBAH<input type="file" accept="image/*" data-photo-input="2-2" aria-label="Tambah foto dua untuk kegiatan kedua"></label><button class="photo-action" type="button" data-photo-remove="2-2">HAPUS</button></div>
+                    </div>
+                    <div class="activity-photo" data-photo-slot="2-3">
+                      <div class="activity-photo-empty" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><rect x="5" y="8" width="38" height="31" rx="1" stroke="currentColor" stroke-width="1.5"/><circle cx="17" cy="19" r="4" stroke="currentColor" stroke-width="1.5"/><path d="m8 35 12-11 7 6 5-5 8 10" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="m9 6 30 35" stroke="#b94a3f" stroke-width="1.5"/></svg><span>FOTO 03<br>BUKTI BELUM ADA</span></div>
+                      <img data-photo-preview alt="Foto bukti kegiatan kedua, foto tiga" hidden><p class="activity-photo-status" data-photo-status="2-3" aria-live="polite"></p>
+                      <div class="activity-photo-actions"><label class="photo-action">TAMBAH<input type="file" accept="image/*" data-photo-input="2-3" aria-label="Tambah foto tiga untuk kegiatan kedua"></label><button class="photo-action" type="button" data-photo-remove="2-3">HAPUS</button></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <footer class="activity-detail-footer"><span>EVIDENCE 02 · SUBJECT FILE #001</span><span>STATUS: ACTIVE</span></footer>
+            </section>
+
+            <section class="activity-detail" id="activityDetail3" data-activity-detail="3" aria-labelledby="activityTitle3" hidden>
+              <header class="activity-detail-header">
+                <div><p class="activity-detail-kicker">FIELD REPORT · FILE 03</p><h3 id="activityTitle3" data-editable="experience-title-3">[Nama Kegiatan Ketiga]</h3></div>
+                <button class="activity-back" type="button" data-activity-back aria-label="Tutup berkas ini dan kembali ke peta kegiatan">← PETA KEGIATAN</button>
+              </header>
+              <div class="activity-detail-grid">
+                <div class="activity-notes">
+                  <div class="activity-meta"><span data-editable="experience-date-3">[Periode kegiatan]</span><span data-editable="experience-place-3">[Organisasi / lokasi]</span></div>
+                  <p class="activity-evidence-label">CATATAN PENYIDIK</p>
+                  <p class="activity-description" data-editable="experience-text-3">[Catat pengalaman, pencapaian, atau pelajaran dari kegiatan ketiga.]</p>
+                  <p class="activity-edit-hint">Aktifkan Edit File untuk mengubah detail dan menambahkan hingga tiga foto bukti kegiatan.</p>
+                </div>
+                <div class="activity-gallery">
+                  <div class="activity-gallery-heading"><span>GALERI BUKTI · 03 / 03</span><span>MAX 3 FOTO</span></div>
+                  <div class="activity-photo-grid">
+                    <div class="activity-photo" data-photo-slot="3-1">
+                      <div class="activity-photo-empty" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><rect x="5" y="8" width="38" height="31" rx="1" stroke="currentColor" stroke-width="1.5"/><circle cx="17" cy="19" r="4" stroke="currentColor" stroke-width="1.5"/><path d="m8 35 12-11 7 6 5-5 8 10" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="m9 6 30 35" stroke="#b94a3f" stroke-width="1.5"/></svg><span>FOTO 01<br>BUKTI BELUM ADA</span></div>
+                      <img data-photo-preview alt="Foto bukti kegiatan ketiga, foto satu" hidden><p class="activity-photo-status" data-photo-status="3-1" aria-live="polite"></p>
+                      <div class="activity-photo-actions"><label class="photo-action">TAMBAH<input type="file" accept="image/*" data-photo-input="3-1" aria-label="Tambah foto satu untuk kegiatan ketiga"></label><button class="photo-action" type="button" data-photo-remove="3-1">HAPUS</button></div>
+                    </div>
+                    <div class="activity-photo" data-photo-slot="3-2">
+                      <div class="activity-photo-empty" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><rect x="5" y="8" width="38" height="31" rx="1" stroke="currentColor" stroke-width="1.5"/><circle cx="17" cy="19" r="4" stroke="currentColor" stroke-width="1.5"/><path d="m8 35 12-11 7 6 5-5 8 10" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="m9 6 30 35" stroke="#b94a3f" stroke-width="1.5"/></svg><span>FOTO 02<br>BUKTI BELUM ADA</span></div>
+                      <img data-photo-preview alt="Foto bukti kegiatan ketiga, foto dua" hidden><p class="activity-photo-status" data-photo-status="3-2" aria-live="polite"></p>
+                      <div class="activity-photo-actions"><label class="photo-action">TAMBAH<input type="file" accept="image/*" data-photo-input="3-2" aria-label="Tambah foto dua untuk kegiatan ketiga"></label><button class="photo-action" type="button" data-photo-remove="3-2">HAPUS</button></div>
+                    </div>
+                    <div class="activity-photo" data-photo-slot="3-3">
+                      <div class="activity-photo-empty" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><rect x="5" y="8" width="38" height="31" rx="1" stroke="currentColor" stroke-width="1.5"/><circle cx="17" cy="19" r="4" stroke="currentColor" stroke-width="1.5"/><path d="m8 35 12-11 7 6 5-5 8 10" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="m9 6 30 35" stroke="#b94a3f" stroke-width="1.5"/></svg><span>FOTO 03<br>BUKTI BELUM ADA</span></div>
+                      <img data-photo-preview alt="Foto bukti kegiatan ketiga, foto tiga" hidden><p class="activity-photo-status" data-photo-status="3-3" aria-live="polite"></p>
+                      <div class="activity-photo-actions"><label class="photo-action">TAMBAH<input type="file" accept="image/*" data-photo-input="3-3" aria-label="Tambah foto tiga untuk kegiatan ketiga"></label><button class="photo-action" type="button" data-photo-remove="3-3">HAPUS</button></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <footer class="activity-detail-footer"><span>EVIDENCE 03 · SUBJECT FILE #001</span><span>STATUS: ACTIVE</span></footer>
+            </section>
+          </div>
+          <div class="dialog-content" data-case-panel="study" hidden>
+            <div class="study-heading">
+              <p class="study-eyebrow">LEARNING EVIDENCE · DISCRETE MATHEMATICS</p>
+              <h2 class="dialog-title">Bukti Belajar</h2>
+              <p class="study-subtitle">Perjalanan belajar Matematika Informatika bersama Pa Iin TA 20261</p>
+            </div>
+            <div class="study-grid">
+              <section class="calculator-card" aria-labelledby="moduloTitle">
+                <p class="calculator-kicker">LEVEL 1 · ARITMETIKA MODULAR</p>
+                <h3 id="moduloTitle">Modulo Calculator</h3>
+                <form class="calculator-form" id="moduloForm" novalidate>
+                  <div class="calculator-fields">
+                    <label class="calculator-field">Bilangan a<input name="a" type="text" inputmode="numeric" placeholder="17" required></label>
+                    <label class="calculator-field">Modulus m<input name="m" type="text" inputmode="numeric" placeholder="5" required></label>
+                  </div>
+                  <button class="calculator-submit" type="submit">HITUNG MODULO</button>
+                </form>
+                <div class="calculator-result" id="moduloResult" aria-live="polite"></div>
+                <p class="study-note calculator-note">Modulo adalah sisa pembagian; untuk a negatif, hasil dibuat dalam rentang 0 sampai m−1.</p>
+              </section>
+
+              <section class="calculator-card" aria-labelledby="congruenceTitle">
+                <p class="calculator-kicker">LEVEL 2 · RELASI KONGRUENSI</p>
+                <h3 id="congruenceTitle">Congruence Checker</h3>
+                <form class="calculator-form" id="congruenceForm" novalidate>
+                  <div class="calculator-fields three-fields">
+                    <label class="calculator-field">Bilangan a<input name="a" type="text" inputmode="numeric" placeholder="17" required></label>
+                    <label class="calculator-field">Bilangan b<input name="b" type="text" inputmode="numeric" placeholder="2" required></label>
+                    <label class="calculator-field">Modulus m<input name="m" type="text" inputmode="numeric" placeholder="5" required></label>
+                  </div>
+                  <button class="calculator-submit" type="submit">Periksa kongruensi</button>
+                </form>
+                <div class="calculator-result" id="congruenceResult" aria-live="polite"></div>
+                <p class="study-note calculator-note">a ≡ b (mod m) jika m membagi (a − b).</p>
+              </section>
+
+              <section class="calculator-card" aria-labelledby="numberSystemTitle">
+                <p class="calculator-kicker">LEVEL 5 · REPRESENTASI BILANGAN</p>
+                <h3 id="numberSystemTitle">Number System</h3>
+                <form class="calculator-form" id="numberSystemForm" novalidate>
+                  <div class="calculator-fields">
+                    <label class="calculator-field">Bilangan<input name="number" type="text" placeholder="1010" required></label>
+                    <label class="calculator-field">Basis asal<select name="base"><option value="2">Biner · 2</option><option value="10" selected>Desimal · 10</option><option value="8">Oktal · 8</option><option value="16">Heksadesimal · 16</option></select></label>
+                  </div>
+                  <button class="calculator-submit" type="submit">Konversi bilangan</button>
+                </form>
+                <div class="calculator-result" id="numberSystemResult" aria-live="polite"></div>
+                <p class="study-note calculator-note">Konversi bilangan bulat antar basis 2, 8, 10, dan 16.</p>
+              </section>
+
+              <section class="calculator-card" aria-labelledby="combinatoricsTitle">
+                <p class="calculator-kicker">LEVEL 6 · KONSEP PENCACAHAN</p>
+                <h3 id="combinatoricsTitle">Combinatorics</h3>
+                <form class="calculator-form" id="combinatoricsForm" novalidate>
+                  <div class="calculator-fields">
+                    <label class="calculator-field">n<input name="n" type="number" min="0" max="500" step="1" placeholder="5" required></label>
+                    <label class="calculator-field">r<input name="r" type="number" min="0" max="500" step="1" placeholder="2" required></label>
+                  </div>
+                  <button class="calculator-submit" type="submit">Hitung P(n,r) &amp; C(n,r)</button>
+                </form>
+                <div class="calculator-result" id="combinatoricsResult" aria-live="polite"></div>
+                <p class="study-note calculator-note">Permutasi memperhatikan urutan; kombinasi tidak. Berlaku 0 ≤ r ≤ n ≤ 500.</p>
+              </section>
+            </div>
+          </div>
+          <section class="dialog-content foundation-panel" data-case-panel="math-tools" hidden>
+            <header class="foundation-heading"><p class="foundation-kicker">CASE FILE · MATH LAB</p><h2>Mathematics Tools</h2></header>
+            <div class="foundation-body math-tools-body">
+              <p class="tools-intro">Pilih alat sesuai petunjuk yang sedang diperiksa. Setiap tombol membuka kalkulator di berkas <strong>Bukti Belajar</strong>; hasil, validasi, dan langkah hitung tetap berada pada satu sumber agar tidak ada kalkulator ganda.</p>
+              <div class="tool-index-grid">
+                <article class="tool-index-card"><span class="tool-index-number">01 · MODULAR</span><h3>Modulo Calculator</h3><p>Temukan sisa pembagian bilangan bulat, termasuk bilangan negatif. Modulus harus bilangan bulat positif.</p><p class="tool-example">INPUT: a, m → HASIL: a mod m</p><button class="archive-action" type="button" data-launch-calculator="modulo">BUKA KALKULATOR</button></article>
+                <article class="tool-index-card"><span class="tool-index-number">02 · RELATION</span><h3>Congruence Checker</h3><p>Periksa apakah dua bilangan memiliki sisa yang sama dengan menguji apakah m membagi selisihnya.</p><p class="tool-example">UJI: a − b, lalu periksa sisanya</p><button class="archive-action" type="button" data-launch-calculator="congruence">BUKA KALKULATOR</button></article>
+                <article class="tool-index-card"><span class="tool-index-number">03 · BASE</span><h3>Number System</h3><p>Konversikan satu bilangan antara basis biner, desimal, oktal, dan heksadesimal dengan validasi digit.</p><p class="tool-example">BASIS: 2 · 10 · 8 · 16</p><button class="archive-action" type="button" data-launch-calculator="number-system">BUKA KALKULATOR</button></article>
+                <article class="tool-index-card"><span class="tool-index-number">04 · COUNTING</span><h3>Combinatorics</h3><p>Hitung susunan berurutan dan pilihan tanpa urutan. Gunakan bilangan bulat n dan r dengan 0 ≤ r ≤ n.</p><p class="tool-example">HASIL: P(n,r) dan C(n,r)</p><button class="archive-action" type="button" data-launch-calculator="combinatorics">BUKA KALKULATOR</button></article>
+              </div>
+              <p class="archive-feedback" id="toolLaunchFeedback" aria-live="polite">Semua kalkulator menghasilkan laporan perhitungan berdasarkan masukan Anda.</p>
+            </div>
+            <footer class="foundation-footer"><span>MATHEMATICS TOOLS</span><span>4 WORKING CALCULATORS · SEE BUKTI BELAJAR</span></footer>
+          </section>
+          <section class="dialog-content foundation-panel" data-case-panel="formula-library" hidden>
+            <header class="foundation-heading"><p class="foundation-kicker">CASE FILE · REFERENCE ARCHIVE</p><h2>Formula Library</h2></header>
+            <div class="foundation-body interactive-foundation">
+              <div class="formula-toolbar">
+                <label class="archive-field">CARI RUMUS<input id="formulaSearch" type="search" placeholder="Cari nama, kategori, atau konsep"></label>
+                <label class="archive-field">FILTER KATEGORI<select id="formulaFilter"><option value="all">Semua kategori</option><option value="modular">Aritmetika modular</option><option value="congruence">Kongruensi</option><option value="number-system">Sistem bilangan</option><option value="permutation">Permutasi</option><option value="combination">Kombinasi</option></select></label>
+              </div>
+              <div class="formula-list" id="formulaList">
+                <details class="formula-item" data-formula-category="modular" data-formula-search="aritmetika modular modulo sisa pembagian bilangan negatif normalisasi">
+                  <summary>Aritmetika Modular</summary>
+                  <div class="formula-detail"><p class="formula-equation">a = qm + r, dengan 0 ≤ r &lt; m</p><p><strong>Simbol:</strong> a adalah bilangan bulat, m modulus positif, q hasil bagi bulat, dan r sisa modulo ternormalisasi.</p><p><strong>Konsep:</strong> Modulo menghasilkan sisa pembagian. Untuk bilangan negatif, pilih sisa yang tetap berada pada rentang 0 sampai m−1.</p><p><strong>Contoh:</strong> 17 mod 5 = 2; −7 mod 5 = 3.</p><p><strong>Penyelesaian:</strong> 17 = 5 × 3 + 2. Untuk −7, −7 = 5 × (−2) + 3, sehingga −7 mod 5 = 3.</p><button class="archive-action" type="button" data-copy-formula="a = qm + r, 0 ≤ r < m">COPY FORMULA</button> <button class="archive-action" type="button" data-launch-calculator="modulo">OPEN MODULO CALCULATOR</button></div>
+                </details>
+                <details class="formula-item" data-formula-category="congruence" data-formula-search="kongruensi kongruen modulo membagi selisih">
+                  <summary>Kongruensi</summary>
+                  <div class="formula-detail"><p class="formula-equation">a ≡ b (mod m) ⇔ m | (a − b)</p><p><strong>Simbol:</strong> m | x berarti m membagi x tanpa sisa.</p><p><strong>Konsep:</strong> Dua bilangan kongruen modulo m jika selisihnya habis dibagi m; ekuivalen dengan memiliki sisa yang sama.</p><p><strong>Contoh:</strong> 17 ≡ 2 (mod 5), sedangkan 17 tidak kongruen dengan 3 (mod 5).</p><p><strong>Penyelesaian:</strong> 17 − 2 = 15 dan 15 mod 5 = 0, jadi kongruen. Untuk 17 − 3 = 14, 14 mod 5 = 4, jadi tidak kongruen.</p><button class="archive-action" type="button" data-copy-formula="a ≡ b (mod m) ⇔ m | (a − b)">COPY FORMULA</button> <button class="archive-action" type="button" data-launch-calculator="congruence">OPEN CONGRUENCE CHECKER</button></div>
+                </details>
+                <details class="formula-item" data-formula-category="number-system" data-formula-search="sistem bilangan basis konversi biner desimal oktal heksadesimal">
+                  <summary>Sistem Bilangan</summary>
+                  <div class="formula-detail"><p class="formula-equation">(dₙ…d₁d₀)ᵦ = Σ dᵢ × bⁱ</p><p><strong>Simbol:</strong> b adalah basis (2, 8, 10, atau 16), dᵢ digit pada posisi i, dan digit harus berada dalam rentang 0 sampai b−1.</p><p><strong>Konsep:</strong> Nilai bilangan adalah jumlah digit dikalikan pangkat basis posisinya. Tanda negatif menunjukkan bilangan bernilai negatif.</p><p><strong>Contoh:</strong> (1010)₂.</p><p><strong>Penyelesaian:</strong> 1×2³ + 0×2² + 1×2¹ + 0×2⁰ = 8 + 2 = 10, sehingga bentuk desimalnya 10.</p><button class="archive-action" type="button" data-copy-formula="(dₙ…d₁d₀)ᵦ = Σ dᵢ × bⁱ">COPY FORMULA</button> <button class="archive-action" type="button" data-launch-calculator="number-system">OPEN CONVERTER</button></div>
+                </details>
+                <details class="formula-item" data-formula-category="permutation" data-formula-search="permutasi urutan p n r faktorial">
+                  <summary>Permutasi</summary>
+                  <div class="formula-detail"><p class="formula-equation">P(n,r) = n! / (n−r)!</p><p><strong>Simbol:</strong> n jumlah objek dan r banyak objek yang dipilih serta diurutkan.</p><p><strong>Konsep:</strong> Permutasi memperhatikan urutan; posisi berbeda menghasilkan susunan berbeda.</p><p><strong>Contoh:</strong> P(5,2).</p><p><strong>Penyelesaian:</strong> 5! / 3! = (5×4×3×2×1) / (3×2×1) = 5×4 = 20.</p><button class="archive-action" type="button" data-copy-formula="P(n,r) = n! / (n−r)!">COPY FORMULA</button> <button class="archive-action" type="button" data-launch-calculator="combinatorics">OPEN COMBINATORICS</button></div>
+                </details>
+                <details class="formula-item" data-formula-category="combination" data-formula-search="kombinasi tidak memperhatikan urutan c n r faktorial">
+                  <summary>Kombinasi</summary>
+                  <div class="formula-detail"><p class="formula-equation">C(n,r) = n! / (r!(n−r)!)</p><p><strong>Simbol:</strong> n jumlah objek dan r banyak objek yang dipilih.</p><p><strong>Konsep:</strong> Kombinasi tidak memperhatikan urutan; pilihan objek yang sama dihitung satu kali.</p><p><strong>Contoh:</strong> C(5,2).</p><p><strong>Penyelesaian:</strong> 5! / (2!×3!) = 120 / 12 = 10.</p><button class="archive-action" type="button" data-copy-formula="C(n,r) = n! / (r!(n−r)!)">COPY FORMULA</button> <button class="archive-action" type="button" data-launch-calculator="combinatorics">OPEN COMBINATORICS</button></div>
+                </details>
+              </div>
+              <p class="archive-feedback" id="formulaFeedback" aria-live="polite"></p>
+            </div>
+            <footer class="foundation-footer"><span>FORMULA LIBRARY · 5 EVIDENCE RECORDS</span><span>REFERENCE ARCHIVE</span></footer>
+          </section>
+          <section class="dialog-content foundation-panel" data-case-panel="learning-journal" hidden>
+            <header class="foundation-heading"><p class="foundation-kicker">CASE FILE · FIELD NOTES</p><h2>Learning Journal</h2></header>
+            <div class="foundation-body interactive-foundation">
+              <form class="archive-form" id="journalForm" novalidate>
+                <input type="hidden" name="entryId">
+                <div class="archive-form-grid">
+                  <label class="archive-field">TANGGAL<input name="date" type="date"></label>
+                  <label class="archive-field">MATERI<input name="topic" type="text" placeholder="Contoh: Aritmetika modular"></label>
+                  <label class="archive-field">HAL YANG SUDAH DIPAHAMI<textarea name="understood" placeholder="Catat pemahaman Anda sendiri"></textarea></label>
+                  <label class="archive-field">KESULITAN YANG DIHADAPI<textarea name="difficulty" placeholder="Catat bagian yang masih menantang"></textarea></label>
+                  <label class="archive-field">CARA MENGATASI<textarea name="solution" placeholder="Tuliskan langkah yang Anda coba"></textarea></label>
+                  <label class="archive-field">KESIMPULAN<textarea name="conclusion" placeholder="Simpulkan sesi belajar ini"></textarea></label>
+                </div>
+                <div class="archive-form-actions"><button class="archive-action" type="submit" id="journalSubmit">SIMPAN CATATAN</button><button class="archive-action" type="button" id="journalCancel" hidden>BATAL EDIT</button></div>
+                <p class="archive-feedback" id="journalFeedback" aria-live="polite"></p>
+              </form>
+              <div class="archive-list" id="journalEntries" aria-live="polite"></div>
+            </div>
+            <footer class="foundation-footer"><span>LEARNING JOURNAL</span><span>LOCAL FIELD NOTES</span></footer>
+          </section>
+          <section class="dialog-content foundation-panel" data-case-panel="quiz-challenge" hidden>
+            <header class="foundation-heading"><p class="foundation-kicker">CASE FILE · CHALLENGE ROOM</p><h2>Quiz Challenge</h2></header>
+            <div class="foundation-body interactive-foundation">
+              <p class="foundation-kicker">DETECTIVE MATHEMATICS CHALLENGE · 5 SOAL</p>
+              <form id="quizForm">
+                <fieldset class="quiz-question"><legend>1. Berapakah −7 mod 5?</legend><div class="quiz-options"><label class="quiz-option"><input type="radio" name="q1" value="2">2</label><label class="quiz-option"><input type="radio" name="q1" value="3">3</label><label class="quiz-option"><input type="radio" name="q1" value="-2">−2</label></div></fieldset>
+                <fieldset class="quiz-question"><legend>2. Apakah 17 ≡ 2 (mod 5)?</legend><div class="quiz-options"><label class="quiz-option"><input type="radio" name="q2" value="yes">Ya, karena 5 membagi 15</label><label class="quiz-option"><input type="radio" name="q2" value="no">Tidak, karena 17 lebih besar dari 2</label></div></fieldset>
+                <fieldset class="quiz-question"><legend>3. Nilai desimal dari (1010)₂ adalah...</legend><div class="quiz-options"><label class="quiz-option"><input type="radio" name="q3" value="8">8</label><label class="quiz-option"><input type="radio" name="q3" value="10">10</label><label class="quiz-option"><input type="radio" name="q3" value="12">12</label></div></fieldset>
+                <fieldset class="quiz-question"><legend>4. Berapakah P(5,2)?</legend><div class="quiz-options"><label class="quiz-option"><input type="radio" name="q4" value="10">10</label><label class="quiz-option"><input type="radio" name="q4" value="20">20</label><label class="quiz-option"><input type="radio" name="q4" value="25">25</label></div></fieldset>
+                <fieldset class="quiz-question"><legend>5. Berapakah C(5,2)?</legend><div class="quiz-options"><label class="quiz-option"><input type="radio" name="q5" value="10">10</label><label class="quiz-option"><input type="radio" name="q5" value="20">20</label><label class="quiz-option"><input type="radio" name="q5" value="5">5</label></div></fieldset>
+                <div class="archive-form-actions"><button class="archive-action" type="submit">PERIKSA JAWABAN</button><button class="archive-action" type="reset">ULANGI KUIS</button></div>
+              </form>
+              <div class="quiz-result" id="quizResult" aria-live="polite"></div>
+            </div>
+            <footer class="foundation-footer"><span>QUIZ CHALLENGE</span><span>YOUR ANSWERS · YOUR SCORE</span></footer>
+          </section>
+          <section class="dialog-content foundation-panel" data-case-panel="learning-progress" hidden>
+            <header class="foundation-heading"><p class="foundation-kicker">CASE FILE · PROGRESS LOG</p><h2>Learning Progress</h2></header>
+            <div class="foundation-body interactive-foundation">
+            <p class="progress-explainer">Lima topik berikut mengikuti materi pada Formula Library dan kalkulator. Aktivitas kalkulator menandai topik sebagai <strong>IN PROGRESS</strong>; pilih status sendiri untuk mencatat penyelesaian. Persentase hanya menghitung topik berstatus <strong>COMPLETED</strong> dan tersimpan di browser ini.</p>
+            <div class="progress-summary" id="progressSummary"></div>
+              <div class="progress-track" role="progressbar" aria-label="Persentase materi selesai" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-fill" id="progressFill"></div></div>
+              <div class="progress-caption"><span>COMPLETED / TOTAL</span><strong id="progressPercent">0%</strong></div>
+              <div class="progress-list" id="progressList"></div>
+              <p class="archive-feedback" id="progressFeedback" aria-live="polite">Pilih status sesuai perkembangan belajar Anda. Perubahan disimpan otomatis.</p>
+            </div>
+            <footer class="foundation-footer"><span>LEARNING PROGRESS</span><span>TRACKED FROM YOUR UPDATES</span></footer>
+          </section>
+          <section class="dialog-content foundation-panel" data-case-panel="conclusion" hidden>
+            <header class="foundation-heading"><p class="foundation-kicker">CASE FILE · FINAL REPORT</p><h2>Conclusion</h2></header>
+            <div class="foundation-body conclusion-body">
+              <p class="conclusion-lead">MATEMATIKA INFORMATIKA · RINGKASAN PENYELIDIKAN</p>
+              <p class="conclusion-copy" data-editable="conclusion-text">Matematika Informatika membantu mengubah persoalan menjadi langkah yang dapat diuji. Dalam berkas ini, aritmetika modular dan kongruensi digunakan untuk memahami sisa serta hubungan antarbilangan; sistem bilangan menunjukkan cara nilai direpresentasikan dengan basis berbeda; sementara permutasi dan kombinasi membedakan susunan yang memperhatikan urutan dari pilihan yang tidak memperhatikannya. Kalkulator menyediakan proses langkah demi langkah, dan Formula Library menjadi rujukan untuk memeriksa konsep. Gunakan Learning Journal dan Progress Tracker untuk mencatat pemahaman serta perkembangan Anda sendiri. Kesimpulan ini dapat disunting agar mencerminkan hasil belajar pribadi.</p>
+              <div class="conclusion-findings">
+                <article><span>FINDING 01</span><strong>Rumus perlu dipahami</strong><p>Setiap hasil sebaiknya dapat dijelaskan kembali melalui konsep dan langkah hitungnya.</p></article>
+                <article><span>FINDING 02</span><strong>Validasi menjaga ketepatan</strong><p>Memeriksa syarat input dan domain membantu mencegah kesimpulan yang keliru.</p></article>
+                <article><span>FINDING 03</span><strong>Belajar adalah proses</strong><p>Catat materi yang sudah dipahami dan bagian yang masih perlu ditinjau, sesuai pengalaman Anda.</p></article>
+              </div>
+              <p class="conclusion-signoff">CASE STATUS: OPEN FOR FURTHER LEARNING <span>·</span> FINAL REPORT</p>
+            </div>
+            <footer class="foundation-footer"><span>CONCLUSION · FINAL REPORT</span><span>EDITABLE · SAVED IN THIS BROWSER</span></footer>
+          </section>
+        </div>
+      </dialog>
+    </div>
+  </main>
+  <script>
+    const cover = document.getElementById("cover");
+    const folder = document.getElementById("folder");
+    const portfolio = document.getElementById("portfolio");
+    const openButton = document.getElementById("openInvestigation");
+    const backButton = document.getElementById("backToCover");
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const editButton = document.getElementById("editButton");
+    const editStatus = document.getElementById("editStatus");
+    const saveNotice = document.getElementById("saveNotice");
+    const caseDialog = document.getElementById("caseDialog");
+    const caseIndex = document.getElementById("caseIndex");
+    const caseIndexButton = document.getElementById("caseIndexButton");
+    const backToTopButton = document.getElementById("backToTop");
+    const dialogIndex = document.getElementById("dialogIndex");
+    const dialogTitle = document.getElementById("dialogTitle");
+    const traceToken = document.getElementById("traceToken");
+    const traceHint = document.getElementById("traceHint");
+    const traceTargets = ["bio", "experience", "study"];
+    let traceIndex = 0;
+    let activeTraceCase = null;
+    let traceTimer;
+    const editableFields = [...document.querySelectorAll("[data-editable]")];
+    const fileStorageKey = "case-file-001-content";
+    const studentPhotoKey = "case-file-001-student-photo";
+    const caseLabels = {
+      bio: ["FILE 01 · SUBJECT PROFILE", "Biodata"],
+      experience: ["FILE 02 · CASE HISTORY", "Pengalaman"],
+      study: ["FILE 03 · MATHEMATICS", "Bukti Belajar"],
+      "math-tools": ["FILE 04 · TOOL ARCHIVE", "Mathematics Tools"],
+      "formula-library": ["FILE 05 · REFERENCE ARCHIVE", "Formula Library"],
+      "learning-journal": ["FILE 06 · FIELD NOTES", "Learning Journal"],
+      "quiz-challenge": ["FILE 07 · CHALLENGE ROOM", "Quiz Challenge"],
+      "learning-progress": ["FILE 08 · PROGRESS LOG", "Learning Progress"],
+      conclusion: ["FILE 10 · FINAL REPORT", "Conclusion"],
+    };
+    const defaultActivityTitles = {
+      1: "Jejak Pertama",
+      2: "Operasi Kedua",
+      3: "Bukti Terakhir",
+    };
+    const experiencePhotoKey = "case-file-001-experience-photos";
+    const experiencePhotos = new Map();
+    let editing = false;
+    let saveTimer;
+
+    function setStatus(message, isError) {
+      editStatus.textContent = message;
+      editStatus.style.color = isError ? "#ed9a83" : "";
+    }
+
+    function loadSavedContent() {
+      try {
+        const saved = localStorage.getItem(fileStorageKey);
+        if (!saved) return;
+        const values = JSON.parse(saved);
+        editableFields.forEach((field) => {
+          if (typeof values[field.dataset.editable] === "string") {
+            field.textContent = values[field.dataset.editable];
+          }
+        });
+      } catch (error) {
+        console.error("Tidak dapat memuat perubahan berkas dari browser.", error);
+        setStatus("Tidak dapat membaca simpanan browser", true);
+      }
+    }
+
+    function saveContent() {
+      const values = {};
+      editableFields.forEach((field) => {
+        values[field.dataset.editable] = field.innerText;
+      });
+      try {
+        localStorage.setItem(fileStorageKey, JSON.stringify(values));
+        setStatus("Perubahan tersimpan di browser ini", false);
+        saveNotice.textContent = "Tersimpan";
+        window.clearTimeout(saveTimer);
+        saveTimer = window.setTimeout(() => { saveNotice.textContent = ""; }, 1700);
+      } catch (error) {
+        console.error("Tidak dapat menyimpan perubahan berkas ke browser.", error);
+        setStatus("Gagal menyimpan — periksa izin penyimpanan browser", true);
+      }
+    }
+
+    function setEditing(enabled) {
+      editing = enabled;
+      portfolio.classList.toggle("editing", editing);
+      editButton.setAttribute("aria-pressed", String(editing));
+      editButton.textContent = editing ? "Simpan" : "Edit File";
+      editStatus.textContent = editing ? "Klik teks yang ingin diubah" : "Perubahan tersimpan di browser ini";
+      editableFields.forEach((field) => {
+        field.contentEditable = String(editing);
+        field.spellcheck = editing;
+      });
+    }
+
+    function updateExperienceMapLabels() {
+      Object.entries(defaultActivityTitles).forEach(([id, defaultTitle]) => {
+        const title = document.querySelector(`[data-editable="experience-title-${id}"]`).textContent.trim();
+        const label = !title || /^\[.*\]$/.test(title) ? defaultTitle : title;
+        document.querySelector(`[data-activity-card-title="${id}"]`).textContent = label;
+      });
+    }
+
+    function showExperienceMap(focusId) {
+      document.getElementById("experienceMap").hidden = false;
+      document.querySelectorAll("[data-activity-detail]").forEach((detail) => {
+        detail.hidden = true;
+      });
+      document.querySelectorAll("[data-activity-open]").forEach((button) => {
+        button.setAttribute("aria-expanded", "false");
+      });
+      if (focusId) {
+        document.querySelector(`[data-activity-open="${focusId}"]`).focus({ preventScroll: true });
+      }
+    }
+
+    function openActivity(id) {
+      document.getElementById("experienceMap").hidden = true;
+      document.querySelectorAll("[data-activity-detail]").forEach((detail) => {
+        detail.hidden = detail.dataset.activityDetail !== id;
+      });
+      document.querySelectorAll("[data-activity-open]").forEach((button) => {
+        button.setAttribute("aria-expanded", String(button.dataset.activityOpen === id));
+      });
+      document.querySelector(`#activityDetail${id} [data-activity-back]`).focus({ preventScroll: true });
+    }
+
+    function setExperiencePhoto(id, dataUrl) {
+      const slot = document.querySelector(`[data-photo-slot="${id}"]`);
+      const image = slot.querySelector("[data-photo-preview]");
+      if (dataUrl) {
+        image.src = dataUrl;
+        image.hidden = false;
+        slot.classList.add("has-image");
+      } else {
+        image.removeAttribute("src");
+        image.hidden = true;
+        slot.classList.remove("has-image");
+      }
+    }
+
+    function setStudentPhoto(dataUrl) {
+      const photoViews = [
+        ["studentPhotoPreview", "#studentPhotoFrame > svg"],
+        ["bioStudentPhotoImage", ".bio-portrait > svg"],
+        ["coverStudentPhotoImage", "#coverStudentPhoto > svg"],
+        ["boardStudentPhotoImage", "#boardStudentPhoto > svg"]
+      ];
+      for (const [imageId, placeholderSelector] of photoViews) {
+        const image = document.getElementById(imageId);
+        const placeholder = document.querySelector(placeholderSelector);
+        if (dataUrl) {
+          image.src = dataUrl;
+          image.hidden = false;
+          placeholder.hidden = true;
+        } else {
+          image.removeAttribute("src");
+          image.hidden = true;
+          placeholder.hidden = false;
+        }
+      }
+    }
+
+    function loadStudentPhoto() {
+      try {
+        const saved = localStorage.getItem(studentPhotoKey);
+        if (saved && saved.startsWith("data:image/")) setStudentPhoto(saved);
+      } catch (error) {
+        console.error("Tidak dapat memuat foto mahasiswa dari browser.", error);
+        document.getElementById("studentPhotoStatus").textContent = "Foto mahasiswa tersimpan tidak dapat dibaca.";
+      }
+    }
+
+    function loadExperiencePhotos() {
+      try {
+        const saved = localStorage.getItem(experiencePhotoKey);
+        if (!saved) return;
+        const photos = JSON.parse(saved);
+        let migratedLegacyPhotos = false;
+        for (const activityId of ["1", "2", "3"]) {
+          for (const photoIndex of ["1", "2", "3"]) {
+            const photoId = `${activityId}-${photoIndex}`;
+            const dataUrl = photos[photoId] || (photoIndex === "1" ? photos[activityId] : null);
+            if (typeof dataUrl === "string" && dataUrl.startsWith("data:image/")) {
+              experiencePhotos.set(photoId, dataUrl);
+              setExperiencePhoto(photoId, dataUrl);
+              if (!photos[photoId] && photos[activityId]) migratedLegacyPhotos = true;
+            }
+          }
+        }
+        if (migratedLegacyPhotos) persistExperiencePhotos();
+      } catch (error) {
+        console.error("Tidak dapat memuat foto bukti pengalaman dari browser.", error);
+        document.querySelectorAll("[data-photo-status]").forEach((status) => {
+          status.textContent = "Foto tersimpan tidak dapat dibaca. Coba pilih ulang file foto.";
+        });
+      }
+    }
+
+    function persistExperiencePhotos() {
+      const photos = Object.fromEntries(experiencePhotos);
+      try {
+        localStorage.setItem(experiencePhotoKey, JSON.stringify(photos));
+        return true;
+      } catch (error) {
+        console.error("Tidak dapat menyimpan foto bukti pengalaman ke browser.", error);
+        return false;
+      }
+    }
+
+    function compressPhoto(file) {
+      return new Promise((resolve, reject) => {
+        if (!file.type.startsWith("image/")) {
+          reject(new Error("Pilih file gambar untuk bukti kegiatan."));
+          return;
+        }
+        if (file.size > 15 * 1024 * 1024) {
+          reject(new Error("Ukuran foto maksimal 15 MB sebelum kompresi."));
+          return;
+        }
+        const objectUrl = URL.createObjectURL(file);
+        const image = new Image();
+        image.onload = () => {
+          URL.revokeObjectURL(objectUrl);
+          const scale = Math.min(1, 1000 / image.naturalWidth, 800 / image.naturalHeight);
+          const canvas = document.createElement("canvas");
+          canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+          canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+          const context = canvas.getContext("2d");
+          if (!context) {
+            reject(new Error("Browser tidak dapat memproses foto ini."));
+            return;
+          }
+          context.fillStyle = "#e8dcc0";
+          context.fillRect(0, 0, canvas.width, canvas.height);
+          context.drawImage(image, 0, 0, canvas.width, canvas.height);
+          let dataUrl;
+          try {
+            dataUrl = canvas.toDataURL("image/jpeg", 0.68);
+          } catch (error) {
+            reject(new Error("Foto tidak dapat dikompresi oleh browser."));
+            return;
+          }
+          if (dataUrl.length > 230_000) {
+            reject(new Error("Foto masih terlalu besar setelah dikompresi. Pilih foto yang lebih kecil."));
+            return;
+          }
+          resolve(dataUrl);
+        };
+        image.onerror = () => {
+          URL.revokeObjectURL(objectUrl);
+          reject(new Error("File foto tidak dapat dibuka."));
+        };
+        image.src = objectUrl;
+      });
+    }
+
+    function positionTraceToken(caseId) {
+      const target = document.querySelector(`[data-case="${caseId}"]`);
+      const board = document.querySelector(".case-board");
+      if (!target || !board) return false;
+      const targetRect = target.getBoundingClientRect();
+      const boardRect = board.getBoundingClientRect();
+      traceToken.style.left = `${targetRect.right - boardRect.left - 19}px`;
+      traceToken.style.top = `${targetRect.top - boardRect.top + 19}px`;
+      return true;
+    }
+
+    function stopTracing() {
+      traceToken.setAttribute("aria-pressed", "false");
+      traceToken.style.left = "50%";
+      traceToken.style.top = "50%";
+      activeTraceCase = null;
+      traceHint.textContent = "KLIK KACA PEMBESAR · TELUSURI PETUNJUK";
+      document.querySelectorAll(".evidence-threads").forEach((thread) => {
+        thread.classList.remove("is-tracing");
+      });
+    }
+
+    function moveTraceTo(caseId) {
+      const target = document.querySelector(`[data-case="${caseId}"]`);
+      if (!target || !positionTraceToken(caseId)) return;
+      activeTraceCase = caseId;
+      traceToken.setAttribute("aria-pressed", "true");
+      document.querySelectorAll(".evidence-threads").forEach((thread) => {
+        thread.classList.add("is-tracing");
+      });
+      target.classList.remove("is-traced");
+      void target.offsetWidth;
+      target.classList.add("is-traced");
+      window.setTimeout(() => target.classList.remove("is-traced"), 800);
+      const label = caseLabels[caseId]?.[1] || "petunjuk";
+      traceHint.textContent = `PETUNJUK DITEMUKAN · ${label.toUpperCase()}`;
+      window.clearTimeout(traceTimer);
+      traceTimer = window.setTimeout(stopTracing, 1400);
+    }
+
+    function openCase(caseId, trigger) {
+      const label = caseLabels[caseId];
+      if (!label) return;
+      document.querySelectorAll("[data-case-panel]").forEach((panel) => {
+        panel.hidden = panel.dataset.casePanel !== caseId;
+      });
+      caseDialog.classList.toggle("study-dialog", caseId === "study");
+      caseDialog.classList.toggle("bio-dialog", caseId === "bio" || caseId === "profile");
+      caseDialog.classList.toggle("experience-dialog", caseId === "experience");
+      caseDialog.classList.toggle("foundation-dialog", ["math-tools", "formula-library", "learning-journal", "quiz-challenge", "learning-progress", "conclusion"].includes(caseId));
+      showExperienceMap();
+      dialogIndex.textContent = label[0];
+      dialogTitle.textContent = label[1];
+      caseDialog.returnValue = "";
+      caseDialog.showModal();
+      caseDialog.dataset.triggerId = trigger.dataset.case || trigger.dataset.indexCase || trigger.dataset.openRecord || "";
+      caseDialog.dataset.triggerWasIndex = String(Boolean(trigger.dataset.indexCase));
+      caseDialog.dataset.triggerType = trigger.dataset.openRecord ? "open-record" : "case";
+    }
+
+    const progressStorageKey = "case-file-001-learning-progress";
+    const journalStorageKey = "case-file-001-learning-journal";
+    const progressLessons = [
+      { id: "modular", name: "Aritmetika Modular", description: "Sisa pembagian dan modulo untuk bilangan negatif." },
+      { id: "congruence", name: "Kongruensi", description: "Keterbagian selisih dan kesamaan sisa." },
+      { id: "number-system", name: "Sistem Bilangan", description: "Konversi basis 2, 8, 10, dan 16." },
+      { id: "permutation", name: "Permutasi", description: "Pencacahan susunan yang memperhatikan urutan." },
+      { id: "combination", name: "Kombinasi", description: "Pencacahan pilihan tanpa memperhatikan urutan." }
+    ];
+    const progressStatuses = [
+      ["not-started", "NOT STARTED"],
+      ["in-progress", "IN PROGRESS"],
+      ["completed", "COMPLETED"]
+    ];
+    const lessonProgress = Object.fromEntries(progressLessons.map((lesson) => [lesson.id, "not-started"]));
+
+    function renderProgress() {
+      const counts = {
+        completed: progressLessons.filter((lesson) => lessonProgress[lesson.id] === "completed").length,
+        "in-progress": progressLessons.filter((lesson) => lessonProgress[lesson.id] === "in-progress").length
+      };
+      counts["not-started"] = progressLessons.length - counts.completed - counts["in-progress"];
+      const percentage = Math.round((counts.completed / progressLessons.length) * 100);
+      document.getElementById("progressSummary").replaceChildren(...[
+        ["TOTAL MATERI", progressLessons.length],
+        ["COMPLETED", counts.completed],
+        ["IN PROGRESS", counts["in-progress"]],
+        ["NOT STARTED", counts["not-started"]]
+      ].map(([label, count]) => {
+        const stat = document.createElement("div");
+        stat.className = "progress-stat";
+        const value = document.createElement("strong");
+        value.textContent = count;
+        const caption = document.createElement("span");
+        caption.textContent = label;
+        stat.append(value, caption);
+        return stat;
+      }));
+      const fill = document.getElementById("progressFill");
+      fill.style.width = `${percentage}%`;
+      fill.parentElement.setAttribute("aria-valuenow", String(percentage));
+      document.getElementById("progressPercent").textContent = `${percentage}% COMPLETED`;
+      const list = document.getElementById("progressList");
+      list.replaceChildren(...progressLessons.map((lesson) => {
+        const row = document.createElement("label");
+        row.className = "progress-row";
+        const topic = document.createElement("div");
+        topic.className = "progress-topic";
+        const title = document.createElement("strong");
+        title.textContent = lesson.name;
+        const description = document.createElement("small");
+        description.textContent = lesson.description;
+        topic.append(title, description);
+        const select = document.createElement("select");
+        select.setAttribute("aria-label", `Status ${lesson.name}`);
+        progressStatuses.forEach(([value, label]) => {
+          const option = document.createElement("option");
+          option.value = value;
+          option.textContent = label;
+          option.selected = lessonProgress[lesson.id] === value;
+          select.append(option);
+        });
+        select.addEventListener("change", () => {
+          const previousStatus = lessonProgress[lesson.id];
+          lessonProgress[lesson.id] = select.value;
+          try {
+            localStorage.setItem(progressStorageKey, JSON.stringify(lessonProgress));
+            document.getElementById("progressFeedback").textContent = `${lesson.name}: ${select.options[select.selectedIndex].text} · tersimpan.`;
+            renderProgress();
+          } catch (error) {
+            lessonProgress[lesson.id] = previousStatus;
+            select.value = previousStatus;
+            console.error("Tidak dapat menyimpan progres belajar.", error);
+            document.getElementById("progressFeedback").textContent = "Progres gagal disimpan. Periksa ruang penyimpanan browser.";
+          }
+        });
+        row.append(topic, select);
+        return row;
+      }));
+    }
+
+    function loadProgress() {
+      try {
+        const saved = localStorage.getItem(progressStorageKey);
+        if (saved) {
+          const values = JSON.parse(saved);
+          progressLessons.forEach(({ id }) => {
+            if (progressStatuses.some(([status]) => status === values[id])) lessonProgress[id] = values[id];
+          });
+        }
+      } catch (error) {
+        console.error("Tidak dapat memuat progres belajar.", error);
+        document.getElementById("progressFeedback").textContent = "Progres tersimpan tidak dapat dibaca.";
+      }
+      renderProgress();
+    }
+
+    function markLessonStarted(id) {
+      if (lessonProgress[id] !== "not-started") return;
+      lessonProgress[id] = "in-progress";
+      try {
+        localStorage.setItem(progressStorageKey, JSON.stringify(lessonProgress));
+        renderProgress();
+        document.getElementById("progressFeedback").textContent = `${progressLessons.find((lesson) => lesson.id === id).name}: IN PROGRESS · aktivitas kalkulator tercatat.`;
+      } catch (error) {
+        lessonProgress[id] = "not-started";
+        console.error("Tidak dapat mencatat aktivitas belajar.", error);
+        document.getElementById("progressFeedback").textContent = "Aktivitas terhitung, tetapi gagal disimpan.";
+      }
+    }
+
+    async function copyToClipboard(text) {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+      const field = document.createElement("textarea");
+      field.value = text;
+      field.setAttribute("readonly", "");
+      field.style.position = "fixed";
+      field.style.opacity = "0";
+      document.body.append(field);
+      field.select();
+      const copied = document.execCommand("copy");
+      field.remove();
+      if (!copied) throw new Error("Browser tidak mengizinkan penyalinan.");
+    }
+
+    function showCalculation(targetId, resultLines, processLines = [], isError = false) {
+      const target = document.getElementById(targetId);
+      target.replaceChildren();
+      target.classList.toggle("is-error", Boolean(isError));
+      target.classList.toggle("has-calculation", processLines.length > 0);
+      if (processLines.length) {
+        const heading = document.createElement("p");
+        heading.className = "calculation-heading";
+        heading.textContent = "EVIDENCE CALCULATION";
+        target.append(heading);
+      }
+      resultLines.forEach((line) => {
+        const paragraph = document.createElement("p");
+        paragraph.textContent = line;
+        target.append(paragraph);
+      });
+      if (processLines.length) {
+        const details = document.createElement("div");
+        details.className = "calculation-details";
+        details.hidden = false;
+        processLines.forEach((line) => {
+          const paragraph = document.createElement("p");
+          paragraph.textContent = line;
+          details.append(paragraph);
+        });
+        const controls = document.createElement("div");
+        controls.className = "calculation-controls";
+        const toggle = document.createElement("button");
+        toggle.className = "calculation-control";
+        toggle.type = "button";
+        toggle.textContent = "HIDE CALCULATION";
+        toggle.setAttribute("aria-expanded", "true");
+        toggle.addEventListener("click", () => {
+          details.hidden = !details.hidden;
+          toggle.textContent = details.hidden ? "SHOW CALCULATION" : "HIDE CALCULATION";
+          toggle.setAttribute("aria-expanded", String(!details.hidden));
+        });
+        const copy = document.createElement("button");
+        copy.className = "calculation-control";
+        copy.type = "button";
+        copy.textContent = "COPY RESULT";
+        copy.addEventListener("click", async () => {
+          const text = [...resultLines, ...processLines].join("\n");
+          try {
+            await copyToClipboard(text);
+            copy.textContent = "COPIED";
+          } catch (error) {
+            console.error("Tidak dapat menyalin hasil perhitungan.", error);
+            copy.textContent = "COPY FAILED";
+          }
+          window.setTimeout(() => { copy.textContent = "COPY RESULT"; }, 1600);
+        });
+        controls.append(toggle, copy);
+        target.append(details, controls);
+      }
+      const status = document.createElement("strong");
+      status.className = "calculation-status";
+      status.textContent = isError ? "STATUS · PERIKSA INPUT" : "STATUS · PERHITUNGAN BERHASIL";
+      target.append(status);
+    }
+
+    function readInteger(value, label) {
+      const normalized = value.trim();
+      if (!/^[+-]?\d+$/.test(normalized)) {
+        throw new Error(`${label} harus berupa bilangan bulat.`);
+      }
+      return BigInt(normalized);
+    }
+
+    function positiveModulo(value, modulus) {
+      return ((value % modulus) + modulus) % modulus;
+    }
+
+    function formInteger(form, name, label) {
+      const value = new FormData(form).get(name);
+      if (value === null || !value.toString().trim()) throw new Error(`${label} wajib diisi.`);
+      return readInteger(value.toString(), label);
+    }
+
+    document.getElementById("moduloForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      try {
+        const form = event.currentTarget;
+        const a = formInteger(form, "a", "Bilangan a");
+        const m = formInteger(form, "m", "Modulus m");
+        if (m <= 0n) throw new Error("Modulus m harus bilangan bulat positif.");
+        const remainder = positiveModulo(a, m);
+        const quotient = (a - remainder) / m;
+        showCalculation("moduloResult", [
+          `HASIL · ${a} mod ${m} = ${remainder}`
+        ], [
+          `INPUT · a = ${a}, m = ${m}`,
+          "RUMUS · a mod m = r, dengan 0 ≤ r < m",
+          `NORMALISASI · r = ((a % m) + m) % m = ${remainder}`,
+          `PEMBAGIAN · ${a} = (${m} × ${quotient}) + ${remainder}`,
+          `CEK RENTANG · 0 ≤ ${remainder} < ${m}`
+        ]);
+        markLessonStarted("modular");
+      } catch (error) {
+        showCalculation("moduloResult", [error.message], [], true);
+      }
+    });
+
+    document.getElementById("congruenceForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      try {
+        const form = event.currentTarget;
+        const a = formInteger(form, "a", "Bilangan a");
+        const b = formInteger(form, "b", "Bilangan b");
+        const m = formInteger(form, "m", "Modulus m");
+        if (m <= 0n) throw new Error("Modulus m harus bilangan bulat positif.");
+        const difference = a - b;
+        const remainder = positiveModulo(difference, m);
+        const quotient = (difference - remainder) / m;
+        const congruent = remainder === 0n;
+        showCalculation("congruenceResult", [
+          `HASIL · ${a} ${congruent ? "≡" : "≢"} ${b} (mod ${m}) · ${congruent ? "KONGRUEN" : "TIDAK KONGRUEN"}`
+        ], [
+          `INPUT · a = ${a}, b = ${b}, m = ${m}`,
+          "RUMUS · a ≡ b (mod m) ⇔ m membagi (a − b)",
+          `SELISIH · ${a} − ${b} = ${difference}`,
+          `PEMBAGIAN · ${difference} = (${m} × ${quotient}) + ${remainder}`,
+          `SISA · ${difference} mod ${m} = ${remainder}`,
+          congruent ? `KESIMPULAN · ${m} membagi (${a} − ${b}); bilangan KONGRUEN.` : `KESIMPULAN · sisa bukan 0; bilangan TIDAK KONGRUEN.`
+        ]);
+        markLessonStarted("congruence");
+      } catch (error) {
+        showCalculation("congruenceResult", [error.message], [], true);
+      }
+    });
+
+    document.getElementById("numberSystemForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      try {
+        const form = event.currentTarget;
+        const formData = new FormData(form);
+        const raw = formData.get("number").toString().trim();
+        if (!raw) throw new Error("Bilangan wajib diisi.");
+        const base = Number(formData.get("base"));
+        const digits = "0123456789ABCDEF";
+        const normalized = raw.toUpperCase();
+        const negative = normalized.startsWith("-");
+        const magnitude = normalized.replace(/^[+-]/, "");
+        if (!magnitude || !/^[+-]?[0-9A-F]+$/.test(normalized) || [...magnitude].some((digit) => digits.indexOf(digit) < 0 || digits.indexOf(digit) >= base)) {
+          throw new Error(`Input tidak valid untuk basis ${base}.`);
+        }
+        let value = 0n;
+        const positionalTerms = [...magnitude].map((digit, index) => {
+          const power = magnitude.length - index - 1;
+          const digitValue = digits.indexOf(digit);
+          value = value * BigInt(base) + BigInt(digitValue);
+          return `${digitValue} × ${base}^${power}`;
+        });
+        if (negative) value = -value;
+        showCalculation("numberSystemResult", [
+          `BINER (2) · ${value.toString(2)}`,
+          `DESIMAL (10) · ${value.toString(10)}`,
+          `OKTAL (8) · ${value.toString(8)}`,
+          `HEKSADESIMAL (16) · ${value.toString(16).toUpperCase()}`
+        ], [
+          `INPUT · ${raw} pada basis ${base}`,
+          "RUMUS · nilai desimal = Σ (digit × basis^posisi)",
+          `NILAI TEMPAT · ${negative ? "−(" : ""}${positionalTerms.join(" + ")}${negative ? ")" : ""} = ${value}`,
+          `KONVERSI · toString(2), toString(8), toString(10), dan toString(16) dari nilai ${value}`
+        ]);
+        markLessonStarted("number-system");
+      } catch (error) {
+        showCalculation("numberSystemResult", [error.message], [], true);
+      }
+    });
+
+    document.getElementById("combinatoricsForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      try {
+        const form = event.currentTarget;
+        const n = Number(new FormData(form).get("n"));
+        const r = Number(new FormData(form).get("r"));
+        const values = new FormData(form);
+        if (!values.get("n")?.toString().trim() || !values.get("r")?.toString().trim()) {
+          throw new Error("Bilangan n dan r wajib diisi.");
+        }
+        if (!Number.isInteger(n) || !Number.isInteger(r) || n < 0 || r < 0 || r > n) {
+          throw new Error("Masukkan bilangan bulat dengan 0 ≤ r ≤ n.");
+        }
+        if (n > 500) throw new Error("Untuk menjaga kalkulator tetap responsif, n maksimum 500.");
+
+        let permutation = 1n;
+        for (let index = 0; index < r; index += 1) {
+          permutation *= BigInt(n - index);
+        }
+        let combination = 1n;
+        const choose = Math.min(r, n - r);
+        for (let index = 1; index <= choose; index += 1) {
+          combination = (combination * BigInt(n - choose + index)) / BigInt(index);
+        }
+        const factorial = (value) => {
+          let result = 1n;
+          for (let index = 2; index <= value; index += 1) result *= BigInt(index);
+          return result;
+        };
+        const nFactorial = factorial(n);
+        const remainderFactorial = factorial(n - r);
+        const rFactorial = factorial(r);
+        const divisor = rFactorial * remainderFactorial;
+        showCalculation("combinatoricsResult", [
+          `PERMUTASI · P(${n},${r}) = ${permutation}`,
+          `KOMBINASI · C(${n},${r}) = ${combination}`
+        ], [
+          `INPUT · n = ${n}, r = ${r}`,
+          `PERMUTASI · P(${n},${r}) = ${n}! / (${n}-${r})! = ${nFactorial} / ${remainderFactorial} = ${permutation}`,
+          `KOMBINASI · C(${n},${r}) = ${n}! / (${r}! × (${n}-${r})!) = ${nFactorial} / (${rFactorial} × ${remainderFactorial}) = ${nFactorial} / ${divisor} = ${combination}`,
+          "KONSEP · Permutasi memperhatikan urutan; kombinasi tidak memperhatikan urutan."
+        ]);
+        markLessonStarted("permutation");
+        markLessonStarted("combination");
+      } catch (error) {
+        showCalculation("combinatoricsResult", [error.message], [], true);
+      }
+    });
+
+    let journalEntries = [];
+    function persistJournal(nextEntries) {
+      try {
+        localStorage.setItem(journalStorageKey, JSON.stringify(nextEntries));
+        journalEntries = nextEntries;
+        return true;
+      } catch (error) {
+        console.error("Tidak dapat menyimpan jurnal belajar.", error);
+        document.getElementById("journalFeedback").textContent = "Catatan gagal disimpan. Periksa ruang penyimpanan browser.";
+        return false;
+      }
+    }
+
+    function renderJournal() {
+      const list = document.getElementById("journalEntries");
+      if (!journalEntries.length) {
+        const empty = document.createElement("p");
+        empty.className = "archive-empty";
+        empty.textContent = "Belum ada catatan. Isi field report di atas untuk merekam perjalanan belajar Anda.";
+        list.replaceChildren(empty);
+        return;
+      }
+      list.replaceChildren(...journalEntries.map((entry) => {
+        const article = document.createElement("article");
+        article.className = "archive-entry";
+        const header = document.createElement("header");
+        header.className = "archive-entry-head";
+        const headingGroup = document.createElement("div");
+        const heading = document.createElement("h3");
+        heading.textContent = entry.topic;
+        const meta = document.createElement("p");
+        meta.className = "archive-entry-meta";
+        meta.textContent = `${entry.date || "Tanggal tidak dicatat"} · FIELD NOTE`;
+        headingGroup.append(heading, meta);
+        const actions = document.createElement("div");
+        actions.className = "archive-entry-actions";
+        const edit = document.createElement("button");
+        edit.className = "archive-action";
+        edit.type = "button";
+        edit.textContent = "EDIT";
+        edit.addEventListener("click", () => {
+          const form = document.getElementById("journalForm");
+          form.elements.namedItem("entryId").value = entry.id;
+          Object.entries(entry).forEach(([key, value]) => {
+            if (form.elements.namedItem(key)) form.elements.namedItem(key).value = value;
+          });
+          document.getElementById("journalSubmit").textContent = "SIMPAN PERUBAHAN";
+          document.getElementById("journalCancel").hidden = false;
+          form.elements.namedItem("topic").focus();
+        });
+        const remove = document.createElement("button");
+        remove.className = "archive-action";
+        remove.type = "button";
+        remove.textContent = "HAPUS";
+        remove.addEventListener("click", () => {
+          const nextEntries = journalEntries.filter((candidate) => candidate.id !== entry.id);
+          if (persistJournal(nextEntries)) {
+            renderJournal();
+            document.getElementById("journalFeedback").textContent = "Catatan dihapus.";
+          }
+        });
+        actions.append(edit, remove);
+        header.append(headingGroup, actions);
+        article.append(header);
+        [
+          ["DIPAHAMI", entry.understood],
+          ["KESULITAN", entry.difficulty],
+          ["CARA MENGATASI", entry.solution],
+          ["KESIMPULAN", entry.conclusion]
+        ].forEach(([label, value]) => {
+          if (!value) return;
+          const text = document.createElement("p");
+          const strong = document.createElement("strong");
+          strong.textContent = `${label} · `;
+          text.append(strong, document.createTextNode(value));
+          article.append(text);
+        });
+        return article;
+      }));
+    }
+
+    function loadJournal() {
+      try {
+        const saved = localStorage.getItem(journalStorageKey);
+        if (saved) {
+          const entries = JSON.parse(saved);
+          if (Array.isArray(entries)) journalEntries = entries.filter((entry) =>
+            entry && typeof entry.id === "string" && typeof entry.topic === "string"
+          );
+        }
+      } catch (error) {
+        console.error("Tidak dapat memuat jurnal belajar.", error);
+        document.getElementById("journalFeedback").textContent = "Jurnal tersimpan tidak dapat dibaca.";
+      }
+      renderJournal();
+    }
+
+    const journalForm = document.getElementById("journalForm");
+    journalForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const values = Object.fromEntries(new FormData(journalForm).entries());
+      const topic = values.topic.toString().trim();
+      if (!values.date || !topic) {
+        document.getElementById("journalFeedback").textContent = "Tanggal dan materi wajib diisi.";
+        return;
+      }
+      const id = values.entryId.toString() || (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`);
+      const entry = {
+        id,
+        date: values.date.toString(),
+        topic,
+        understood: values.understood.toString().trim(),
+        difficulty: values.difficulty.toString().trim(),
+        solution: values.solution.toString().trim(),
+        conclusion: values.conclusion.toString().trim()
+      };
+      const existingIndex = journalEntries.findIndex((candidate) => candidate.id === id);
+      const nextEntries = [...journalEntries];
+      if (existingIndex >= 0) nextEntries[existingIndex] = entry;
+      else nextEntries.unshift(entry);
+      if (persistJournal(nextEntries)) {
+        journalForm.reset();
+        document.getElementById("journalSubmit").textContent = "SIMPAN CATATAN";
+        document.getElementById("journalCancel").hidden = true;
+        document.getElementById("journalFeedback").textContent = existingIndex >= 0 ? "Perubahan catatan tersimpan." : "Catatan belajar tersimpan.";
+        renderJournal();
+      }
+    });
+    document.getElementById("journalCancel").addEventListener("click", () => {
+      journalForm.reset();
+      document.getElementById("journalSubmit").textContent = "SIMPAN CATATAN";
+      document.getElementById("journalCancel").hidden = true;
+      document.getElementById("journalFeedback").textContent = "Edit dibatalkan.";
+    });
+
+    function filterFormulas() {
+      const query = document.getElementById("formulaSearch").value.trim().toLocaleLowerCase();
+      const category = document.getElementById("formulaFilter").value;
+      let visible = 0;
+      document.querySelectorAll(".formula-item").forEach((item) => {
+        const matches = (category === "all" || item.dataset.formulaCategory === category)
+          && item.dataset.formulaSearch.includes(query);
+        item.hidden = !matches;
+        if (matches) visible += 1;
+      });
+      document.getElementById("formulaFeedback").textContent = visible ? `${visible} RUMUS DITEMUKAN` : "Tidak ada rumus yang cocok.";
+    }
+    document.getElementById("formulaSearch").addEventListener("input", filterFormulas);
+    document.getElementById("formulaFilter").addEventListener("change", filterFormulas);
+    document.querySelectorAll("[data-copy-formula]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const feedback = document.getElementById("formulaFeedback");
+        try {
+          await copyToClipboard(button.dataset.copyFormula);
+          feedback.textContent = "Rumus berhasil disalin.";
+        } catch (error) {
+          console.error("Tidak dapat menyalin rumus.", error);
+          feedback.textContent = "Rumus gagal disalin. Periksa izin clipboard browser.";
+        }
+      });
+    });
+
+    document.getElementById("quizForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      const answers = ["q1", "q2", "q3", "q4", "q5"];
+      const result = document.getElementById("quizResult");
+      if (answers.some((name) => !formData.has(name))) {
+        result.classList.add("is-error");
+        result.textContent = "Jawab semua pertanyaan sebelum memeriksa kasus.";
+        return;
+      }
+      const correctAnswers = ["3", "yes", "10", "20", "10"];
+      const score = correctAnswers.reduce((total, answer, index) =>
+        total + (formData.get(answers[index]) === answer ? 1 : 0), 0
+      );
+      result.classList.remove("is-error");
+      result.textContent = `HASIL INVESTIGASI · ${score} dari ${correctAnswers.length} jawaban benar (${Math.round(score / correctAnswers.length * 100)}%).`;
+    });
+    document.getElementById("quizForm").addEventListener("reset", () => {
+      const result = document.getElementById("quizResult");
+      result.textContent = "";
+      result.classList.remove("is-error");
+    });
+
+    function openInvestigation() {
+      openButton.disabled = true;
+      folder.classList.add("opening");
+      window.setTimeout(() => {
+        cover.hidden = true;
+        portfolio.classList.add("visible");
+        portfolio.setAttribute("aria-hidden", "false");
+        window.scrollTo(0, 0);
+        backToTopButton.classList.remove("visible");
+        updateActiveNavigation();
+        openButton.disabled = false;
+      }, motionPreference.matches ? 0 : 650);
+    }
+
+    function returnToCover() {
+      portfolio.classList.remove("visible");
+      portfolio.setAttribute("aria-hidden", "true");
+      caseIndex.hidden = true;
+      caseIndexButton.setAttribute("aria-expanded", "false");
+      caseDialog.close();
+      setEditing(false);
+      cover.hidden = false;
+      folder.classList.remove("opening");
+      window.scrollTo(0, 0);
+      openButton.focus({ preventScroll: true });
+    }
+
+    openButton.addEventListener("click", openInvestigation);
+    backButton.addEventListener("click", returnToCover);
+    caseIndexButton.addEventListener("click", () => {
+      const isOpening = caseIndex.hidden;
+      caseIndex.hidden = !isOpening;
+      caseIndexButton.setAttribute("aria-expanded", String(isOpening));
+      if (isOpening) caseIndex.querySelector("[data-section-link]").focus({ preventScroll: true });
+    });
+    const sectionLinks = [...document.querySelectorAll("[data-section-link]")];
+    const pageSections = [...document.querySelectorAll("[data-page-section]")];
+    sectionLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        caseIndex.hidden = true;
+        caseIndexButton.setAttribute("aria-expanded", "false");
+        document.querySelector(link.hash)?.focus({ preventScroll: true });
+      });
+    });
+    document.querySelectorAll("[data-open-record]").forEach((button) => {
+      button.addEventListener("click", () => openCase(button.dataset.openRecord, button));
+    });
+
+    function updateActiveNavigation() {
+      const marker = window.innerHeight * 0.34;
+      let activeSection = "home";
+      pageSections.forEach((section) => {
+        if (section.getBoundingClientRect().top <= marker) activeSection = section.dataset.pageSection;
+      });
+      sectionLinks.forEach((link) => {
+        if (link.dataset.sectionLink === activeSection) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+      });
+    }
+
+    let scrollUpdateScheduled = false;
+    window.addEventListener("scroll", () => {
+      if (scrollUpdateScheduled) return;
+      scrollUpdateScheduled = true;
+      window.requestAnimationFrame(() => {
+        updateActiveNavigation();
+        backToTopButton.classList.toggle("visible", window.scrollY > 280 && portfolio.classList.contains("visible"));
+        scrollUpdateScheduled = false;
+      });
+    }, { passive: true });
+    backToTopButton.addEventListener("click", () => {
+      if (motionPreference.matches) window.scrollTo(0, 0);
+      else window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    document.addEventListener("click", (event) => {
+      if (caseIndex.hidden || caseIndex.contains(event.target) || caseIndexButton.contains(event.target)) return;
+      caseIndex.hidden = true;
+      caseIndexButton.setAttribute("aria-expanded", "false");
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape" || caseIndex.hidden) return;
+      caseIndex.hidden = true;
+      caseIndexButton.setAttribute("aria-expanded", "false");
+      caseIndexButton.focus({ preventScroll: true });
+    });
+    loadSavedContent();
+    updateExperienceMapLabels();
+    loadStudentPhoto();
+    loadExperiencePhotos();
+    loadProgress();
+    loadJournal();
+    filterFormulas();
+    document.getElementById("studentPhotoInput").addEventListener("change", async (event) => {
+      const input = event.currentTarget;
+      const file = input.files[0];
+      const status = document.getElementById("studentPhotoStatus");
+      if (!file) return;
+      status.textContent = "Memproses foto mahasiswa...";
+      try {
+        const dataUrl = await compressPhoto(file);
+        localStorage.setItem(studentPhotoKey, dataUrl);
+        setStudentPhoto(dataUrl);
+        status.textContent = "Foto mahasiswa tersimpan di browser ini.";
+      } catch (error) {
+        console.error("Tidak dapat memproses atau menyimpan foto mahasiswa.", error);
+        status.textContent = error.message || "Foto mahasiswa gagal disimpan. Periksa ruang penyimpanan browser.";
+      } finally {
+        input.value = "";
+      }
+    });
+    document.getElementById("studentPhotoRemove").addEventListener("click", () => {
+      const status = document.getElementById("studentPhotoStatus");
+      try {
+        localStorage.removeItem(studentPhotoKey);
+        setStudentPhoto(null);
+        status.textContent = "Foto mahasiswa dihapus.";
+      } catch (error) {
+        console.error("Tidak dapat menghapus foto mahasiswa dari browser.", error);
+        status.textContent = "Foto mahasiswa gagal dihapus.";
+      }
+    });
+    document.addEventListener("click", (event) => {
+      if (!(event.target instanceof Element)) return;
+      const trigger = event.target.closest("[data-launch-calculator]");
+      if (!trigger) return;
+      const formIds = {
+        modulo: "moduloForm",
+        congruence: "congruenceForm",
+        "number-system": "numberSystemForm",
+        combinatorics: "combinatoricsForm"
+      };
+      const form = document.getElementById(formIds[trigger.dataset.launchCalculator]);
+      if (!form) {
+        console.error("Kalkulator yang dipilih tidak ditemukan.", trigger.dataset.launchCalculator);
+        return;
+      }
+      document.querySelectorAll("[data-case-panel]").forEach((panel) => {
+        panel.hidden = panel.dataset.casePanel !== "study";
+      });
+      caseDialog.classList.remove("foundation-dialog", "bio-dialog", "experience-dialog");
+      caseDialog.classList.add("study-dialog");
+      const label = caseLabels.study;
+      dialogIndex.textContent = label[0];
+      dialogTitle.textContent = label[1];
+      caseDialog.returnValue = "";
+      window.requestAnimationFrame(() => {
+        const calculator = form.closest(".calculator-card");
+        calculator.scrollIntoView({ behavior: motionPreference.matches ? "auto" : "smooth", block: "center" });
+        calculator.classList.add("tool-launch-highlight");
+        const firstInput = form.querySelector("input:not([type='hidden']), select");
+        if (firstInput) firstInput.focus({ preventScroll: true });
+        window.setTimeout(() => calculator.classList.remove("tool-launch-highlight"), 1800);
+      });
+    });
+    document.querySelectorAll(".case-board [data-case]").forEach((card) => {
+      card.addEventListener("click", () => {
+        if (card.disabled || card.classList.contains("is-opening")) return;
+        moveTraceTo(card.dataset.case);
+        traceIndex = (traceTargets.indexOf(card.dataset.case) + 1) % traceTargets.length;
+        card.disabled = true;
+        card.classList.add("is-opening");
+        window.setTimeout(() => {
+          card.classList.remove("is-opening");
+          card.disabled = false;
+          openCase(card.dataset.case, card);
+        }, motionPreference.matches ? 0 : 560);
+      });
+    });
+    traceToken.addEventListener("click", () => {
+      const caseId = traceTargets[traceIndex];
+      moveTraceTo(caseId);
+      traceIndex = (traceIndex + 1) % traceTargets.length;
+    });
+    window.addEventListener("resize", () => {
+      if (activeTraceCase) positionTraceToken(activeTraceCase);
+    });
+    document.getElementById("closeDialog").addEventListener("click", () => caseDialog.close());
+    document.querySelectorAll("[data-activity-open]").forEach((button) => {
+      button.addEventListener("click", () => openActivity(button.dataset.activityOpen));
+    });
+    document.querySelectorAll("[data-activity-back]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const detail = button.closest("[data-activity-detail]");
+        showExperienceMap(detail.dataset.activityDetail);
+      });
+    });
+    caseDialog.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      const activeDetail = document.querySelector("[data-activity-detail]:not([hidden])");
+      if (!activeDetail) return;
+      event.preventDefault();
+      event.stopPropagation();
+      showExperienceMap(activeDetail.dataset.activityDetail);
+    });
+    document.querySelectorAll("[data-photo-input]").forEach((input) => {
+      input.addEventListener("change", async () => {
+        const id = input.dataset.photoInput;
+        const status = document.querySelector(`[data-photo-status="${id}"]`);
+        const file = input.files[0];
+        if (!file) return;
+        status.textContent = "Memproses foto bukti...";
+        try {
+          const previousPhoto = experiencePhotos.get(id);
+          const dataUrl = await compressPhoto(file);
+          experiencePhotos.set(id, dataUrl);
+          setExperiencePhoto(id, dataUrl);
+          if (!persistExperiencePhotos()) {
+            if (previousPhoto) experiencePhotos.set(id, previousPhoto);
+            else experiencePhotos.delete(id);
+            setExperiencePhoto(id, previousPhoto);
+            status.textContent = "Foto gagal disimpan. Periksa ruang penyimpanan browser.";
+            return;
+          }
+          status.textContent = "Foto bukti tersimpan di browser ini.";
+        } catch (error) {
+          console.error("Tidak dapat memproses foto bukti pengalaman.", error);
+          status.textContent = error.message;
+        } finally {
+          input.value = "";
+        }
+      });
+    });
+    document.querySelectorAll("[data-photo-remove]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const id = button.dataset.photoRemove;
+        const status = document.querySelector(`[data-photo-status="${id}"]`);
+        const previousPhoto = experiencePhotos.get(id);
+        experiencePhotos.delete(id);
+        setExperiencePhoto(id, null);
+        if (!persistExperiencePhotos()) {
+          if (previousPhoto) experiencePhotos.set(id, previousPhoto);
+          setExperiencePhoto(id, previousPhoto);
+          status.textContent = "Foto gagal dihapus dari penyimpanan browser.";
+          return;
+        }
+        status.textContent = "Foto bukti dihapus.";
+      });
+    });
+    caseDialog.addEventListener("click", (event) => {
+      if (event.target === caseDialog) caseDialog.close();
+    });
+    caseDialog.addEventListener("close", () => {
+      showExperienceMap();
+      if (caseDialog.dataset.triggerWasIndex === "true") {
+        caseIndexButton.focus({ preventScroll: true });
+        return;
+      }
+      const trigger = caseDialog.dataset.triggerType === "open-record"
+        ? document.querySelector(`[data-open-record="${caseDialog.dataset.triggerId}"]`)
+        : document.querySelector(`[data-case="${caseDialog.dataset.triggerId}"]`);
+      if (trigger) trigger.focus({ preventScroll: true });
+    });
+    editButton.addEventListener("click", () => {
+      if (editing) {
+        saveContent();
+        setEditing(false);
+      } else {
+        setEditing(true);
+      }
+    });
+    portfolio.addEventListener("input", (event) => {
+      const field = event.target.closest("[data-editable]");
+      if (!field) return;
+      const key = field.dataset.editable;
+      editableFields.forEach((duplicate) => {
+        if (duplicate !== field && duplicate.dataset.editable === key) {
+          duplicate.textContent = field.innerText;
+        }
+      });
+      if (key.startsWith("experience-title-")) updateExperienceMapLabels();
+      saveContent();
+    });
+  </script>
+</body>
+</html>
