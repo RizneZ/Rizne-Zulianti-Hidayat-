@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#211b16" />
+    <meta name="description" content="Berkas investigasi personal — portofolio rahasia Case File #001." />
+    <title>Case File #001 — Personal Investigation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Silkscreen:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+
+    <main class="shell">
+      <section class="cover-screen" id="coverScreen" aria-labelledby="welcomeTitle">
+        <div class="case-folder" id="caseFolder">
+          <div class="folder-tab" aria-hidden="true"></div>
+          <div class="paper-sheet">
+            <span class="paper-clip" aria-hidden="true"></span>
+            <div class="case-stamp" aria-label="Confidential">CONFIDENTIAL</div>
+            <p class="case-kicker">CONFIDENTIAL DOCUMENT</p>
+            <div class="case-title-row">
+              <div>
+                <h1 id="welcomeTitle">CASE FILE <span>#001</span></h1>
+                <p class="case-subtitle">PERSONAL INVESTIGATION</p>
+              </div>
+              <div class="fingerprint" aria-hidden="true">
+                <svg viewBox="0 0 64 64" fill="none">
+                  <path d="M32 8c-13 0-23 10-23 23 0 7 2 13 3 19M32 15c-9 0-16 7-16 16 0 9 2 15 3 20M32 22c-5 0-9 4-9 9 0 11 2 17 2 21M32 8c13 0 23 10 23 23 0 7-2 13-3 19M32 15c9 0 16 7 16 16 0 9-2 15-3 20M32 22c5 0 9 4 9 9 0 11-2 17-2 21M32 29v22" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+            <div class="subject-block">
+              <div class="id-photo">
+                <img id="profileImage" alt="Foto identitas subjek" hidden />
+                <svg id="profilePlaceholder" viewBox="0 0 80 96" role="img" aria-label="Siluet foto identitas">
+                  <rect width="80" height="96" fill="#b9a98c"/>
+                  <path d="M12 88c2-20 13-30 28-30s26 10 28 30" fill="#51483b"/>
+                  <ellipse cx="40" cy="35" rx="18" ry="22" fill="#75634d"/>
+                  <path d="M21 34c1-18 10-27 21-27 12 0 19 10 19 26-6-3-10-10-12-15-5 8-14 13-28 16Z" fill="#39352e"/>
+                  <path d="M29 40h3m16 0h3" stroke="#282520" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+                <span class="photo-code">ID / 001</span>
+              </div>
+              <div class="subject-details">
+                <span class="field-label">SUBJECT</span>
+                <p class="subject-name" data-editable="name">Nama Lengkap</p>
+                <span class="field-label">CLASSIFICATION</span>
+                <p class="classification-value">TOP SECRET</p>
+                <span class="field-label">STATUS</span>
+                <p class="status-value"><i aria-hidden="true"></i> ACTIVE INVESTIGATION</p>
+              </div>
+            </div>
+            <div class="case-divider"><span>CASE NO. 001</span><span>FILE COPY · 01</span></div>
+            <button class="open-book" id="openBook" type="button">OPEN CASE BOARD <span aria-hidden="true">↗</span></button>
+            <p class="case-motto">“Setiap petunjuk membuka cerita baru.”</p>
+          </div>
+          <div class="folder-edge" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <section class="portfolio" id="portfolio" hidden>
+        <header class="toolbar">
+          <button class="brand" id="backToCover" type="button" aria-label="Kembali ke sampul">
+            <span class="brand-icon" aria-hidden="true">←</span> CASE FILE // 001
+          </button>
+          <div class="toolbar-actions">
+            <span class="edit-hint" id="editHint">Perubahan tersimpan otomatis di browser ini.</span>
+            <button class="edit-toggle" id="editToggle" type="button" aria-pressed="false">
+              <span aria-hidden="true">✎</span> <span id="editLabel">EDIT ISI</span>
+            </button>
+          </div>
+        </header>
+
+        <section class="case-board" id="caseBoard" aria-labelledby="caseBoardTitle" hidden>
+          <div class="board-heading">
+            <p class="eyebrow"><span></span> INVESTIGATION BOARD · CASE #001</p>
+            <h1 id="caseBoardTitle">Papan Identifikasi</h1>
+            <p class="board-intro">Pilih satu berkas untuk membuka petunjuknya. Setiap berkas akan terbuka seperti kotak hadiah.</p>
+          </div>
+          <div class="evidence-board">
+            <svg class="evidence-threads" viewBox="0 0 900 410" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M450 28 C450 110 155 85 155 190" />
+              <path d="M450 28 C450 112 450 110 450 190" />
+              <path d="M450 28 C450 110 745 85 745 190" />
+            </svg>
+            <span class="board-pin board-pin-main" aria-hidden="true"></span>
+            <button class="evidence-card" type="button" data-case-page="about">
+              <span class="gift-ribbon" aria-hidden="true"></span>
+              <span class="evidence-number">FILE 01 · SUBJECT</span>
+              <span class="evidence-icon" aria-hidden="true">⌕</span>
+              <strong data-editable="board-title-about">BIODATA</strong>
+              <span class="evidence-caption" data-editable="board-caption-about">Identitas &amp; perjalanan pendidikan</span>
+              <span class="evidence-open">BUKA BERKAS ↗</span>
+            </button>
+            <button class="evidence-card" type="button" data-case-page="learning">
+              <span class="gift-ribbon" aria-hidden="true"></span>
+              <span class="evidence-number">FILE 02 · EVIDENCE</span>
+              <span class="evidence-icon" aria-hidden="true">∑</span>
+              <strong data-editable="board-title-learning">BUKTI BELAJAR</strong>
+              <span class="evidence-caption" data-editable="board-caption-learning">Arsip investigasi Matematika Informatika</span>
+              <span class="evidence-open">BUKA BERKAS ↗</span>
+            </button>
+            <button class="evidence-card" type="button" data-case-page="valuable">
+              <span class="gift-ribbon" aria-hidden="true"></span>
+              <span class="evidence-number">FILE 03 · FIELD NOTES</span>
+              <span class="evidence-icon" aria-hidden="true">✦</span>
+              <strong data-editable="board-title-valuable">PENGALAMAN BERHARGA</strong>
+              <span class="evidence-caption" data-editable="board-caption-valuable">Catatan pengalaman &amp; dokumentasi foto</span>
+              <span class="evidence-open">BUKA BERKAS ↗</span>
+            </button>
+          </div>
+          <p class="board-footnote">TARIK BENANG · IKUTI PETUNJUK · BUKA SATU BERKAS</p>
+        </section>
+
+        <div class="book" id="book" hidden>
+          <section class="page-stack" aria-label="Isi buku portofolio" aria-live="polite">
+            <div class="page">
+              <div class="page-top"><span>PERSONAL INVESTIGATION RECORD · <span id="pageNumber">01 / 03</span></span><button id="backToBoard" type="button">← KEMBALI KE PAPAN</button></div>
+              <article class="page-content" id="section-about" data-content="about" aria-labelledby="aboutTitle">
+                <p class="eyebrow"><span></span> SUBJECT PROFILE · 001</p>
+                <h2 id="aboutTitle">Hai, aku<br /><em data-editable="name">Nama Kamu.</em></h2>
+                <div class="about-profile">
+                  <div class="about-portrait">
+                    <img id="aboutProfileImage" alt="Foto profil pada halaman data diri" hidden />
+                    <span id="aboutProfilePlaceholder" aria-hidden="true">♡</span>
+                  </div>
+                  <div class="about-profile-copy">
+                    <span>THIS IS ME</span>
+                    <p data-editable="name">Nama Kamu</p>
+                    <label class="about-photo-button" for="photoInput" hidden>✎ Ganti foto profil</label>
+                    <input id="photoInput" type="file" accept="image/*" hidden disabled />
+                  </div>
+                </div>
+                <p class="intro" data-editable="about">Aku suka belajar hal baru, merangkai ide, dan membuat sesuatu yang bermakna. Di sini aku berbagi sedikit cerita tentang diriku dan perjalanan yang sedang kutempuh.</p>
+                <div class="location-note"><span class="note-flower" aria-hidden="true">⌖</span><div><small>AKU TINGGAL DI</small><p data-editable="location">Kota tempat tinggalmu</p></div></div>
+                <span class="page-doodle" aria-hidden="true">✧</span>
+              </article>
+
+              <article class="page-content" id="section-education" data-content="education" aria-labelledby="educationTitle">
+                <p class="eyebrow"><span></span> ACADEMIC RECORD · 002</p>
+                <h2 id="educationTitle">Perjalanan<br /><em>pendidikan.</em></h2>
+                <div class="timeline">
+                  <div class="timeline-item"><small data-editable="education-year-1">2022 — SEKARANG</small><h3 data-editable="education-name-1">Nama universitas / sekolah</h3><p data-editable="education-info-1">Program studi atau jurusan · Kota</p></div>
+                  <div class="timeline-item"><small data-editable="education-year-2">2019 — 2022</small><h3 data-editable="education-name-2">Nama sekolah sebelumnya</h3><p data-editable="education-info-2">Jurusan atau fokus belajar · Kota</p></div>
+                </div>
+                <p class="hand-note">catatan arsip · riwayat pendidikan subjek</p>
+              </article>
+
+              <article class="page-content learning-section" id="section-learning" data-content="learning" aria-labelledby="learningTitle">
+                <p class="eyebrow"><span></span> DIGITAL EVIDENCE · MATHEMATICS &amp; TECHNOLOGY</p>
+                <h2 id="learningTitle" data-editable="learning-title">Bukti Belajar.</h2>
+                <p class="learning-subtitle" data-editable="learning-subtitle">Perjalanan belajar Matematika Informatika bersama Pa Iin TA 20261</p>
+                <p class="learning-intro" data-editable="learning-intro">Catatan interaktif untuk memahami sistem bilangan, aritmetika modular, kongruensi, dan kombinatorika.</p>
+
+                <div class="calculator-grid">
+                  <section class="calculator-card" aria-labelledby="moduloTitle">
+                    <div class="calculator-heading"><span class="calculator-index">01 / MODULAR ARITHMETIC</span><span class="calculator-mark" aria-hidden="true">%</span></div>
+                    <h3 id="moduloTitle">Modulo Calculator</h3>
+                    <p class="calculator-description">Modulo menghasilkan sisa pembagian. Untuk bilangan negatif, hasil dinormalisasi ke rentang 0 sampai m − 1.</p>
+                    <form id="moduloForm" class="calculator-form">
+                      <label>a <input id="moduloA" type="text" inputmode="text" autocomplete="off" placeholder="Contoh: -17" required /></label>
+                      <label>Modulus m <input id="moduloM" type="text" inputmode="text" autocomplete="off" placeholder="Bilangan positif" required /></label>
+                      <button type="submit">Hitung modulo</button>
+                    </form>
+                    <div class="calculator-result" id="moduloResult" aria-live="polite" aria-atomic="true">
+                      <p class="result-placeholder">Hasil dan proses perhitungan akan muncul di sini.</p>
+                    </div>
+                  </section>
+
+                  <section class="calculator-card" aria-labelledby="congruenceTitle">
+                    <div class="calculator-heading"><span class="calculator-index">02 / CONGRUENCE</span><span class="calculator-mark" aria-hidden="true">≡</span></div>
+                    <h3 id="congruenceTitle">Congruence Checker</h3>
+                    <p class="calculator-description">a kongruen dengan b modulo m jika selisih a − b habis dibagi m.</p>
+                    <form id="congruenceForm" class="calculator-form">
+                      <label>a <input id="congruenceA" type="text" inputmode="text" autocomplete="off" placeholder="Contoh: 17" required /></label>
+                      <label>b <input id="congruenceB" type="text" inputmode="text" autocomplete="off" placeholder="Contoh: 2" required /></label>
+                      <label>Modulus m <input id="congruenceM" type="text" inputmode="text" autocomplete="off" placeholder="Contoh: 5" required /></label>
+                      <button type="submit">Periksa kongruensi</button>
+                    </form>
+                    <div class="calculator-result" id="congruenceResult" aria-live="polite" aria-atomic="true">
+                      <p class="result-placeholder">Status kongruensi dan proses pengecekan akan muncul di sini.</p>
+                    </div>
+                  </section>
+
+                  <section class="calculator-card" aria-labelledby="numberSystemTitle">
+                    <div class="calculator-heading"><span class="calculator-index">03 / NUMBER SYSTEMS</span><span class="calculator-mark" aria-hidden="true">0x</span></div>
+                    <h3 id="numberSystemTitle">Number System Calculator</h3>
+                    <p class="calculator-description">Konversi bilangan di antara basis 2, 8, 10, dan 16. Gunakan tanda minus untuk bilangan negatif.</p>
+                    <form id="numberSystemForm" class="calculator-form number-system-form">
+                      <label>Bilangan <input id="numberValue" type="text" autocomplete="off" placeholder="Contoh: 1010" required /></label>
+                      <label>Basis asal
+                        <select id="numberBase">
+                          <option value="2">Biner · basis 2</option>
+                          <option value="8">Oktal · basis 8</option>
+                          <option value="10" selected>Desimal · basis 10</option>
+                          <option value="16">Heksadesimal · basis 16</option>
+                        </select>
+                      </label>
+                      <button type="submit">Konversi bilangan</button>
+                    </form>
+                    <div class="calculator-result conversion-result" id="numberSystemResult" aria-live="polite" aria-atomic="true">
+                      <p class="result-placeholder">Hasil konversi empat basis akan muncul di sini.</p>
+                    </div>
+                  </section>
+
+                  <section class="calculator-card" aria-labelledby="combinatoricsTitle">
+                    <div class="calculator-heading"><span class="calculator-index">04 / COMBINATORICS</span><span class="calculator-mark" aria-hidden="true">n!</span></div>
+                    <h3 id="combinatoricsTitle">Combinatorics Calculator</h3>
+                    <p class="calculator-description">Permutasi memperhatikan urutan; kombinasi menghitung pilihan tanpa memperhatikan urutan.</p>
+                    <form id="combinatoricsForm" class="calculator-form">
+                      <label>n <input id="combinatoricsN" type="number" min="0" max="1000" step="1" placeholder="Contoh: 5" required /></label>
+                      <label>r <input id="combinatoricsR" type="number" min="0" max="1000" step="1" placeholder="Contoh: 2" required /></label>
+                      <button type="submit">Hitung P(n,r) &amp; C(n,r)</button>
+                    </form>
+                    <div class="calculator-result" id="combinatoricsResult" aria-live="polite" aria-atomic="true">
+                      <p class="result-placeholder">Hasil, rumus, dan proses perhitungan akan muncul di sini.</p>
+                    </div>
+                  </section>
+                </div>
+                <p class="learning-footnote">Semua kalkulasi menggunakan bilangan bulat presisi tinggi agar hasil tetap akurat.</p>
+              </article>
+
+              <article class="page-content formula-section" id="section-formulas" data-content="formulas" aria-labelledby="formulaTitle">
+                <p class="eyebrow"><span></span> REFERENCE ARCHIVE · FORMULA INDEX</p>
+                <h2 id="formulaTitle">Formula Library.</h2>
+                <p class="learning-subtitle">Kumpulan konsep dan rumus untuk menelusuri setiap petunjuk matematika.</p>
+                <div class="formula-filters">
+                  <label for="formulaSearch">SEARCH FORMULA <input id="formulaSearch" type="search" placeholder="Cari nama, rumus, atau konsep..." /></label>
+                  <label for="formulaCategory">CATEGORY
+                    <select id="formulaCategory">
+                      <option value="all">Semua kategori</option>
+                      <option value="modular">Aritmetika Modular</option>
+                      <option value="congruence">Kongruensi</option>
+                      <option value="number-system">Sistem Bilangan</option>
+                      <option value="permutation">Permutasi</option>
+                      <option value="combination">Kombinasi</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="formula-list" id="formulaList">
+                  <article class="formula-card" data-category="modular">
+                    <span class="formula-category">ARITMETIKA MODULAR</span><h3>Operasi modulo</h3>
+                    <p class="formula-math">a mod m = r, dengan a = qm + r</p>
+                    <p class="formula-summary">Sisa r diperoleh saat bilangan bulat a dibagi modulus positif m.</p>
+                    <div class="formula-actions"><button type="button" data-copy-text="a mod m = r; a = qm + r">COPY FORMULA</button><button type="button" data-formula-details>VIEW DETAILS</button></div>
+                    <div class="formula-detail" hidden><p><b>Simbol:</b> a adalah bilangan yang dibagi; m adalah pembagi positif; q adalah hasil bagi bulat; r adalah sisa dengan 0 ≤ r &lt; m.</p><p><b>Konsep:</b> modulo mengelompokkan bilangan berdasarkan sisa pembagian.</p><p><b>Contoh:</b> 17 mod 5.</p><p><b>Penyelesaian:</b> 17 = 3 × 5 + 2, jadi 17 mod 5 = 2.</p></div>
+                  </article>
+                  <article class="formula-card" data-category="congruence">
+                    <span class="formula-category">KONGRUENSI</span><h3>Uji kongruensi</h3>
+                    <p class="formula-math">a ≡ b (mod m) ⇔ m | (a − b)</p>
+                    <p class="formula-summary">Dua bilangan kongruen jika selisihnya habis dibagi modulus positif.</p>
+                    <div class="formula-actions"><button type="button" data-copy-text="a ≡ b (mod m) jika dan hanya jika m membagi (a - b)">COPY FORMULA</button><button type="button" data-formula-details>VIEW DETAILS</button></div>
+                    <div class="formula-detail" hidden><p><b>Simbol:</b> a dan b adalah bilangan bulat; m adalah modulus positif; tanda | berarti “membagi habis”.</p><p><b>Konsep:</b> a dan b memiliki sisa yang sama ketika dibagi m.</p><p><b>Contoh:</b> 17 ≡ 2 (mod 5).</p><p><b>Penyelesaian:</b> 17 − 2 = 15 = 3 × 5, jadi keduanya kongruen modulo 5.</p></div>
+                  </article>
+                  <article class="formula-card" data-category="number-system">
+                    <span class="formula-category">SISTEM BILANGAN</span><h3>Ekspansi basis</h3>
+                    <p class="formula-math">dₖ…d₁d₀(base b) = Σ dᵢ × bⁱ</p>
+                    <p class="formula-summary">Nilai digit ditentukan oleh posisi dan pangkat basisnya.</p>
+                    <div class="formula-actions"><button type="button" data-copy-text="(d_k...d_1d_0)_b = Σ(d_i × b^i)">COPY FORMULA</button><button type="button" data-formula-details>VIEW DETAILS</button></div>
+                    <div class="formula-detail" hidden><p><b>Simbol:</b> b adalah basis; dᵢ adalah digit pada posisi i, dengan 0 ≤ dᵢ &lt; b.</p><p><b>Konsep:</b> setiap posisi menyumbang digit dikali pangkat basis.</p><p><b>Contoh:</b> 1010₂.</p><p><b>Penyelesaian:</b> 1×2³ + 0×2² + 1×2¹ + 0×2⁰ = 8 + 2 = 10₁₀.</p></div>
+                  </article>
+                  <article class="formula-card" data-category="permutation">
+                    <span class="formula-category">PERMUTASI</span><h3>Permutasi P(n,r)</h3>
+                    <p class="formula-math">P(n,r) = n! / (n − r)!</p>
+                    <p class="formula-summary">Menghitung cara memilih dan menyusun r objek dari n objek; urutan diperhatikan.</p>
+                    <div class="formula-actions"><button type="button" data-copy-text="P(n,r) = n! / (n-r)!">COPY FORMULA</button><button type="button" data-formula-details>VIEW DETAILS</button></div>
+                    <div class="formula-detail" hidden><p><b>Simbol:</b> n adalah jumlah objek; r adalah jumlah posisi terpilih; n! adalah faktorial.</p><p><b>Konsep:</b> susunan berbeda jika urutannya berbeda.</p><p><b>Contoh:</b> P(5,2).</p><p><b>Penyelesaian:</b> 5! / 3! = 5 × 4 = 20 susunan.</p></div>
+                  </article>
+                  <article class="formula-card" data-category="combination">
+                    <span class="formula-category">KOMBINASI</span><h3>Kombinasi C(n,r)</h3>
+                    <p class="formula-math">C(n,r) = n! / (r!(n − r)!)</p>
+                    <p class="formula-summary">Menghitung cara memilih r objek dari n objek tanpa memperhatikan urutan.</p>
+                    <div class="formula-actions"><button type="button" data-copy-text="C(n,r) = n! / (r!(n-r)!)">COPY FORMULA</button><button type="button" data-formula-details>VIEW DETAILS</button></div>
+                    <div class="formula-detail" hidden><p><b>Simbol:</b> n adalah jumlah objek; r adalah jumlah pilihan; faktorial membagi susunan yang hanya berbeda urutan.</p><p><b>Konsep:</b> pilihan yang sama dihitung satu kali meskipun urutan berubah.</p><p><b>Contoh:</b> C(5,2).</p><p><b>Penyelesaian:</b> 5! / (2! × 3!) = (5 × 4) / (2 × 1) = 10 pilihan.</p></div>
+                  </article>
+                </div>
+                <p class="empty-state" id="formulaEmpty" hidden>Tidak ada rumus yang cocok dengan pencarian ini.</p>
+              </article>
+
+              <article class="page-content progress-section" id="section-progress" data-content="progress" aria-labelledby="progressTitle">
+                <p class="eyebrow"><span></span> CASE STATUS · LEARNING RECORD</p>
+                <h2 id="progressTitle">LEARNING PROGRESS</h2>
+                <p class="learning-subtitle">Track Every Step of Your Mathematical Investigation.</p>
+                <div class="progress-summary" id="progressSummary" aria-live="polite"></div>
+                <div class="progress-list" id="progressList"></div>
+                <section class="progress-history" aria-labelledby="historyTitle"><h3 id="historyTitle">COMPLETION HISTORY</h3><ol id="progressHistory"><li>Belum ada materi yang diselesaikan.</li></ol></section>
+                <button class="secondary-button" id="resetProgress" type="button">RESET LEARNING PROGRESS</button>
+              </article>
+
+              <article class="page-content journal-section" id="section-journal" data-content="journal" aria-labelledby="journalTitle">
+                <p class="eyebrow"><span></span> PERSONAL NOTES · LEARNING RECORD · INVESTIGATION LOG</p>
+                <h2 id="journalTitle">LEARNING JOURNAL</h2>
+                <p class="learning-subtitle">Personal Notes from My Learning Investigation.</p>
+                <label class="journal-search" for="journalSearch">SEARCH NOTE <input id="journalSearch" type="search" placeholder="Cari catatan pembelajaran..." /></label>
+                <button class="primary-button" id="newJournalNote" type="button">ADD NEW NOTE</button>
+                <form id="journalForm" class="journal-form" hidden>
+                  <input id="journalId" type="hidden" />
+                  <label>Tanggal <input id="journalDate" type="date" required /></label>
+                  <label>Judul materi <input id="journalTitleInput" type="text" maxlength="120" placeholder="Contoh: Aritmetika modular" required /></label>
+                  <label>Apa yang dipelajari? <textarea id="journalLearned" rows="3" required placeholder="Tuliskan materi yang dipelajari..."></textarea></label>
+                  <label>Apa yang sudah dipahami? <textarea id="journalUnderstood" rows="3" placeholder="Bagian yang sudah dipahami..."></textarea></label>
+                  <label>Kesulitan yang dihadapi <textarea id="journalDifficulty" rows="3" placeholder="Bagian yang masih terasa sulit..."></textarea></label>
+                  <label>Bagaimana cara mengatasi kesulitan? <textarea id="journalSolution" rows="3" placeholder="Rencana atau cara mengatasinya..."></textarea></label>
+                  <label>Kesimpulan pembelajaran <textarea id="journalConclusion" rows="3" placeholder="Kesimpulan versi kamu..."></textarea></label>
+                  <div class="form-actions"><button class="primary-button" type="submit">SAVE NOTE</button><button class="secondary-button" id="cancelJournal" type="button">CANCEL</button></div>
+                  <p class="journal-storage-note">Catatan tersimpan lokal di browser ini, tidak dikirim ke server.</p>
+                </form>
+                <div class="journal-list" id="journalList" aria-live="polite"></div>
+                <p class="empty-state" id="journalEmpty">Belum ada catatan. Tambahkan jurnal pembelajaranmu sendiri.</p>
+              </article>
+
+              <article class="page-content quiz-section" id="section-quiz" data-content="quiz" aria-labelledby="quizTitle">
+                <p class="eyebrow"><span></span> CHALLENGE ARCHIVE · 15 CLUES</p>
+                <h2 id="quizTitle">DETECTIVE MATHEMATICS CHALLENGE</h2>
+                <p class="learning-subtitle">Test Your Knowledge. Solve Every Mathematical Clue.</p>
+                <div class="quiz-levels" aria-label="Tingkat kemampuan berdasarkan nilai akhir">
+                  <span>LEVEL 1 — BEGINNER DETECTIVE</span><span>LEVEL 2 — JUNIOR ANALYST</span><span>LEVEL 3 — MASTER MATHEMATICIAN</span>
+                </div>
+                <div id="quizQuestion" class="quiz-question" aria-live="polite"></div>
+                <div class="quiz-actions"><button class="primary-button" id="nextQuestion" type="button" disabled>NEXT QUESTION</button><button class="secondary-button" id="restartQuiz" type="button">RESTART QUIZ</button></div>
+                <div id="quizSummary" class="quiz-summary" hidden aria-live="polite"></div>
+              </article>
+
+              <article class="page-content" id="section-valuable" data-content="valuable" aria-labelledby="valuableTitle">
+                <p class="eyebrow"><span></span> REFLECTION LOG · PERSONAL ACCOUNT</p>
+                <h2 id="valuableTitle" data-editable="valuable-title">PENGALAMAN BERHARGA</h2>
+                <p class="learning-subtitle" data-editable="valuable-subtitle">Catatan pengalaman belajar. Isi bagian berikut berdasarkan pengalamanmu sendiri.</p>
+                <div class="experience-choices" role="group" aria-label="Pilih berkas pengalaman">
+                  <button type="button" class="experience-choice active" data-experience-choice="1" aria-pressed="true" data-editable="experience-choice-1">PILIHAN 01 · CERITA PERTAMA</button>
+                  <button type="button" class="experience-choice" data-experience-choice="2" aria-pressed="false" data-editable="experience-choice-2">PILIHAN 02 · CERITA KEDUA</button>
+                  <button type="button" class="experience-choice" data-experience-choice="3" aria-pressed="false" data-editable="experience-choice-3">PILIHAN 03 · CERITA KETIGA</button>
+                  <button type="button" class="experience-add" id="addExperience" aria-label="Tambah pengalaman berharga" title="Tambah pengalaman">+</button>
+                </div>
+                <div class="experience-record active" data-experience-record="1">
+                  <label class="experience-title">JUDUL PENGALAMAN <input data-editable="experience-title-1" type="text" value="Pengalaman pertama" /></label>
+                  <div class="evidence-photos">
+                    <figure class="evidence-photo"><img data-experience-image="1-1" alt="Foto bukti pengalaman pertama, foto satu" hidden /><span class="photo-placeholder">FOTO BUKTI<br />01</span><label class="experience-upload" hidden>UNGGAH FOTO<input type="file" accept="image/*" data-experience-photo="1-1" hidden /></label></figure>
+                    <figure class="evidence-photo"><img data-experience-image="1-2" alt="Foto bukti pengalaman pertama, foto dua" hidden /><span class="photo-placeholder">FOTO BUKTI<br />02</span><label class="experience-upload" hidden>UNGGAH FOTO<input type="file" accept="image/*" data-experience-photo="1-2" hidden /></label></figure>
+                    <figure class="evidence-photo"><img data-experience-image="1-3" alt="Foto bukti pengalaman pertama, foto tiga" hidden /><span class="photo-placeholder">FOTO BUKTI<br />03</span><label class="experience-upload" hidden>UNGGAH FOTO<input type="file" accept="image/*" data-experience-photo="1-3" hidden /></label></figure>
+                  </div>
+                  <p class="photo-caption" data-editable="experience-caption-1">Tambahkan cerita dan dokumentasi pengalamanmu sendiri.</p>
+                </div>
+                <div class="experience-record" data-experience-record="2" hidden>
+                  <label class="experience-title">JUDUL PENGALAMAN <input data-editable="experience-title-2" type="text" value="Pengalaman kedua" /></label>
+                  <div class="evidence-photos">
+                    <figure class="evidence-photo"><img data-experience-image="2-1" alt="Foto bukti pengalaman kedua, foto satu" hidden /><span class="photo-placeholder">FOTO BUKTI<br />01</span><label class="experience-upload" hidden>UNGGAH FOTO<input type="file" accept="image/*" data-experience-photo="2-1" hidden /></label></figure>
+                    <figure class="evidence-photo"><img data-experience-image="2-2" alt="Foto bukti pengalaman kedua, foto dua" hidden /><span class="photo-placeholder">FOTO BUKTI<br />02</span><label class="experience-upload" hidden>UNGGAH FOTO<input type="file" accept="image/*" data-experience-photo="2-2" hidden /></label></figure>
+                    <figure class="evidence-photo"><img data-experience-image="2-3" alt="Foto bukti pengalaman kedua, foto tiga" hidden /><span class="photo-placeholder">FOTO BUKTI<br />03</span><label class="experience-upload" hidden>UNGGAH FOTO<input type="file" accept="image/*" data-experience-photo="2-3" hidden /></label></figure>
+                  </div>
+                  <p class="photo-caption" data-editable="experience-caption-2">Tambahkan cerita dan dokumentasi pengalamanmu sendiri.</p>
+                </div>
+                <div class="experience-record" data-experience-record="3" hidden>
+                  <label class="experience-title">JUDUL PENGALAMAN <input data-editable="experience-title-3" type="text" value="Pengalaman ketiga" /></label>
+                  <div class="evidence-photos">
+                    <figure class="evidence-photo"><img data-experience-image="3-1" alt="Foto bukti pengalaman ketiga, foto satu" hidden /><span class="photo-placeholder">FOTO BUKTI<br />01</span><label class="experience-upload" hidden>UNGGAH FOTO<input type="file" accept="image/*" data-experience-photo="3-1" hidden /></label></figure>
+                    <figure class="evidence-photo"><img data-experience-image="3-2" alt="Foto bukti pengalaman ketiga, foto dua" hidden /><span class="photo-placeholder">FOTO BUKTI<br />02</span><label class="experience-upload" hidden>UNGGAH FOTO<input type="file" accept="image/*" data-experience-photo="3-2" hidden /></label></figure>
+                    <figure class="evidence-photo"><img data-experience-image="3-3" alt="Foto bukti pengalaman ketiga, foto tiga" hidden /><span class="photo-placeholder">FOTO BUKTI<br />03</span><label class="experience-upload" hidden>UNGGAH FOTO<input type="file" accept="image/*" data-experience-photo="3-3" hidden /></label></figure>
+                  </div>
+                  <p class="photo-caption" data-editable="experience-caption-3">Tambahkan cerita dan dokumentasi pengalamanmu sendiri.</p>
+                </div>
+                <div class="reflection-list">
+                  <label>Pengalaman mengikuti pembelajaran bersama dosen <textarea data-editable="reflection-class" rows="3" placeholder="Ceritakan pengalamanmu sendiri..."></textarea></label>
+                  <label>Materi yang paling menarik <textarea data-editable="reflection-topic" rows="3" placeholder="Materi yang paling menarik bagimu..."></textarea></label>
+                  <label>Tantangan memahami materi <textarea data-editable="reflection-challenge" rows="3" placeholder="Tantangan yang benar-benar kamu alami..."></textarea></label>
+                  <label>Pengalaman membuat kalkulator matematika <textarea data-editable="reflection-calculator" rows="3" placeholder="Tuliskan proses yang kamu jalani..."></textarea></label>
+                  <label>Pengalaman menggunakan HTML, CSS, dan JavaScript <textarea data-editable="reflection-code" rows="3" placeholder="Hal yang kamu pelajari saat membuatnya..."></textarea></label>
+                  <label>Pengalaman menggunakan AI sebagai pendamping belajar <textarea data-editable="reflection-ai" rows="3" placeholder="Bagaimana kamu memanfaatkan AI?..."></textarea></label>
+                  <label>Pengetahuan baru yang diperoleh <textarea data-editable="reflection-knowledge" rows="3" placeholder="Tuliskan pengetahuan barumu..."></textarea></label>
+                </div>
+                <p class="journal-storage-note">Catatan refleksi disimpan otomatis di browser ini. Isi dengan pengalamanmu sendiri.</p>
+              </article>
+            </div>
+          </section>
+        </div>
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      </section>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
